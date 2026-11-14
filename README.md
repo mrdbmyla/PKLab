@@ -1,69 +1,61 @@
 # PKLab
 
-PKLab est un compagnon pour les jeux Pokémon (Gen 3, 4 et 5) joués sur émulateur : il lit l'équipe et l'adversaire en direct dans la mémoire de l'émulateur et affiche les faiblesses, les stats et les attaques. Il inclut aussi un randomizer, un éditeur de sauvegarde et un réglage de la vitesse du jeu.
+PKLab is a companion app for Pokémon games (Gen 3, 4 and 5) played on an emulator. It reads your party and the opponent live from the emulator's memory and shows weaknesses, stats and moves. It also includes a randomizer, a save editor and a game speed slider.
 
-Téléchargement : [Releases](https://github.com/mrdbmyla/PKLab/releases) → `PKLab.exe` (aucune installation). Les ROM ne sont pas fournies.
+Download: [Releases](https://github.com/mrdbmyla/PKLab/releases) → `PKLab.exe` (no installation needed). ROMs are not included.
 
-## Pourquoi ce code est public
+## Why this code is public
 
-Ce dépôt contient le code source exact qui sert à construire `PKLab.exe`. Il est publié **uniquement pour que chacun puisse vérifier ce que fait le programme** (absence de virus, de collecte de données, etc.).
-Ce n'est **pas** un projet open source : tous les droits sont réservés (voir [LICENSE](LICENSE)).
+This repository contains the exact source code used to build `PKLab.exe`. It is published **only so that anyone can check what the program does** (no malware, no data collection, etc.).
+This is **not** an open source project: all rights are reserved (see [LICENSE](LICENSE)).
 
-Ce que fait le programme, en bref :
-- serveur local sur `127.0.0.1:8731` uniquement (aucun accès depuis le réseau) ;
-- lecture de la mémoire de mGBA / melonDS (`pymem`) pour afficher l'équipe ;
-- connexions Internet (téléchargements seulement, rien n'est envoyé) :
-  - API GitHub de ce dépôt pour les mises à jour (`app/updater.py`), fichiers vérifiés par leur sha256 ;
-  - `raw.githubusercontent.com/pret/…` : données publiques des cartes (`app/gen3_maps.py`, `app/gen4_maps.py`), mises en cache ;
-  - `raw.githubusercontent.com/PokeAPI/sprites` : images de secours des Pokémon ;
-  - Google Fonts : police de l'interface ;
-- aucune télémétrie, aucun compte.
+What the program does, in short:
+- local server on `127.0.0.1:8731` only (not reachable from the network);
+- reads the memory of mGBA / melonDS (`pymem`) to show your party;
+- Internet connections (downloads only, nothing is sent):
+  - this repository's GitHub API, for updates (`app/updater.py`); downloaded files are checked by their sha256;
+  - `raw.githubusercontent.com/pret/…`: public map data (`app/gen3_maps.py`, `app/gen4_maps.py`), cached locally;
+  - `raw.githubusercontent.com/PokeAPI/sprites`: fallback Pokémon images;
+  - Google Fonts: the interface font;
+- no telemetry, no account.
 
-## Contenu
+## Contents
 
-| Chemin | Rôle |
+| Path | Role |
 |---|---|
-| `app/app.py` | boucle de lecture, serveur HTTP local, fenêtre (pywebview) |
-| `app/nds_reader.py`, `app/games.py` | lecture des jeux DS (Gen 4/5) dans melonDS |
-| `mgba_gen3_bridge.lua` | script lancé dans mGBA pour les jeux GBA (Gen 3) |
-| `app/engine.py` | décodage des Pokémon et calcul des faiblesses |
-| `app/randomizer*.py`, `app/save_editor.py`, `app/shiny_patch.py` | outils |
-| `app/updater.py` | mises à jour |
-| `pklab.html`, `data/` | interface et données |
-| `app/PKLab.spec` | recette PyInstaller |
+| `app/app.py` | read loop, local HTTP server, window (pywebview) |
+| `app/nds_reader.py`, `app/games.py` | reading DS games (Gen 4/5) in melonDS |
+| `mgba_gen3_bridge.lua` | script run inside mGBA for GBA games (Gen 3) |
+| `app/engine.py` | Pokémon decoding and weakness calculation |
+| `app/randomizer*.py`, `app/save_editor.py`, `app/shiny_patch.py` | tools |
+| `app/updater.py` | updates |
+| `pklab.html`, `data/` | interface and data |
+| `app/PKLab.spec` | PyInstaller recipe |
 
-## Construire l'exe soi-même (vérification)
+## Building the exe yourself (for verification)
 
-Prérequis : Windows, Python 3.11, PyInstaller 6.
+Requirements: Windows, Python 3.11, PyInstaller 6.
 
 ```bash
 pip install -r app/requirements.txt pyinstaller
 ```
 
-Les éléments suivants ne sont **pas** dans ce dépôt et doivent être ajoutés à la main avant la construction :
-- `app/mgba_bundle/mGBA.exe` : [mGBA 0.11](https://mgba.io/downloads.html) officiel pour Windows (licence MPL-2.0, [code source](https://github.com/mgba-emu/mgba)) ;
-- `app/melonds_bundle/melonDS.exe` : [melonDS 1.1](https://melonds.kuribo64.net/downloads.php) officiel pour Windows (licence GPL-3.0, [code source](https://github.com/melonDS-emu/melonDS)) ;
-- `boxart/` et `data/sprites/` : images des jeux et des Pokémon (propriété de Nintendo / The Pokémon Company, non redistribuées ici).
+The following are **not** in this repository and must be added by hand before building:
+- `app/mgba_bundle/mGBA.exe`: official [mGBA 0.11](https://mgba.io/downloads.html) for Windows (MPL-2.0 license, [source code](https://github.com/mgba-emu/mgba));
+- `app/melonds_bundle/melonDS.exe`: official [melonDS 1.1](https://melonds.kuribo64.net/downloads.php) for Windows (GPL-3.0 license, [source code](https://github.com/melonDS-emu/melonDS));
+- `boxart/` and `data/sprites/`: game and Pokémon images (property of Nintendo / The Pokémon Company, not redistributed here).
 
-Puis :
+Then:
 
 ```bash
 cd app
 pyinstaller PKLab.spec --noconfirm
 ```
 
-L'exe est créé dans `app/dist/PKLab.exe`.
+The exe is created in `app/dist/PKLab.exe`.
 
-Les émulateurs fournis dans `PKLab.exe` sont les versions officielles, non modifiées, des projets ci-dessus ; leur code source est disponible aux liens indiqués.
+The emulators shipped inside `PKLab.exe` are the official, unmodified releases of the projects above; their source code is available at the links given.
 
-## Mentions
+## Credits
 
-Pokémon et tous les noms associés sont des marques de Nintendo, Game Freak et The Pokémon Company. PKLab n'est ni affilié ni approuvé par eux.
-
----
-
-## English
-
-PKLab is a companion app for Pokémon games (Gen 3–5) played on an emulator: it reads your party and the opponent live from emulator memory and shows weaknesses, stats and moves.
-
-This repository holds the exact source code used to build `PKLab.exe`. It is public **only so anyone can check what the program does**. It is **not** open source: all rights are reserved (see [LICENSE](LICENSE)). The emulators (mGBA, MPL-2.0; melonDS, GPL-3.0), game box art, sprites and ROMs are not included.
+Pokémon and all related names are trademarks of Nintendo, Game Freak and The Pokémon Company. PKLab is not affiliated with or endorsed by them.
