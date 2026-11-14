@@ -1,0 +1,50 @@
+PKLab
+Copyright (c) 2026 Mourad (github.com/mrdbmyla). Tous droits réservés. All rights reserved.
+
+FRANÇAIS
+
+Ce code source est rendu public uniquement pour permettre sa consultation et sa
+vérification (sécurité, absence de logiciel malveillant).
+
+Vous êtes autorisé à :
+  - lire et examiner ce code ;
+  - le construire sur votre propre ordinateur, pour votre usage personnel, afin de
+    vérifier qu'il correspond au programme distribué.
+
+Sans autorisation écrite préalable de l'auteur, il est interdit de :
+  - copier, modifier, adapter ou traduire tout ou partie de ce code ;
+  - le distribuer, le publier ou le mettre à disposition, modifié ou non ;
+  - l'utiliser dans un autre projet, gratuit ou commercial.
+
+Les fonctions « voir » et « fork » proposées par GitHub restent possibles dans les
+limites des conditions d'utilisation de GitHub ; elles ne donnent aucun autre droit.
+
+Ce logiciel est fourni « tel quel », sans aucune garantie. L'auteur ne pourra être
+tenu responsable d'aucun dommage lié à son utilisation.
+
+Les composants tiers (mGBA, melonDS, bibliothèques Python) restent soumis à leurs
+propres licences. Pokémon est une marque de Nintendo, Game Freak et The Pokémon Company.
+
+ENGLISH
+
+This source code is made public solely so that it can be viewed and verified
+(security, absence of malware).
+
+You may:
+  - read and review this code;
+  - build it on your own computer, for personal use, to check that it matches the
+    distributed program.
+
+Without the author's prior written permission, you may not:
+  - copy, modify, adapt or translate any part of this code;
+  - distribute, publish or make it available, modified or not;
+  - use it in any other project, free or commercial.
+
+GitHub's "view" and "fork" features remain available within the limits of
+GitHub's Terms of Service; they grant no other rights.
+
+This software is provided "as is", without warranty of any kind. The author shall
+not be liable for any damage arising from its use.
+
+Third-party components (mGBA, melonDS, Python libraries) remain under their own
+licenses. Pokémon is a trademark of Nintendo, Game Freak and The Pokémon Company.

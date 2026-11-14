@@ -1,0 +1,957 @@
+# French -> English for the interface (site + app messages + randomizer report).
+Vitesse du jeu : glisser, molette, double-clic = x1	Game speed: drag, mouse wheel, double-click = x1
+Vitesse du jeu	Game speed
+sans limite	no limit
+i/s	fps
+# One entry per line: French<TAB>English. Lines starting with # are comments.
+# Entries with a space or punctuation are also replaced INSIDE longer texts;
+# single words only replace a whole text, unless the line starts with ~.
+# Built into data/i18n_en.js by app/build_i18n.py (with the Pokémon/move/item/place names).
+
+# ---- header / library / launch
+Type Fée + retypages (Blaze Black 2 Redux, etc.)	Fairy type + retypes (Blaze Black 2 Redux, etc.)
+Volume de l'émulateur	Emulator volume
+Vitesse : non disponible pour le moment	Speed: not available right now
+~Retour	Back
+En attente de données...	Waiting for data...
+Relancer la détection	Detect again
+Redétection...	Detecting again...
+Mode hack	Hack mode
+Choisis un jeu dans la bibliothèque pour commencer.	Pick a game in the library to start.
+Lancement...	Launching...
+lancement...	launching...
+(lancement...)	(launching...)
+Démarrage de l'émulateur	Starting the emulator
+Si le jeu a une sauvegarde, appuie sur Start puis Continuer dans l'émulateur pour accélérer la détection.	If the game has a save, press Start then Continue in the emulator to speed up detection.
+Continuer sans attendre	Continue without waiting
+Choisis un jeu	Choose a game
+Clique sur un jeu pour lancer l'émulateur avec la ROM correspondante.	Click a game to launch the emulator with the matching ROM.
+Choisir ma ROM...	Choose my ROM...
+Passer, l'émulateur tourne déjà	Skip, the emulator is already running
+Reprendre :	Resume:
+Charger la dernière sauvegarde (state 1) :	Load the last save (state 1):
+ROM non trouvée automatiquement :	ROM not found automatically:
+Lancer	Launch
+recherche de la ROM...	looking for the ROM...
+ROM introuvable	ROM not found
+choisis une ROM	choose a ROM
+lancé !	launched!
+choix du fichier...	choosing the file...
+extension non reconnue (	unknown extension (
+(aucune ROM trouvée)	(no ROM found)
+Nouvelle partie	New game
+Détection en cours...	Detecting...
+Pas encore de sauvegarde : ton équipe s'affichera dès ton premier Pokémon	No save yet: your team will show up as soon as you get your first Pokémon
+Recherche du jeu dans la mémoire de l'émulateur	Looking for the game in the emulator's memory
+Toujours pas détecté - le jeu a-t-il bien une sauvegarde chargée ?	Still not detected - does the game really have a save loaded?
+Détecté !	Detected!
+erreur	error
+Erreur	Error
+Échec :	Failed:
+Reçu !	Received!
+pas de signal	no signal
+
+# ---- game names
+Pokémon Diamant	Pokémon Diamond
+Pokémon Perle	Pokémon Pearl
+Pokémon Platine	Pokémon Platinum
+Pokémon Or HeartGold	Pokémon HeartGold
+Pokémon Argent SoulSilver	Pokémon SoulSilver
+Pokémon Noire	Pokémon Black
+Pokémon Blanche	Pokémon White
+Pokémon Noire 2	Pokémon Black 2
+Pokémon Blanche 2	Pokémon White 2
+Pokémon Rubis	Pokémon Ruby
+Pokémon Saphir	Pokémon Sapphire
+Pokémon Émeraude	Pokémon Emerald
+Pokémon Rouge Feu	Pokémon FireRed
+Pokémon Vert Feuille	Pokémon LeafGreen
+Noire 2 / Blanche 2	Black 2 / White 2
+Rouge Feu / Vert Feuille	FireRed / LeafGreen
+Rubis / Saphir	Ruby / Sapphire
+
+# ---- randomizer panel
+Randomizer	Randomizer
+Crée une version aléatoire de ton jeu (3G, 4G et 5G) en quelques clics. Mode simple pour jouer tout de suite, mode détaillé pour tout régler. La ROM d'origine n'est jamais modifiée.	Creates a randomized version of your game (Gen 3, 4 and 5) in a few clicks. Simple mode to play right away, detailed mode to tune everything. The original ROM is never modified.
+Ton jeu	Your game
+Choisir une ROM...	Choose a ROM...
+Nom	Name
+Nom de la ROM créée (facultatif, sinon « ... (Aleatoire n) »)	Name of the new ROM (optional, otherwise "... (Random n)")
+Nom de la ROM créée (facultatif, sinon « ... (Shiny 1-512) »)	Name of the new ROM (optional, otherwise "... (Shiny 1-512)")
+Simple	Simple
+Détaillé	Detailed
+À quel point tout mélanger ?	How much should be shuffled?
+Découverte	Discovery
+Starters, Pokémon sauvages, Pokémon offerts, œufs et échanges changent. Le reste est normal.	Starters, wild Pokémon, gift Pokémon, eggs and trades change. Everything else is normal.
+Aventure	Adventure
+conseillé	recommended
+En plus : dresseurs (Pokémon évolués selon leur niveau), légendaires, fossiles, objets au sol, CT et tuteurs. Force équilibrée.	Also: trainers (Pokémon evolved according to their level), legendaries, fossils, field items, TMs and tutors. Balanced strength.
+Chaos	Chaos
+Tout change : types, talents, stats, attaques apprises, évolutions, compatibilités CT et tuteurs, objets.	Everything changes: types, abilities, stats, learned moves, evolutions, TM and tutor compatibility, items.
+Petits plus	Extras
+Aléatoire total	Fully random
+(starters, sauvages, dresseurs, échanges : n'importe quel Pokémon du jeu, évolué ou non, sans tenir compte de la force)	(starters, wild, trainers, trades: any Pokémon of the game, evolved or not, regardless of strength)
+Pas de légendaires	No legendaries
+Dresseurs plus forts	Stronger trainers
+(+20 % de niveaux)	(+20% levels)
+Évolution aléatoire à chaque évolution	Random evolution at every evolution
+Toutes les CS pour tous	All HMs for everyone
+(Coupe, Surf... sans chercher le bon Pokémon)	(Cut, Surf... without looking for the right Pokémon)
+Ligue unique	Unique League
+(champions, Conseil 4 et Maître ont des Pokémon que personne d'autre n'a)	(Gym Leaders, Elite Four and Champion have Pokémon nobody else has)
+Magasins aléatoires	Random shops
+(objets vendus changés, CT et Poké Balls gardés)	(items sold changed, TMs and Poké Balls kept)
+Courir partout, même à l'intérieur	Run everywhere, even indoors
+(3G, phase expérimentale)	(Gen 3, experimental)
+Chaussures de course dès le début	Running Shoes from the start
+(Rouge Feu / Vert Feuille ; phase expérimentale)	(FireRed / LeafGreen; experimental)
+(3G : Rouge Feu / Vert Feuille ; phase expérimentale)	(Gen 3: FireRed / LeafGreen; experimental)
+Texte rapide	Fast text
+(3G : Émeraude, Rouge Feu, Vert Feuille ; phase expérimentale)	(Gen 3: Emerald, FireRed, LeafGreen; experimental)
+Garder ma sauvegarde actuelle	Keep my current save
+(sinon : nouvelle partie)	(otherwise: new game)
+Préréglages	Presets
+Charger	Load
+Enregistrer	Save
+Supprimer	Delete
+Nom du préréglage	Preset name
+Pokémon sauvages	Wild Pokémon
+Mode	Mode
+Par zone (chaque espèce d'une zone devient une autre)	By area (each species of an area becomes another one)
+Global (une espèce devient la même autre partout)	Global (a species becomes the same other one everywhere)
+Total (chaque emplacement tiré au sort)	Total (every slot drawn at random)
+Ne pas changer	Don't change
+Force similaire	Similar strength
+~force similaire	similar strength
+Un type par zone	One type per area
+Pokémon Eau en surf et pêche	Water Pokémon when surfing and fishing
+Niveaux	Levels
+Attrapez-les tous	Gotta catch 'em all
+(le plus d'espèces différentes possible)	(as many different species as possible)
+Objets tenus aléatoires	Random held items
+(utiles en combat)	(useful in battle)
+Taux de capture minimum	Minimum catch rate
+255 (le plus facile)	255 (easiest)
+Dresseurs	Trainers
+Équipes	Teams
+Aléatoires	Random
+Aléatoire	Random
+Aléatoires, le plus d'espèces différentes	Random, as many different species as possible
+Aléatoires, un type par dresseur	Random, one type per trainer
+Champions, Conseil 4, Maître : un type chacun	Gym Leaders, Elite Four, Champion: one type each
+Champions, Conseil 4, Maître : Pokémon que personne d'autre n'a	Gym Leaders, Elite Four, Champion: Pokémon nobody else has
+Complètement évolués dès le Nv.	Fully evolved from Lv.
+(0 = non)	(0 = no)
+Meilleures attaques	Better moves
+(dresseurs à attaques choisies)	(trainers with chosen moves)
+Le rival garde la lignée de son starter	The rival keeps his starter's line
+Pokémon évolués selon leur niveau	Pokémon evolved according to their level
+(niveau d'évolution atteint ; pierre, échange... dès le Nv. 40)	(evolution level reached; stone, trade... from Lv. 40)
+Pokémon en plus : Champions/Conseil 4	Extra Pokémon: Gym Leaders/Elite Four
+rivaux/boss	rivals/bosses
+autres	others
+Objets tenus :	Held items:
+Champions/Conseil 4	Gym Leaders/Elite Four
+Objets : baies seulement	Items: berries only
+Objet seulement pour le Pokémon de plus haut niveau	Item only for the highest-level Pokémon
+Tous les combats en double	All battles are double battles
+(phase expérimentale)	(experimental)
+phase expérimentale	experimental
+Mélanger les noms des dresseurs	Shuffle trainer names
+Mélanger les noms de classes (Gamin, Montagnard...)	Shuffle class names (Youngster, Hiker...)
+Les Pokémon eux-mêmes	The Pokémon themselves
+Types	Types
+Aléatoires (évolutions cohérentes)	Random (consistent evolutions)
+Aléatoires (chaque espèce à part)	Random (each species on its own)
+Toujours deux types	Always two types
+Talents	Abilities
+Pas de Garde Mystik	No Wonder Guard
+Toujours deux talents	Always two abilities
+Pas de talents qui piègent	No trapping abilities
+(Marque Ombre, Piège Sable, Magnépiège)	(Shadow Tag, Arena Trap, Magnet Pull)
+Pas de talents handicapants	No handicap abilities
+(Absentéisme, Début Calme...)	(Truant, Slow Start...)
+Pas de talents inutiles en combat	No abilities useless in battle
+(Fuite, Ramassage...)	(Run Away, Pickup...)
+Stats de base	Base stats
+Mélangées (mêmes valeurs)	Shuffled (same values)
+Aléatoires (même total, même répartition dans la famille)	Random (same total, same split within the family)
+Aléatoires (même total, chacun la sienne)	Random (same total, each its own)
+Courbe d'expérience	Experience curve
+La même pour tous : moyenne	The same for all: medium
+La même pour tous : rapide	The same for all: fast
+La même pour tous : parabolique	The same for all: parabolic
+La même pour tous : lente	The same for all: slow
+Attaques par niveau	Level-up moves
+Aléatoires, types du Pokémon privilégiés	Random, favoring the Pokémon's types
+Totalement aléatoires	Fully random
+Métronome seulement	Metronome only
+Pas d'attaques qui cassent le jeu	No game-breaking moves
+(Sonicboom, Draco-Rage, K.O. en un coup, Spore)	(Sonic Boom, Dragon Rage, one-hit KOs, Spore)
+Attaques offensives fortes	Strong damaging moves
+Ranger les attaques offensives (faibles d'abord)	Order damaging moves (weakest first)
+Compatibilité CT	TM compatibility
+Aléatoire (même nombre)	Random (same number)
+Aléatoire, types du Pokémon privilégiés	Random, favoring the Pokémon's types
+Toutes les CT	All TMs
+Une attaque apprise par niveau qui est une CT : CT compatible	A level-up move that is a TM: TM compatible
+Évolutions	Evolutions
+Aléatoires (au moins aussi fortes)	Random (at least as strong)
+À chaque niveau	At every level
+Évolution au moins aussi forte	Evolution at least as strong
+(si aléatoires)	(if random)
+Évolution du même type	Evolution of the same type
+Rendre possibles les évolutions par échange	Make trade evolutions possible
+Évolutions plus faciles	Easier evolutions
+(Nv. 40 maximum)	(Lv. 40 maximum)
+Évolutions sans condition d'heure	Evolutions without time condition
+Puissance des attaques aléatoire	Random move power
+Type des attaques aléatoire	Random move type
+Précision des attaques aléatoire	Random move accuracy
+PP des attaques aléatoires	Random move PP
+Catégorie physique / spéciale aléatoire	Random physical / special category
+Starters	Starters
+Aléatoires (Pokémon de base qui évoluent)	Random (basic Pokémon that evolve)
+Aléatoires (n'importe quel Pokémon)	Random (any Pokémon)
+Choisis	Chosen
+Avec 2 évolutions (si aléatoires)	With 2 evolutions (if random)
+3 types différents (si aléatoires)	3 different types (if random)
+Mettre à jour les dialogues qui citent les starters	Update the dialogues that mention the starters
+~Starter 1 (à la place de	Starter 1 (instead of
+~Starter 2 (à la place de	Starter 2 (instead of
+~Starter 3 (à la place de	Starter 3 (instead of
+CT, échanges, cadeaux, objets	TMs, trades, gifts, items
+Attaques des CT	TM moves
+Aléatoires (les CS ne changent pas)	Random (HMs don't change)
+Garder Tunnel, Flash et Éclate-Roc	Keep Dig, Flash and Rock Smash
+Tuteurs : attaques	Tutors: moves
+Tuteurs : compatibilité	Tutors: compatibility
+Tous compatibles	All compatible
+Une attaque apprise par niveau qu'un tuteur enseigne : compatible	A level-up move that a tutor teaches: compatible
+Tuteurs : Émeraude, Rouge Feu, Vert Feuille, Platine, HeartGold, SoulSilver, Noire 2, Blanche 2.	Tutors: Emerald, FireRed, LeafGreen, Platinum, HeartGold, SoulSilver, Black 2, White 2.
+Échanges en jeu	In-game trades
+Pokémon reçus aléatoires	Random received Pokémon
+Pokémon reçus et demandés aléatoires	Random received and requested Pokémon
+Pokémon fixes	Static Pokémon
+(légendaires, statues...)	(legendaries, statues...)
+Légendaires ↔ légendaires	Legendaries ↔ legendaries
+Aléatoires (force similaire)	Random (similar strength)
+Pokémon offerts	Gift Pokémon
+(Évoli, Zorua, singes...)	(Eevee, Zorua, monkeys...)
+Offerts : force similaire	Gifts: similar strength
+Fossiles	Fossils
+Œufs offerts	Gift eggs
+Aléatoires (Pokémon de base)	Random (basic Pokémon)
+Objets au sol	Field items
+Mélangés	Shuffled
+Aléatoires (les CT restent des CT)	Random (TMs stay TMs)
+Magasins	Shops
+Aléatoires (prix proches, CT et Poké Balls gardés)	Random (similar prices, TMs and Poké Balls kept)
+Échanges, fixes, offerts, œufs, objets au sol, objets cachés, magasins : 3G, 4G et 5G. Les dialogues citent encore les anciens Pokémon / attaques, et les Pokémon fixes gardent leur apparence sur la carte.	Trades, static, gifts, eggs, field items, hidden items, shops: Gen 3, 4 and 5. Dialogues still mention the old Pokémon / moves, and static Pokémon keep their look on the map.
+Général	General
+Sans légendaires	No legendaries
+Même stade d'évolution	Same evolution stage
+(sauvages et dresseurs : non évolué → non évolué, évolué → évolué)	(wild and trainers: unevolved → unevolved, evolved → evolved)
+Reprendre la sauvegarde de la ROM d'origine	Keep the original ROM's save
+Graine	Seed
+vide = au hasard	empty = random
+Créer la ROM aléatoire	Create the random ROM
+Créer ma partie aléatoire	Create my random game
+choisis 3 Pokémon dans la liste pour les starters	choose 3 Pokémon from the list for the starters
+Donne un nom.	Give it a name.
+Impossible d'enregistrer (stockage indisponible).	Can't save (storage unavailable).
+remplacé.	replaced.
+enregistré.	saved.
+chargé.	loaded.
+supprimé.	deleted.
+Supprimer le préréglage	Delete the preset
+~Préréglage	Preset
+(aucun)	(none)
+Création en cours...	Creating...
+starters pas encore disponibles pour ce jeu,	starters not available yet for this game,
+starters inchangés,	starters unchanged,
+Créée :	Created:
+(graine	(seed
+sauvegarde reprise	save kept
+nouvelle partie	new game
+voir le détail	see the details
+Jouer maintenant	Play now
+(aléatoire)	(random)
+Aucune ROM 3G/4G/5G dans Téléchargements ou Bureau	No Gen 3/4/5 ROM in Downloads or Desktop
+- shiny	- shiny
+
+# ---- shiny tool
+Chance de shiny	Shiny odds
+Crée une copie de ton jeu (3G, 4G et 5G, d'origine ou déjà aléatoire) où les Pokémon chromatiques sont plus fréquents, jusqu'à 100 %. Rien d'autre ne change et la ROM d'origine n'est jamais modifiée. (phase expérimentale)	Creates a copy of your game (Gen 3, 4 and 5, original or already randomized) where shiny Pokémon are more common, up to 100%. Nothing else changes and the original ROM is never modified. (experimental)
+Chance	Odds
+1 / 4096 (2 fois plus)	1 / 4096 (2 times more)
+1 / 1024 (8 fois plus)	1 / 1024 (8 times more)
+1 / 512 (16 fois plus)	1 / 512 (16 times more)
+1 / 256 (32 fois plus)	1 / 256 (32 times more)
+1 / 2 (un sur deux)	1 / 2 (one in two)
+Tous shiny (100 %)	All shiny (100%)
+Valeur personnalisée	Custom value
+(le menu « Chance » est alors ignoré)	(the "Odds" menu is then ignored)
+1 sur	1 in
+de 2 à 65536	from 2 to 65536
+entre 2 et 65536	between 2 and 65536
+Tape un nombre entre 2 et 65536	Type a number between 2 and 65536
+→ chance réelle : 1 sur	→ real odds: 1 in
+(plus rare que normal)	(rarer than normal)
+Garder ma sauvegarde	Keep my save
+(copie le .sav : tu continues ta partie avec la nouvelle chance)	(copies the .sav: you continue your game with the new odds)
+Créer la ROM	Create the ROM
+
+# ---- save editor
+Éditeur de sauvegarde	Save editor
+Notre éditeur : argent, sac, Pokédex, équipe et PC (espèce, niveau, nature, objet, attaques, IV / EV). Une copie .bak de la sauvegarde d'origine est gardée. (phase expérimentale)	Our editor: money, bag, Pokédex, team and PC (species, level, nature, item, moves, IVs / EVs). A .bak copy of the original save is kept. (experimental)
+Sauvegarde	Save
+Choisir une sauvegarde...	Choose a save...
+Choisis une sauvegarde	Choose a save
+Sac	Bag
++ Ajouter un objet	+ Add an item
+Tous	All
+Vus	Seen
+~Vus	Seen
+Capturés	Caught
+~Capturés	Caught
+Pas encore vus	Not seen yet
+Tout voir	See all
+Tout capturer	Catch all
+Tout effacer	Clear all
+Clic sur un Pokémon : pas vu → vu → capturé → pas vu.	Click a Pokémon: not seen → seen → caught → not seen.
+Chercher un Pokémon	Search a Pokémon
+Argent	Money
+Équipe	Team
+PC	PC
+~Boîte	Box
+Choisis un Pokémon dans l'équipe ou le PC.	Choose a Pokémon in the team or the PC.
+Enregistrer la sauvegarde	Save the file
+Annuler	Cancel
+Pokémon illisible	Unreadable Pokémon
+Place vide	Empty slot
+Pour l'équipe, utilise la première place libre.	For the team, use the first free slot.
+Créer un Pokémon	Create a Pokémon
+Espèce	Species
+Niveau	Level
+Nature	Nature
+Chromatique	Shiny
+oui	yes
+non	no
+ou	or
+ex. Pikachu	e.g. Pikachu
+Attaques : choisis une espèce	Moves: choose a species
+Attaques :	Moves:
+Créer le Pokémon	Create the Pokémon
+Importer un Pokémon (	Import a Pokémon (
+Vider la place	Empty the slot
+Objet	Item
+aucun	none
+Bonheur	Friendship
+Attaques	Moves
+EV max	Max EVs
+510 EV : 252 + 252 + 6	510 EVs: 252 + 252 + 6
+Où mettre les EV	Where to put the EVs
+EV à zéro	EVs to zero
+auto (meilleure attaque + Vitesse)	auto (best attack + Speed)
+Attaque + Vitesse	Attack + Speed
+Atq. Spé. + Vitesse	Sp. Atk + Speed
+PV + Défense	HP + Defense
+PV + Déf. Spé.	HP + Sp. Def
+réparti (85 partout)	spread (85 everywhere)
+Contrôle : rien d'anormal	Check: nothing wrong
+Contrôle :	Check:
+Exporter (	Export (
+Remplacer par un fichier...	Replace with a file...
+Retirer de l'équipe	Remove from the team
+Retirer de la boîte	Remove from the box
+introuvable dans ce jeu	not found in this game
+attaque introuvable dans ce jeu	move not found in this game
+Les EV ne peuvent pas dépasser 510 au total	EVs can't exceed 510 in total
+Retirer	Remove
+Poche vide.	Empty pocket.
+Objets rangés dans le PC du jeu.	Items stored in the game's PC.
+Objet introuvable ou pas dans cette poche	Item not found or not in this pocket
+: poche pleine	: pocket full
+Aucun Pokémon.	No Pokémon.
+Effacer tout le Pokédex (vus et capturés) ?	Clear the whole Pokédex (seen and caught)?
+annulé	cancelled
+Pokémon exporté :	Pokémon exported:
+Enregistre ou annule d'abord tes changements en cours.	Save or cancel your current changes first.
+Pokémon importé et sauvegarde enregistrée (copie de l'originale : .sav.bak).	Pokémon imported and save written (copy of the original: .sav.bak).
+Retirer ce Pokémon de l'équipe ? (pense à l'exporter avant si tu veux le garder)	Remove this Pokémon from the team? (export it first if you want to keep it)
+Retirer ce Pokémon de la boîte ? (pense à l'exporter avant si tu veux le garder)	Remove this Pokémon from the box? (export it first if you want to keep it)
+Pokémon retiré et sauvegarde enregistrée (copie de l'originale : .sav.bak).	Pokémon removed and save written (copy of the original: .sav.bak).
+Choisis une espèce de la liste	Choose a species from the list
+Pokémon créé et sauvegarde enregistrée (copie de l'originale : .sav.bak).	Pokémon created and save written (copy of the original: .sav.bak).
+Lecture...	Reading...
+Attention :	Warning:
+Enregistrement...	Saving...
+Sauvegarde enregistrée (copie de l'originale : .sav.bak). Relance le jeu pour voir les changements.	Save written (copy of the original: .sav.bak). Restart the game to see the changes.
+~Dresseur	Trainer
+vide	empty
+
+# ---- battle panel
+Combat	Battle
+Votre équipe	Your team
+Adversaire	Opponent
+Triches	Cheats
+Carte	Map
+Toi	You
+Voir les Pokémon de la zone	See the area's Pokémon
+Clique sur la carte pour l'ouvrir en grand et voir les Pokémon de la zone	Click the map to open it full size and see the area's Pokémon
+Pokémon rencontrables dans cette zone	Pokémon found in this area
+Replier/déplier les stats	Fold/unfold the stats
+Fiche technique	Info sheet
+⚠ Faiblesses (subit plus de dégâts)	⚠ Weaknesses (takes more damage)
+🛡 Résistances (subit moins de dégâts)	🛡 Resistances (takes less damage)
+⊘ Immunisé (ne subit aucun dégât)	⊘ Immune (takes no damage)
+⚔ Menace pour votre équipe	⚔ Threat to your team
+Talent :	Ability:
+Nature :	Nature:
+Total :	Total:
+(description non trouvée)	(description not found)
+Nature neutre : n'affecte aucune statistique.	Neutral nature: doesn't affect any stat.
+~Augmente :	Raises:
+~Diminue :	Lowers:
+✨ Chromatique :	✨ Shiny:
+En attente d'un jeu	Waiting for a game
+(aucun combat en cours)	(no battle in progress)
+(équipe non détectée)	(team not detected)
+- pas de signal (dernières données il y a	- no signal (last data
+: l'émulateur/le script sont-ils bien lancés ?)	ago: are the emulator/script really running?)
+(pas de script actif - rien à afficher)	(no active script - nothing to show)
+Jeu :	Game:
+- connecté	- connected
+Pas de données (le script Lua tourne-t-il ? un combat a-t-il eu lieu ?)	No data (is the Lua script running? has a battle happened?)
+À pied (herbes)	On foot (grass)
+Surf	Surf
+Éclate-Roc	Rock Smash
+Canne	Old Rod
+Super Canne	Good Rod
+Méga Canne	Super Rod
+Aucune rencontre sauvage ici	No wild encounters here
+Master Ball	Master Ball
+Super Bonbon	Rare Candy
+Atq	Atk
+Déf	Def
+Vit	Spe
+PV	HP
+ASp	SpA
+DSp	SpD
+A.Spé	Sp.A
+D.Spé	Sp.D
+Attaque	Attack
+Défense	Defense
+Vitesse	Speed
+Attaque Spéciale	Special Attack
+Défense Spéciale	Special Defense
+
+# ---- info sheet (fiche)
+Données de ta ROM aléatoire	Data of your random ROM
+Données du jeu :	Game data:
+Jeu non détecté : données de Noire 2 / Blanche 2	Game not detected: Black 2 / White 2 data
+Statistiques de base	Base stats
+Indisponibles	Unavailable
+Attaques indisponibles (fichier data/fiche manquant).	Moves unavailable (data/fiche file missing).
+· cliquer pour ouvrir la fiche	· click to open the sheet
+Talents possibles	Possible abilities
+· survoler pour l'explication	· hover for the explanation
+(caché)	(hidden)
+Aucun	None
+Aucune	None
+· puissance · précision	· power · accuracy
+Peut apprendre avec les CT et CS	Can learn with TMs and HMs
+~capacités	moves
+Chargement…	Loading…
+pas de données	no data
+N'évolue pas	Doesn't evolve
+~Évol.	Evo.
+~Nv.	Lv.
+~CT	TM
+~CS	HM
+Apparaît quand Ningale évolue (	Appears when Nincada evolves (
+) s'il reste une place dans l'équipe et une Poké Ball	) if there is a free team slot and a Poké Ball
+Beauté au maximum + gain de niveau	Max Beauty + level up
+Bonheur élevé + gain de niveau, la nuit	High friendship + level up, at night
+Bonheur élevé + gain de niveau, le jour	High friendship + level up, during the day
+Bonheur élevé + gain de niveau	High friendship + level up
+Gain de niveau avec	Level up with
+dans l'équipe	in the team
+Gain de niveau en connaissant	Level up knowing
+Gain de niveau en tenant	Level up holding
+Gain de niveau près de la pierre spéciale	Level up near the special rock
+— impossible dans ce jeu	— impossible in this game
+Gain de niveau à :	Level up at:
+Gain de niveau dans un lieu spécial	Level up in a special place
+, la nuit	, at night
+, le jour	, during the day
+, femelle	, female
+, mâle	, male
+, selon la personnalité (aléatoire)	, depending on personality (random)
+Attaque < Défense	Attack < Defense
+Attaque = Défense	Attack = Defense
+Attaque > Défense	Attack > Defense
+Échange contre	Trade for
+Échange en tenant	Trade holding
+~Échange	Trade
+Pierre Aube	Dawn Stone
+Pierre Eau	Water Stone
+Pierre Feu	Fire Stone
+Pierre Foudre	Thunder Stone
+Pierre Lune	Moon Stone
+Pierre Nuit	Dusk Stone
+Pierre Plante	Leaf Stone
+Pierre Soleil	Sun Stone
+Pierre Éclat	Shiny Stone
+
+# ---- app messages (Python)
+Le script mGBA ne répond pas (vérifie qu'il est bien chargé)	The mGBA script isn't answering (check that it is loaded)
+Sauvegarder en Save State 1 avant de quitter ?	Save to Save State 1 before quitting?
+Cette ROM n'est pas prise en charge (Pokémon 3G, 4G ou 5G d'origine)	This ROM isn't supported (original Gen 3, 4 or 5 Pokémon game)
+Cette ROM n'est pas prise en charge (Pokémon 3G, 4G ou 5G)	This ROM isn't supported (Gen 3, 4 or 5 Pokémon game)
+Nom trop long (100 caractères maximum)	Name too long (100 characters maximum)
+Ce nom est celui de la ROM d'origine : choisis-en un autre	This is the original ROM's name: choose another one
+Une ROM porte déjà ce nom dans ce dossier : choisis-en un autre	A ROM already has this name in this folder: choose another one
+Une ROM porte déjà ce nom dans ce dossier : donne-lui un nom	A ROM already has this name in this folder: give it a name
+ROM introuvable ou non prise en charge	ROM not found or not supported
+ROM non prise en charge	ROM not supported
+Sauvegarde introuvable	Save not found
+Tous les fichiers (*.*)	All files (*.*)
+Moteur inconnu	Unknown engine
+Aucune sauvegarde dans le state 1 pour ce jeu	No save in state 1 for this game
+Exécutable introuvable dans l'appli	Executable not found in the app
+Triche inconnue	Unknown cheat
+Partie du joueur non localisée (es-tu bien en jeu ?)	Player's game not found (are you really in game?)
+Aucun jeu détecté	No game detected
+Recherche d'un émulateur connu...	Looking for a known emulator...
+La graine et les pourcentages doivent être des nombres	The seed and the percentages must be numbers
+place vide	empty slot
+choisis un fichier .pk3, .pk4 ou .pk5	choose a .pk3, .pk4 or .pk5 file
+Adresse argent non configurée pour ce jeu	Money address not configured for this game
+Objet non configuré	Item not configured
+Sac plein (aucun emplacement libre trouvé)	Bag full (no free slot found)
+Adresse argent non confirmée (valeur actuelle improbable)	Money address not confirmed (current value unlikely)
+Lecture mémoire impossible	Can't read memory
+cette sauvegarde prend les fichiers	this save takes
+(Pokémon de la même génération)	files (Pokémon of the same generation)
+: pas dans la poche	: not in the pocket
+jeu non pris en charge	game not supported
+triche inconnue	unknown cheat
+sac non localisé (vérifie que la partie est bien chargée)	bag not found (check that the game is loaded)
+argent non configuré pour ce jeu	money not configured for this game
+sac plein	bag full
+échec	failed
+Chance invalide : tape un nombre (1 sur N)	Invalid odds: type a number (1 in N)
+Chance hors limites : 1 sur	Odds out of range: 1 in
+(ou « Tous shiny »)	(or "All shiny")
+Cette ROM a déjà une chance de shiny modifiée : pars de la ROM d'avant	This ROM already has modified shiny odds: start from the ROM before it
+Chance de shiny : NON changée (tests introuvables :	Shiny odds: NOT changed (checks not found:
+au lieu de 5)	instead of 5)
+Chance de shiny : NON changée (test introuvable :	Shiny odds: NOT changed (check not found:
+Chance de shiny : NON changée (code d'un test inattendu)	Shiny odds: NOT changed (unexpected check code)
+Chance de shiny : NON changée (code d'un test inattendu :	Shiny odds: NOT changed (unexpected check code:
+Chance de shiny :	Shiny odds:
+(au lieu de 1 / 8192 ; non testé en jeu)	(instead of 1 / 8192; not tested in game)
+Format de sauvegarde pas encore pris en charge (	Save format not supported yet (
+fichier illisible (somme de contrôle fausse ou mauvaise génération)	unreadable file (wrong checksum or wrong generation)
+impossible de retirer le dernier Pokémon de l'équipe	can't remove the last Pokémon of the team
+place déjà vide	slot already empty
+données abîmées (somme de contrôle fausse)	damaged data (wrong checksum)
+aucune attaque	no move
+la même attaque deux fois	the same move twice
+attaque inconnue dans ce jeu	move unknown in this game
+objet tenu inconnu dans ce jeu	held item unknown in this game
+nature invalide	invalid nature
+aucun Pokémon lisible dans l'équipe pour servir de modèle	no readable Pokémon in the team to use as a template
+Équipe : choisis un Pokémon à remplacer ou la première place libre	Team: choose a Pokémon to replace or the first free slot
+Sauvegarde 3G non reconnue (aucun emplacement valide)	Gen 3 save not recognized (no valid slot)
+Équipe illisible	Unreadable team
+octets : pas un Pokémon	bytes: not a Pokémon
+fichier de	file of
+inconnue en	unknown in
+au total (510 maximum)	in total (510 maximum)
+expérience au-delà du niveau 100	experience beyond level 100
+mais expérience du niveau	but experience of level
+données de l'espèce	species data
+absentes : niveau non modifiable	missing: level can't be changed
+: somme de contrôle fausse	: wrong checksum
+: aucune copie valide	: no valid copy
+aucun PID trouvé pour cette nature	no PID found for this nature
+Objets rares	Key Items
+noms des Pokémon introuvables	Pokémon names not found
+table des objets introuvable	item table not found
+Pokédex 4G introuvable	Gen 4 Pokédex not found
+Pokédex 5G introuvable	Gen 5 Pokédex not found
+
+# ---- randomizer report (Python)
+Randomizer PKLab	Randomizer PKLab
+ROM d'origine :	Original ROM:
+Graine :	Seed:
+Sans légendaires :	No legendaries:
+Dresseurs importants	Important trainers
+chaque niveau	every level
+refus d'écraser la ROM d'origine	refusing to overwrite the original ROM
+Jeu non pris en charge pour l'instant :	Game not supported yet:
+Pas encore disponible en 3G (ignoré) :	Not available yet in Gen 3 (ignored):
+Pas encore disponible en 4G (ignoré) :	Not available yet in Gen 4 (ignored):
+Pas encore disponible pour ce jeu (ignoré) :	Not available yet for this game (ignored):
+Pas encore disponible	Not available yet
+(ignoré)	(ignored)
+magasins	shops
+objets au sol	field items
+Pokémon fixes	Static Pokémon
+combats doubles	double battles
+noms de dresseurs	trainer names
+noms de classes	class names
+Pokémon en plus (boss)	extra Pokémon (bosses)
+Pokémon en plus (importants)	extra Pokémon (important)
+Pokémon en plus (autres)	extra Pokémon (others)
+objets des dresseurs	trainer items
+catégorie des attaques (fixée par le type en 3G)	move category (set by the type in Gen 3)
+Tuteurs : aucun dans ce jeu	Tutors: none in this game
+Tuteurs : NON modifiés (table introuvable)	Tutors: NOT changed (table not found)
+Tuteurs (60) :	Tutors (60):
+Tuteurs :	Tutors:
+attaques aléatoires (les dialogues citent encore les anciennes)	random moves (dialogues still mention the old ones)
+compatibilité aléatoire (même nombre)	random compatibility (same number)
+compatibilité aléatoire, types du Pokémon privilégiés	random compatibility, favoring the Pokémon's types
+tous compatibles	all compatible
+attaques apprises par niveau compatibles	level-up moves compatible
+Compatibilité CT : NON modifiée (liste des CT inconnue)	TM compatibility: NOT changed (TM list unknown)
+Compatibilité CT :	TM compatibility:
+aléatoire, types du Pokémon privilégiés (même nombre)	random, favoring the Pokémon's types (same number)
+toutes les CS pour tous	all HMs for everyone
+les attaques apprises par niveau qui sont des CT sont compatibles	level-up moves that are TMs are compatible
+toutes les CT	all TMs
+aléatoire (même nombre)	random (same number)
+aléatoires	random
+Attaques :	Moves:
+Types : aléatoires (	Types: random (
+évolutions cohérentes	consistent evolutions
+chaque espèce à part	each species on its own
+, toujours deux types	, always two types
+Talents : aléatoires (évolutions cohérentes),	Abilities: random (consistent evolutions),
+talents possibles	possible abilities
+, toujours deux talents	, always two abilities
+Stats de base :	Base stats:
+mélangées	shuffled
+aléatoires (même total, même répartition dans la famille)	random (same total, same split within the family)
+aléatoires (même total, chacun la sienne)	random (same total, each its own)
+Courbe d'expérience : la même pour tous (	Experience curve: the same for all (
+Taux de capture minimum :	Minimum catch rate:
+Objets tenus par les Pokémon sauvages : aléatoires (objets utiles en combat)	Items held by wild Pokémon: random (items useful in battle)
+Évolutions : à chaque niveau, vers une espèce au hasard	Evolutions: at every level, into a random species
+Évolutions :	Evolutions:
+évolutions vers des espèces aléatoires (	evolutions into random species (
+au moins aussi fortes,	at least as strong,
+3 stades maximum	3 stages maximum
+, partageant un type	, sharing a type
+échanges/beauté remplacés (Nv. 37 ou objet)	trades/beauty replaced (Lv. 37 or item)
+sans condition d'heure	without time condition
+niveaux plafonnés à 40	levels capped at 40
+Évolutions plus simples :	Simpler evolutions:
+méthodes changées (	methods changed (
+Attaques par niveau : mode Métronome seulement	Level-up moves: Metronome mode only
+Attaques par niveau : aléatoires	Level-up moves: random
+(types du Pokémon privilégiés)	(favoring the Pokémon's types)
+% d'attaques offensives fortes	% strong damaging moves
+, 1re attaque toujours offensive	, 1st move always damaging
+, sans attaques qui cassent le jeu	, without game-breaking moves
+Attaques offensives rangées de la plus faible à la plus forte	Damaging moves ordered from weakest to strongest
+images NON changées (Pillow absent)	pictures NOT changed (Pillow missing)
+images NON changées (dossier des sprites inconnu)	pictures NOT changed (unknown sprite folder)
+images NON changées (archive non reconnue)	pictures NOT changed (archive not recognized)
+images redessinées	pictures redrawn
+écran de choix mis à jour	choice screen updated
+écran de choix NON trouvé	choice screen NOT found
+emplacements de script,	script slots,
+Starters : NON modifiés (scripts de ce jeu non reconnus)	Starters: NOT changed (this game's scripts not recognized)
+Starters : NON modifiés (script du labo non trouvé)	Starters: NOT changed (lab script not found)
+Starters : NON modifiés (table non trouvée)	Starters: NOT changed (table not found)
+Starters : NON modifiés (table de l'écran de choix non trouvée)	Starters: NOT changed (choice screen table not found)
+Starters choisis : il faut 3 Pokémon	Chosen starters: 3 Pokémon are needed
+Starters choisis : il faut 3 Pokémon de la 3G (n° 1 à 386)	Chosen starters: 3 Gen 3 Pokémon are needed (No. 1 to 386)
+Starters choisis : il faut 3 Pokémon de la 4G (n° 1 à 493)	Chosen starters: 3 Gen 4 Pokémon are needed (No. 1 to 493)
+Starters :	Starters:
+script du labo (joueur + rival)	lab script (player + rival)
+table du sac du Prof. (image, cri, Pokémon donné)	Prof.'s bag table (picture, cry, Pokémon given)
+table(s) de l'écran de choix,	choice screen table(s),
+comparaisons de script, images de l'écran :	script comparisons, screen pictures:
+texte(s) de l'écran)	screen text(s))
+table ARM9	ARM9 table
+hors de portée	out of range
+Pokémon sauvages : mode	Wild Pokémon: mode
+emplacements	slots
+, force similaire	, similar strength
+, un type par zone	, one type per area
+, Eau en surf/pêche	, Water when surfing/fishing
+, attrapez-les tous (	, gotta catch 'em all (
+espèces différentes)	different species)
+lieu inconnu	unknown place
+Dresseurs :	Trainers:
+dresseurs	trainers
+, Champions / Conseil 4 / Maître : un type chacun	, Gym Leaders / Elite Four / Champion: one type each
+, complètement évolués dès le Nv.	, fully evolved from Lv.
+, meilleures attaques (dresseurs à attaques choisies)	, better moves (trainers with chosen moves)
+, le rival garde la lignée du starter (	, the rival keeps the starter's line (
+, lignée des starters suivie (	, starters' line followed (
+, lignée des starters suivie	, starters' line followed
+Pokémon en plus (boss	extra Pokémon (bosses
+objets tenus	held items
+(baies seulement)	(berries only)
+(plus haut niveau seulement)	(highest level only)
+dresseurs en combat double (phase expérimentale)	trainers in double battles (experimental)
+Dresseurs, équipes agrandies :	Trainers, bigger teams:
+rien à changer	nothing to change
+; fichier	; file
+équipes déplacées dans l'espace libre de la ROM	teams moved to the ROM's free space
+Dresseurs : Pokémon en plus NON ajoutés (pas assez de place libre dans la ROM)	Trainers: extra Pokémon NOT added (not enough free space in the ROM)
+Combats doubles :	Double battles:
+dresseurs de plus (ceux qui ont au moins 2 Pokémon) (phase expérimentale)	more trainers (those with at least 2 Pokémon) (experimental)
+Noms mélangés :	Shuffled names:
+classes de dresseurs	trainer classes
+Noms des dresseurs :	Trainer names:
+Noms des classes de dresseurs :	Trainer class names:
+Noms des classes : NON modifiés (table introuvable)	Class names: NOT changed (table not found)
+Noms des	Names of
+: NON modifiés (banque introuvable)	: NOT changed (bank not found)
+noms des	names of
+Textes système : fichier	System texts: file
+Textes des starters (« quel était ton premier Pokémon ? ») :	Starter texts ("what was your first Pokémon?"):
+phrases mises à jour ; fichier	sentences updated; file
+CT : NON modifiées (table introuvable dans ce jeu)	TMs: NOT changed (table not found in this game)
+CT : NON modifiées (table introuvable)	TMs: NOT changed (table not found)
+Attaques des CT : aléatoires (CS gardées	TM moves: random (HMs kept
+, Tunnel/Flash/Éclate-Roc gardées	, Dig/Flash/Rock Smash kept
+, Tunnel/Flash gardées	, Dig/Flash kept
+/Force Cachée	/Secret Power
+) ; programme du jeu (ARM9) recompressé	); game program (ARM9) recompressed
+Échanges en jeu :	In-game trades:
+échanges (	trades (
+Pokémon reçus et demandés	received and requested Pokémon
+(Pokémon reçus et demandés)	(received and requested Pokémon)
+Pokémon reçus	received Pokémon
+(Pokémon reçus)	(received Pokémon)
+Échanges : NON modifiés (table introuvable)	Trades: NOT changed (table not found)
+Échanges : NON modifiés (fichier introuvable)	Trades: NOT changed (file not found)
+Pokémon fixes (légendaires, statues...) :	Static Pokémon (legendaries, statues...):
+Pokémon fixes :	Static Pokémon:
+remplacés (	replaced (
+remplacés	replaced
+(force similaire)	(similar strength)
+; le Pokémon visible sur la carte garde son apparence	; the Pokémon visible on the map keeps its look
+Pokémon offerts :	Gift Pokémon:
+Pokémon offerts / fossiles :	Gift Pokémon / fossils:
+espèces changées (les dialogues citent encore les anciennes)	species changed (dialogues still mention the old ones)
+; fossiles et œufs non concernés	; fossils and eggs not affected
+remplacés (œufs : Pokémon de base)	replaced (eggs: basic Pokémon)
+Œufs offerts :	Gift eggs:
+changé(s) (Pokémon de base)	changed (basic Pokémon)
+Fossiles : 7 Pokémon ressuscités aléatoires	Fossils: 7 random revived Pokémon
+Fossiles : NON modifiés (table introuvable)	Fossils: NOT changed (table not found)
+Objets au sol : NON modifiés (script des objets introuvable)	Field items: NOT changed (item script not found)
+Objets au sol :	Field items:
+Objets cachés :	Hidden items:
+Objets cachés	Hidden items
+objets	items
+aléatoires (CT -> CT)	random (TM -> TM)
+aléatoires (parmi les objets au sol du jeu ; les CT restent des CT)	random (among the game's field items; TMs stay TMs)
+aléatoires (les CT restent des CT)	random (TMs stay TMs)
+CT restent des CT)	TMs stay TMs)
+boutiques du jeu,	game shops,
+objets changés (CT et Poké Balls gardés) -	items changed (TMs and Poké Balls kept) -
+objets changés (CT et Poké Balls gardés)	items changed (TMs and Poké Balls kept)
+parmi les objets vendus dans le jeu	among the items sold in the game
+- prix proches	- similar prices
+Magasins :	Shops:
+, Munja garde 1 PV	, Shedinja keeps 1 HP
+Course (chaussures) autorisée partout, même à l'intérieur (phase expérimentale)	Running (shoes) allowed everywhere, even indoors (experimental)
+Course en intérieur : NON appliquée (code introuvable :	Indoor running: NOT applied (code not found:
+Chaussures de course : déjà disponibles dès le début dans ce jeu (rien à changer)	Running Shoes: already available from the start in this game (nothing to change)
+Chaussures de course disponibles dès le début (phase expérimentale)	Running Shoes available from the start (experimental)
+Chaussures dès le début : NON appliquées (code introuvable :	Shoes from the start: NOT applied (code not found:
+Texte : vitesse « rapide » instantanée, « moyen » et « lent » accélérés (phase expérimentale)	Text: "fast" speed instant, "medium" and "slow" sped up (experimental)
+Texte rapide : NON appliqué (	Fast text: NOT applied (
+pas disponible pour Rubis / Saphir	not available for Ruby / Sapphire
+table introuvable :	table not found:
+introuvable (	not found (
+table des attaques introuvable	move table not found
+table des évolutions introuvable	evolution table not found
+pointeurs des attaques par niveau introuvables	level-up move pointers not found
+table de compatibilité CT introuvable	TM compatibility table not found
+liste des CT introuvable	TM list not found
+correspondance des numéros d'espèces incomplète	species number mapping incomplete
+attaques par niveau	level-up moves
+Pokédex national	National Pokédex
+ARM9 : paramètres introuvables	ARM9: parameters not found
+ARM9 : compression impossible	ARM9: compression impossible
+: compression impossible	: compression impossible
+: NARC invalide	: invalid NARC
+NARC invalide	Invalid NARC
+Rencontres de la ROM aléatoire illisibles :	Random ROM encounters unreadable:
+oui	yes
+non	no
+Taux de capture	Catch rate
+Nv	Lv
+~NON	NOT
+Sauvegarde (*.sav)	Save file (*.sav)
+Sans légendaires : oui	No legendaries: yes
+Sans légendaires : non	No legendaries: no
+
+# ---- single words inside report / log sentences
+~aléatoires	random
+~aléatoire	random
+~puissance	power
+~précision	accuracy
+~catégorie	category
+prix proches	similar prices
+~combats	battles
+~espèces	species
+Tunnel gardées	Dig kept
+~gardées	kept
+~gardés	kept
+~mélangés	shuffled
+~Mélangés	Shuffled
+~importants	important
+~autres	others
+~équipes	teams
+~niveaux	levels
+Tuteurs (	Tutors (
+~déplacé	moved
+~dresseurs	trainers
+~dresseur	trainer
+~emplacements	slots
+~donne	gives
+~reçoit	receives
+~contre	for
+~Échange	Trade
+~échange	trade
+~Maître	Champion
+~Champions	Gym Leaders
+~Champion	Gym Leader
+~Conseil 4	Elite Four
+~listes	lists
+~Métronome	Metronome
+~Fer	Iron
+~objets	items
+Fossiles et œufs :	Fossils and eggs:
+~boutiques	shops
+en place	in place
+~PV	HP
+PV:	HP:
+Atq:	Atk:
+Def:	Def:
+ASp:	SpA:
+DSp:	SpD:
+Vit:	Spe:
+~magasins	shops
+EV :	EVs:
+# Gen 3 ROM place names (unaccented, as the ROMs spell them)
+Fond Marin	Underwater
+Planque Ë	Aqua Hideout
+Camionnette	Inside of Truck
+Cramois’Ile	Cinnabar Island
+L’Oceane	S.S. Anne
+Repaire Rocket	Rocket Hideout
+Ile Sevii 6	Sevii Isle 6
+Ile Sevii 7	Sevii Isle 7
+Ile Sevii 8	Sevii Isle 8
+Ile Sevii 9	Sevii Isle 9
+Ile Sevii 22	Sevii Isle 22
+Ile Sevii 23	Sevii Isle 23
+Ile Sevii 24	Sevii Isle 24
+Labyrinthe D’O	Water Labyrinth
+Entree Canyon	Canyon Entrance
+Entrepot	Rocket Warehouse
+Trou Perce	Dotted Hole
+Chambres Tanoby	Tanoby Chambers
+Cle Tanoby	Tanoby Key
+Chambre Jonquatr	Dilford Chamber
+Source Braise	Ember Spa
+Ile Lointaine	Faraway Island
+Mont Dresseurs	Trainer Hill
+Cent. Commercial	Celadon Dept.
+~oui	yes
+noms des classes	class names
+noms des dresseurs	trainer names
+~œuf	egg
+
+# ---- welcome screen
+Bienvenue !	Welcome!
+PKLab lance ton jeu Pokémon dans un émulateur et t'aide pendant tes combats : faiblesses et résistances de l'adversaire, ton équipe, la carte et les Pokémon de chaque zone.	PKLab runs your Pokémon game in an emulator and helps you during battles: the opponent's weaknesses and resistances, your team, the map and the Pokémon of each area.
+Les ROM ne sont pas fournies	ROMs are not included
+Tu dois télécharger toi-même les ROM de tes jeux : des fichiers .gba (Game Boy Advance) ou .nds (Nintendo DS). L'appli n'en contient aucune.	You have to download your games' ROMs yourself: .gba (Game Boy Advance) or .nds (Nintendo DS) files. The app doesn't contain any.
+Range-les dans Téléchargements ou sur le Bureau	Put them in Downloads or on the Desktop
+L'appli les y trouve toute seule : clique sur un jeu de la bibliothèque et il se lance. Sinon, elle te demande où se trouve le fichier.	The app finds them there by itself: click a game in the library and it starts. Otherwise, it asks you where the file is.
+Une ROM modifiée ?	A modified ROM?
+Hack, version aléatoire, traduction... Choisis-la avec le lien « Choisir un fichier... » sous le titre de la bibliothèque.	Hack, randomized version, translation... Pick it with the "Choose a file..." link under the library title.
+Tu peux revoir cet écran à tout moment avec le bouton ? en haut à droite.	You can see this screen again at any time with the ? button at the top right.
+C'est parti !	Let's go!
+Aide	Help
+Et ce n'est pas tout : les outils inclus	And that's not all: the built-in tools
+Redécouvre ton jeu préféré : starters, Pokémon sauvages, dresseurs, types, attaques... tout peut changer. Une nouvelle aventure à chaque partie.	Rediscover your favorite game: starters, wild Pokémon, trainers, types, moves... anything can change. A new adventure every time.
+Marre d'attendre ? Rends les Pokémon chromatiques bien plus fréquents, jusqu'à 100 %, dans une copie de ton jeu.	Tired of waiting? Make shiny Pokémon far more common, up to 100%, in a copy of your game.
+Argent, sac, Pokédex et Pokémon : change le niveau, la nature, les attaques ou les IV / EV, ou crée le Pokémon de tes rêves.	Money, bag, Pokédex and Pokémon: change the level, nature, moves or IVs / EVs, or create the Pokémon of your dreams.
+Aide au combat	Battle helper
+Pendant ta partie : faiblesses et résistances de l'adversaire, menace pour ton équipe et fiche technique de chaque Pokémon.	While you play: the opponent's weaknesses and resistances, threats to your team and an info sheet for every Pokémon.
+Carte et rencontres	Map and encounters
+Ta position sur la carte et tous les Pokémon que tu peux trouver dans la zone : herbes, surf, pêche.	Your position on the map and every Pokémon you can find in the area: grass, surfing, fishing.
+Une Master Ball ou un Super Bonbon en un clic, quand tu en as besoin.	A Master Ball or a Rare Candy in one click, whenever you need one.
+Essayer →	Try it →
+En jeu	In game
+Fond bleu nuit	Navy blue background
+Fond noir	Black background
+Couleur du fond	Background colour
+Changement de couleur	Change colour
+Fond clair	Light background
+Mes ROMs créées	My created ROMs
+L'original n'est jamais modifié	The original is never modified
+Mises à jour	Updates
+Installée	Installed
+Disponible	Available
+Nouveautés	What's new
+Mettre à jour	Update
+Plus tard	Later
+Vérifier	Check
+Vérifier au démarrage	Check at startup
+La vérification en ligne n'est pas encore activée.	Online checking is not enabled yet.
+Pas de connexion au serveur de mises à jour	No connection to the update server
+PKLab est à jour	PKLab is up to date
+vérification...	checking...
+Tout	All
+Rien dans cette catégorie.	Nothing in this category.
+Aucune ROM créée pour l'instant : utilise le Randomizer ou Chances de shiny juste au-dessus.	No ROM created yet: use the Randomizer or Shiny odds just above.
+Chances de shiny	Shiny odds
+graine	seed
+Créée aujourd'hui	Created today
+Créée hier	Created yesterday
+Créée le	Created on
+Détails	Details
+Ouvrir le dossier	Open folder
+Mettre à la corbeille	Move to Recycle Bin
+Jouer	Play
+Mettre cette ROM à la corbeille ?	Move this ROM to the Recycle Bin?
+Sa sauvegarde (.sav) est gardée. Tu peux la récupérer dans la corbeille de Windows.	Its save (.sav) is kept. You can restore it from the Windows Recycle Bin.
+Impossible de la mettre à la corbeille (ROM ouverte ?)	Could not move it to the Recycle Bin (ROM in use?)
+Outils	Tools
+Mes ROMs	My ROMs
+Installer	Install
+Télécharger	Download
+Téléchargement de la mise à jour...	Downloading the update...
+Mise à jour installée. Ferme et relance PKLab pour l'utiliser.	Update installed. Close and restart PKLab to use it.
+Aucune mise à jour légère disponible	No light update available
+Mise à jour légère impossible avec cette installation	Light update not possible with this installation
+Téléchargement impossible	Download failed
+Fichier de mise à jour trop gros	Update file too large
+Fichier de mise à jour corrompu (empreinte différente)	Update file corrupted (checksum mismatch)
+Fichier de mise à jour illisible	Unreadable update file
+Fichier de mise à jour incohérent	Inconsistent update file
+Cette mise à jour demande le nouveau PKLab.exe	This update needs the new PKLab.exe
+Écriture impossible dans le dossier de PKLab	Cannot write to the PKLab folder
+Mise à jour installée. PKLab redémarre...	Update installed. PKLab is restarting...
+Aucune mise à jour automatique disponible	No automatic update available
+Mise à jour automatique impossible avec cette installation	Automatic update not possible with this installation
+Empreinte du nouvel exe absente	Checksum of the new exe is missing
+Remplacement de PKLab.exe impossible	Could not replace PKLab.exe
+PKLab est déjà ouvert.	PKLab is already open.

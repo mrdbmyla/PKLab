@@ -1,0 +1,171 @@
+# Spanish ability descriptions, keyed by the French ability name (site's ABILITY_DESCRIPTIONS).
+Torrent	Potencia los movimientos de tipo Agua (daño ×1,5) con 1/3 de los PS máximos o menos.
+Fuite	Garantiza la huida en los combates contra Pokémon salvajes.
+Œil Composé	Aumenta un 30 % la precisión de los movimientos.
+Cuvette	Recupera 1/16 de los PS máximos al final de cada turno con lluvia.
+Engrais	Potencia los movimientos de tipo Planta (daño ×1,5) con 1/3 de los PS máximos o menos.
+Brasier	Potencia los movimientos de tipo Fuego (daño ×1,5) con 1/3 de los PS máximos o menos.
+Écran Poudre	Protege de los efectos secundarios de los movimientos recibidos.
+Chlorophylle	Duplica la Velocidad con sol intenso.
+Mue	Tiene un 33 % de probabilidad de curar cualquier problema de estado al final de cada turno.
+Lentiteintée	Duplica el daño de los movimientos poco eficaces.
+Pieds Confus	Duplica la evasión cuando está confuso.
+Sniper	Los golpes críticos hacen ×3 de daño en lugar de ×2.
+Regard Vif	Impide que baje la precisión.
+Essaim	Potencia los movimientos de tipo Bicho (daño ×1,5) con 1/3 de los PS máximos o menos.
+Cœur de Coq	Impide que baje la Defensa.
+Cran	Multiplica el Ataque por 1,5 si sufre un problema de estado.
+Intimidation	Baja un nivel el Ataque de los rivales al entrar en combate.
+Agitation	Potencia los movimientos físicos (daño ×1,5), pero su precisión baja a ×0,8.
+Tension	Impide que los Pokémon rivales se coman las bayas que llevan.
+Statik	Tiene un 30 % de probabilidad de paralizar al Pokémon que lo ataque por contacto.
+Paratonnerre	Atrae hacia este Pokémon los movimientos de tipo Eléctrico de un solo objetivo cuando es posible.  Absorbe los movimientos de tipo Eléctrico y sube un nivel el Ataque Especial.
+Voile Sable	Aumenta la evasión un 25 % durante una tormenta de arena.  Protege del daño de la tormenta de arena.
+Baigne Sable	Duplica la Velocidad durante una tormenta de arena.  Protege del daño de la tormenta de arena.
+Rivalité	Multiplica el daño por 1,25 contra Pokémon del mismo sexo, pero lo baja a ×0,75 contra el sexo opuesto.
+Sans Limite	Potencia ×1,3 los movimientos con efectos secundarios, pero anula esos efectos.
+Joli Sourire	Tiene un 30 % de probabilidad de enamorar al Pokémon que lo ataque por contacto.
+Point Poison	Tiene un 30 % de probabilidad de envenenar al Pokémon que lo ataque por contacto.
+Garde Magik	Protege del daño que no venga directamente de un movimiento.
+Torche	Protege de los movimientos de tipo Fuego.  Tras bloquear uno, sus propios movimientos de tipo Fuego hacen un 50 % más de daño hasta que sale del combate.
+Garde-Ami	Reduce a ×0,75 todo el daño directo que reciben los aliados.
+Battant	Sube dos niveles el Ataque Especial cuando baja cualquiera de sus características.
+Sécheresse	Al entrar en combate, provoca un sol intenso que dura indefinidamente.
+Inconscient	Ignora los cambios de características de los demás Pokémon al calcular el daño y la precisión.
+Fouille	Revela el objeto que lleva un rival al entrar en combate.
+Puanteur	Tiene un 10 % de probabilidad de hacer retroceder al objetivo con cada golpe.
+Attention	Impide retroceder.
+Infiltration	Ignora Pantalla de Luz, Reflejo y Velo Sagrado.
+Pose Spore	Tiene un 30 % de probabilidad de paralizar, envenenar o dormir al Pokémon que lo ataque por contacto.
+Peau Sèche	Pierde 1/8 de los PS máximos cada turno con sol intenso, pero recupera 1/8 con lluvia.  Recibe ×1,25 de daño de los movimientos de tipo Fuego, pero absorbe los de tipo Agua y recupera 1/4 de los PS máximos.
+Piège Sable	Impide que los rivales huyan o se cambien.  No afecta a los tipo Volador ni a los Pokémon en el aire.
+Ramassage	Recoge los objetos usados o lanzados por otros Pokémon.  También puede recoger un objeto tras un combate.
+Technicien	Potencia ×1,5 los movimientos de potencia base 60 o menos.
+Moiteur	Impide Autodestrucción, Explosión y Detonación mientras el Pokémon está en combate.
+Peau Miracle	Reduce exactamente al 50 % la precisión base de los movimientos de estado recibidos.
+Échauffement	Impide la parálisis.
+Acharné	Sube dos niveles el Ataque cuando baja cualquiera de sus características.
+Glissade	Duplica la Velocidad con lluvia.
+Ciel Gris	Anula todos los efectos del tiempo atmosférico, pero no detiene el propio tiempo.
+Force Soleil	Multiplica el Ataque Especial por 1,5, pero cuesta 1/8 de los PS máximos al final de cada turno con sol intenso.
+Esprit Vital	Impide el sueño.
+Colérique	Sube el Ataque al máximo (seis niveles) al recibir un golpe crítico.
+Force Sable	Potencia ×1,3 los movimientos de tipo Roca, Tierra y Acero durante una tormenta de arena.  Protege del daño de la tormenta de arena.
+Cœur Noble	Sube un nivel el Ataque al recibir un movimiento de tipo Siniestro.
+Synchro	Devuelve la quemadura, la parálisis o el envenenamiento recibidos al Pokémon que los causó.
+Absorbe-Eau	Absorbe los movimientos de tipo Agua y recupera 1/4 de los PS máximos.
+Annule Garde	Todos los movimientos usados por el Pokémon y contra él aciertan.
+Corps Sain	Impide que otros Pokémon le bajen las características.
+Suintement	Daña a los rivales que usen movimientos de absorción tanto como habrían recuperado.
+Impassible	Sube un nivel la Velocidad al retroceder.
+Gloutonnerie	Hace que el Pokémon se coma las bayas de PS bajos por debajo de la mitad de sus PS máximos.
+Fermeté	Con los PS al máximo, no puede quedar debilitado de un golpe: queda con 1 PS.  Protege de los movimientos fulminantes sean cuales sean sus PS.
+Benêt	Impide el enamoramiento y protege de Seducción.
+Régé-Force	Recupera 1/3 de los PS máximos al cambiarse.
+Magnépiège	Impide que los rivales de tipo Acero huyan o se cambien.
+Analyste	Potencia ×1,3 los movimientos cuando actúa el último.
+Tempo Perso	Impide la confusión.
+Hydratation	Cura cualquier problema de estado al final de cada turno con lluvia.
+Corps Ardent	Tiene un 30 % de probabilidad de quemar al Pokémon que lo ataque por contacto.
+Corps Gel	Recupera 1/16 de los PS máximos al final de cada turno con granizo.  Protege del daño del granizo.
+Isograisse	Reduce a la mitad el daño de los movimientos de tipo Fuego y Hielo.
+Toxitouche	Tiene un 30 % de probabilidad de envenenar al objetivo por contacto.
+Glu	Impide que otro Pokémon le quite el objeto que lleva.
+Coque Armure	Protege de los golpes críticos.
+Multi-Coups	Los movimientos de dos a cinco golpes y Triple Patada golpean siempre el máximo de veces.
+Envelocape	Protege del daño del tiempo atmosférico.
+Armurouillée	Sube un nivel la Velocidad y baja un nivel la Defensa al recibir un movimiento físico.
+Prédiction	Revela el movimiento más fuerte de los rivales al entrar en combate.
+Lévitation	Esquiva los movimientos de tipo Tierra.
+Insomnia	Impide el sueño.
+Corps Maudit	Tiene un 30 % de probabilidad de anular el movimiento que golpee al Pokémon.
+Hyper Cutter	Impide que baje el Ataque.
+Boom Final	Daña al atacante con 1/4 de sus PS máximos si este Pokémon queda debilitado por un movimiento de contacto.
+Téméraire	Potencia ×1,2 los movimientos con daño de retroceso.
+Récolte	Tiene un 50 % de probabilidad de recuperar una baya usada al final de cada turno si no lleva otro objeto entretanto.
+Armurbaston	Protege de los golpes críticos.
+Anti-Bruit	Protege de los movimientos basados en el sonido.
+Délestage	Duplica la Velocidad al usar o perder el objeto que lleva.
+Gaz Inhibiteur	Neutraliza las habilidades de todos los Pokémon en combate.
+Poing de Fer	Potencia ×1,2 los movimientos de puñetazo.
+Sérénité	Duplica la probabilidad de los efectos secundarios de los movimientos.
+Feuille Garde	Protege de los problemas de estado con sol intenso.
+Querelleur	Permite que sus movimientos de tipo Normal y Lucha golpeen a los Pokémon de tipo Fantasma.
+Filtre	Reduce en 1/4 el daño de los movimientos supereficaces.
+Cœur Soin	Tiene un 30 % de probabilidad de curar a un aliado adyacente de cualquier problema de estado al final de cada turno.
+Lumiattirance	Duplica la frecuencia de encuentros con Pokémon salvajes.
+Médic Nature	Cura cualquier problema de estado al cambiarse.
+Ignifu-Voile	Impide las quemaduras.
+Phobique	Sube un nivel la Velocidad al recibir un movimiento de tipo Siniestro, Fantasma o Bicho.
+Impudence	Sube un nivel el Ataque al debilitar a un Pokémon.
+Brise Moule	Ignora las habilidades de los objetivos que pudieran estorbar o impedir un movimiento.
+Anticipation	Al entrar en combate, avisa si un rival tiene un movimiento supereficaz, Autodestrucción, Explosión o un movimiento fulminante.
+Tête de Roc	Protege del daño de retroceso.
+Absorbe-Volt	Absorbe los movimientos de tipo Eléctrico y recupera 1/4 de los PS máximos.
+Calque	Copia la habilidad de un rival al entrar en combate.
+Pied Véloce	Multiplica la Velocidad por 1,5 si sufre un problema de estado.
+Adaptabilité	Sube la bonificación por mismo tipo de ×1,5 a ×2.
+Imposteur	Se transforma al entrar en combate.
+Matinal	El sueño se le pasa el doble de rápido.
+Télécharge	Al entrar en combate, sube un nivel el Ataque o el Ataque Especial según la defensa más débil del rival.
+Pression	Los movimientos dirigidos a este Pokémon gastan un PP más.
+Vaccin	Impide el envenenamiento.
+Multiécaille	Reduce a la mitad el daño recibido con los PS al máximo.
+Écaille Spéciale	Multiplica la Defensa por 1,5 si sufre un problema de estado.
+Rideau Neige	Multiplica la evasión por 1,25 con granizo.  Protege del daño del granizo.
+Plus	Multiplica el Ataque Especial por 1,5 si un aliado tiene Más o Menos.
+Chanceux	Sube un nivel el índice de golpe crítico de sus movimientos.
+Miroir Magik	Devuelve al usuario la mayoría de los movimientos de estado.
+Coloforce	Duplica el Ataque en combate.
+Herbivore	Absorbe los movimientos de tipo Planta y sube un nivel el Ataque.
+Turbo	Sube un nivel la Velocidad al final de cada turno.
+Télépathe	Protege de los movimientos ofensivos de los aliados.
+Light Metal	Reduce a la mitad el peso del Pokémon.
+Cherche Miel	El Pokémon puede recoger Miel tras un combate.
+Crachin	Al entrar en combate, provoca lluvia que dura indefinidamente.
+Marque Ombre	Impide que el rival huya o se cambie.
+Farceur	Sube en uno la prioridad de los movimientos de estado.
+Pickpocket	Roba por contacto el objeto que lleva el Pokémon que lo ataca.
+Armumagma	Impide la congelación.
+Contestation	Invierte los cambios de características.
+Aéroporté	Da inmunidad a los movimientos de viento y sube un nivel el Ataque al recibir uno.
+Soin Poison	Envenenado, recupera 1/8 de los PS máximos al final de cada turno en lugar de perderlos.
+Ventouse	Impide que los movimientos de otros Pokémon lo obliguen a salir del combate.
+Lunatique	Al final de cada turno, sube dos niveles una característica al azar y baja otra un nivel.
+Sable Volant	Al entrar en combate, provoca una tormenta de arena que dura indefinidamente.
+Absentéisme	Pierde un turno de cada dos.
+Garde Mystik	Protege del daño de los movimientos ofensivos que no sean supereficaces.
+Normalise	Todos los movimientos del Pokémon pasan a ser de tipo Normal.
+Force Pure	Duplica el Ataque en combate.
+Frein	El Pokémon actúa el último dentro de la misma prioridad.
+Moins	Multiplica el Ataque Especial por 1,5 si un aliado tiene Más o Menos.
+Heavy Metal	Duplica el peso del Pokémon.
+Solide Roc	Reduce en 1/4 el daño de los movimientos supereficaces.
+Peau Dure	Daña al Pokémon que lo ataque por contacto con 1/8 de sus PS máximos.
+Lavabo	Atrae hacia este Pokémon los movimientos de tipo Agua de un solo objetivo si es posible.  Absorbe los movimientos de tipo Agua y sube un nivel el Ataque Especial.
+Écran Fumée	Impide que otros Pokémon le bajen las características.
+Simple	Duplica los cambios de características del Pokémon.  Siguen limitados entre los niveles -6 y 6.
+Rage Poison	Multiplica el Ataque por 1,5 cuando está envenenado.
+Météo	Cambia el tipo y la forma de Castform según el tiempo atmosférico.
+Homochromie	Cambia su tipo al del movimiento ofensivo que acaba de recibir.
+Protéen	Cambia el tipo del usuario al de cada movimiento que usa.
+Don Floral	Multiplica por 1,5 el Ataque y la Defensa Especial de los aliados con sol intenso.
+Rage Brûlure	Multiplica el Ataque Especial por 1,5 cuando está quemado.
+Ignifugé	Reduce a la mitad el daño de los movimientos de tipo Fuego y de las quemaduras.
+Maladresse	Impide que el Pokémon use en combate el objeto que lleva.
+Air Lock	Anula todos los efectos del tiempo atmosférico, pero no detiene el propio tiempo.
+Alerte Neige	Al entrar en combate, provoca granizo que dura indefinidamente.
+Début Calme	Reduce a la mitad el Ataque y la Velocidad durante cinco turnos al entrar en combate.
+Incisif	Aumenta la potencia de los movimientos cortantes.
+Mauvais Rêve	Daña a los rivales dormidos con 1/8 de sus PS máximos al final de cada turno.
+Motorisé	Absorbe los movimientos de tipo Eléctrico y sube un nivel la Velocidad.
+Victorieux	Multiplica por 1,1 la precisión de los movimientos de los aliados.
+Momie	Por contacto, cambia la habilidad del atacante a Momia.
+Mode Transe	Cambia la forma de Darmanitan al final de cada turno según sus PS: Modo Daruma por debajo del 50 % de los PS máximos y Modo Normal si no.
+Illusion	Al salir al combate, toma la apariencia del último Pokémon consciente del equipo hasta recibir un movimiento ofensivo.
+Épine de Fer	Daña al Pokémon que lo ataque por contacto con 1/8 de sus PS máximos.
+Téra-Voltage	Ignora las habilidades de los objetivos que pudieran estorbar o impedir un movimiento.
+Turbo Brasier	Ignora las habilidades de los objetivos que pudieran estorbar o impedir un movimiento.
+Chasse-Neige	Duplica la Velocidad de este Pokémon con granizo.
+Défaitiste	Reduce a la mitad el Ataque y el Ataque Especial con el 50 % de los PS máximos o menos.
+Multi-Type	Cambia el tipo y la forma de Arceus según la tabla que lleva.

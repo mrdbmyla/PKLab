@@ -1,0 +1,1166 @@
+# French -> Spanish for the interface (site + app messages + randomizer report).
+Vitesse du jeu : glisser, molette, double-clic = x1	Velocidad del juego: arrastrar, rueda, doble clic = x1
+Vitesse du jeu	Velocidad del juego
+sans limite	sin límite
+i/s	fps
+# Same format and rules as i18n_en_ui.tsv (French<TAB>Spanish; ~ = single word also inside sentences).
+# Built into data/i18n_es.js by app/build_i18n.py es (with the Pokémon/move/item/place names).
+
+# ---- header / library / launch
+Type Fée + retypages (Blaze Black 2 Redux, etc.)	Tipo Hada + cambios de tipo (Blaze Black 2 Redux, etc.)
+Volume de l'émulateur	Volumen del emulador
+Vitesse : non disponible pour le moment	Velocidad: no disponible por ahora
+~Retour	Volver
+En attente de données...	Esperando datos...
+Relancer la détection	Volver a detectar
+Redétection...	Detectando de nuevo...
+Mode hack	Modo hack
+Choisis un jeu dans la bibliothèque pour commencer.	Elige un juego de la biblioteca para empezar.
+Lancement...	Iniciando...
+lancement...	iniciando...
+(lancement...)	(iniciando...)
+Démarrage de l'émulateur	Iniciando el emulador
+Si le jeu a une sauvegarde, appuie sur Start puis Continuer dans l'émulateur pour accélérer la détection.	Si el juego tiene una partida guardada, pulsa Start y luego Continuar en el emulador para acelerar la detección.
+Continuer sans attendre	Continuar sin esperar
+Choisis un jeu	Elige un juego
+Clique sur un jeu pour lancer l'émulateur avec la ROM correspondante.	Haz clic en un juego para iniciar el emulador con la ROM correspondiente.
+Choisir ma ROM...	Elegir mi ROM...
+Passer, l'émulateur tourne déjà	Saltar, el emulador ya está abierto
+Reprendre :	Reanudar:
+Charger la dernière sauvegarde (state 1) :	Cargar el último guardado (state 1):
+ROM non trouvée automatiquement :	ROM no encontrada automáticamente:
+Lancer	Iniciar
+recherche de la ROM...	buscando la ROM...
+ROM introuvable	ROM no encontrada
+choisis une ROM	elige una ROM
+lancé !	¡iniciado!
+choix du fichier...	eligiendo el archivo...
+extension non reconnue (	extensión no reconocida (
+(aucune ROM trouvée)	(ninguna ROM encontrada)
+Nouvelle partie	Nueva partida
+Détection en cours...	Detectando...
+Pas encore de sauvegarde : ton équipe s'affichera dès ton premier Pokémon	Aún no hay partida guardada: tu equipo aparecerá en cuanto tengas tu primer Pokémon
+Recherche du jeu dans la mémoire de l'émulateur	Buscando el juego en la memoria del emulador
+Toujours pas détecté - le jeu a-t-il bien une sauvegarde chargée ?	Sigue sin detectarse - ¿el juego tiene una partida cargada?
+Détecté !	¡Detectado!
+erreur	error
+Erreur	Error
+Échec :	Fallo:
+Reçu !	¡Recibido!
+pas de signal	sin señal
+
+# ---- game names
+Pokémon Diamant	Pokémon Diamante
+Pokémon Perle	Pokémon Perla
+Pokémon Platine	Pokémon Platino
+Pokémon Or HeartGold	Pokémon Oro HeartGold
+Pokémon Argent SoulSilver	Pokémon Plata SoulSilver
+Pokémon Noire	Pokémon Negro
+Pokémon Blanche	Pokémon Blanco
+Pokémon Noire 2	Pokémon Negro 2
+Pokémon Blanche 2	Pokémon Blanco 2
+Pokémon Rubis	Pokémon Rubí
+Pokémon Saphir	Pokémon Zafiro
+Pokémon Émeraude	Pokémon Esmeralda
+Pokémon Rouge Feu	Pokémon Rojo Fuego
+Pokémon Vert Feuille	Pokémon Verde Hoja
+Noire 2 / Blanche 2	Negro 2 / Blanco 2
+Rouge Feu / Vert Feuille	Rojo Fuego / Verde Hoja
+Rubis / Saphir	Rubí / Zafiro
+
+# ---- randomizer panel
+Randomizer	Randomizer
+Crée une version aléatoire de ton jeu (3G, 4G et 5G) en quelques clics. Mode simple pour jouer tout de suite, mode détaillé pour tout régler. La ROM d'origine n'est jamais modifiée.	Crea una versión aleatoria de tu juego (3.ª, 4.ª y 5.ª gen.) en pocos clics. Modo simple para jugar enseguida, modo detallado para ajustarlo todo. La ROM original nunca se modifica.
+Ton jeu	Tu juego
+Choisir une ROM...	Elegir una ROM...
+Nom	Nombre
+Nom de la ROM créée (facultatif, sinon « ... (Aleatoire n) »)	Nombre de la ROM creada (opcional, si no « ... (Aleatorio n) »)
+Nom de la ROM créée (facultatif, sinon « ... (Shiny 1-512) »)	Nombre de la ROM creada (opcional, si no « ... (Shiny 1-512) »)
+Simple	Simple
+Détaillé	Detallado
+À quel point tout mélanger ?	¿Cuánto mezclarlo todo?
+Découverte	Descubrimiento
+Starters, Pokémon sauvages, Pokémon offerts, œufs et échanges changent. Le reste est normal.	Cambian los iniciales, los Pokémon salvajes, los Pokémon regalados, los huevos y los intercambios. Lo demás es normal.
+Aventure	Aventura
+conseillé	recomendado
+En plus : dresseurs (Pokémon évolués selon leur niveau), légendaires, fossiles, objets au sol, CT et tuteurs. Force équilibrée.	Además: entrenadores (Pokémon evolucionados según su nivel), legendarios, fósiles, objetos del suelo, MT y tutores. Fuerza equilibrada.
+Chaos	Caos
+Tout change : types, talents, stats, attaques apprises, évolutions, compatibilités CT et tuteurs, objets.	Todo cambia: tipos, habilidades, características, movimientos aprendidos, evoluciones, compatibilidad con MT y tutores, objetos.
+Petits plus	Extras
+Aléatoire total	Totalmente aleatorio
+(starters, sauvages, dresseurs, échanges : n'importe quel Pokémon du jeu, évolué ou non, sans tenir compte de la force)	(iniciales, salvajes, entrenadores, intercambios: cualquier Pokémon del juego, evolucionado o no, sin tener en cuenta la fuerza)
+Pas de légendaires	Sin legendarios
+Dresseurs plus forts	Entrenadores más fuertes
+(+20 % de niveaux)	(+20 % de niveles)
+Évolution aléatoire à chaque évolution	Evolución aleatoria en cada evolución
+Toutes les CS pour tous	Todas las MO para todos
+(Coupe, Surf... sans chercher le bon Pokémon)	(Corte, Surf... sin buscar el Pokémon adecuado)
+Ligue unique	Liga única
+(champions, Conseil 4 et Maître ont des Pokémon que personne d'autre n'a)	(Líderes de Gimnasio, Alto Mando y Campeón tienen Pokémon que nadie más tiene)
+Magasins aléatoires	Tiendas aleatorias
+(objets vendus changés, CT et Poké Balls gardés)	(objetos en venta cambiados, MT y Poké Balls conservadas)
+Courir partout, même à l'intérieur	Correr en todas partes, incluso en interiores
+(3G, phase expérimentale)	(3.ª gen., experimental)
+Chaussures de course dès le début	Deportivas desde el principio
+(Rouge Feu / Vert Feuille ; phase expérimentale)	(Rojo Fuego / Verde Hoja; experimental)
+(3G : Rouge Feu / Vert Feuille ; phase expérimentale)	(3.ª gen.: Rojo Fuego / Verde Hoja; experimental)
+Texte rapide	Texto rápido
+(3G : Émeraude, Rouge Feu, Vert Feuille ; phase expérimentale)	(3.ª gen.: Esmeralda, Rojo Fuego, Verde Hoja; experimental)
+Garder ma sauvegarde actuelle	Conservar mi partida actual
+(sinon : nouvelle partie)	(si no: nueva partida)
+Préréglages	Ajustes guardados
+Charger	Cargar
+Enregistrer	Guardar
+Supprimer	Borrar
+Nom du préréglage	Nombre del ajuste
+Pokémon sauvages	Pokémon salvajes
+Mode	Modo
+Par zone (chaque espèce d'une zone devient une autre)	Por zona (cada especie de una zona se convierte en otra)
+Global (une espèce devient la même autre partout)	Global (una especie se convierte en la misma otra en todas partes)
+Total (chaque emplacement tiré au sort)	Total (cada hueco sorteado)
+Ne pas changer	No cambiar
+Force similaire	Fuerza similar
+~force similaire	fuerza similar
+Un type par zone	Un tipo por zona
+Pokémon Eau en surf et pêche	Pokémon de tipo Agua al surfear y pescar
+Niveaux	Niveles
+Attrapez-les tous	¡Hazte con todos!
+(le plus d'espèces différentes possible)	(el mayor número posible de especies distintas)
+Objets tenus aléatoires	Objetos equipados aleatorios
+(utiles en combat)	(útiles en combate)
+Taux de capture minimum	Ratio de captura mínimo
+255 (le plus facile)	255 (el más fácil)
+Dresseurs	Entrenadores
+Équipes	Equipos
+Aléatoires	Aleatorios
+Aléatoire	Aleatorio
+Aléatoires, le plus d'espèces différentes	Aleatorios, el mayor número de especies distintas
+Aléatoires, un type par dresseur	Aleatorios, un tipo por entrenador
+Champions, Conseil 4, Maître : un type chacun	Líderes de Gimnasio, Alto Mando, Campeón: un tipo cada uno
+Champions, Conseil 4, Maître : Pokémon que personne d'autre n'a	Líderes de Gimnasio, Alto Mando, Campeón: Pokémon que nadie más tiene
+Complètement évolués dès le Nv.	Totalmente evolucionados desde el Nv.
+(0 = non)	(0 = no)
+Meilleures attaques	Mejores movimientos
+(dresseurs à attaques choisies)	(entrenadores con movimientos elegidos)
+Le rival garde la lignée de son starter	El rival conserva la línea de su inicial
+Pokémon évolués selon leur niveau	Pokémon evolucionados según su nivel
+(niveau d'évolution atteint ; pierre, échange... dès le Nv. 40)	(nivel de evolución alcanzado; piedra, intercambio... desde el Nv. 40)
+Pokémon en plus : Champions/Conseil 4	Pokémon de más: Líderes/Alto Mando
+rivaux/boss	rivales/jefes
+autres	otros
+Objets tenus :	Objetos equipados:
+Champions/Conseil 4	Líderes/Alto Mando
+Objets : baies seulement	Objetos: solo bayas
+Objet seulement pour le Pokémon de plus haut niveau	Objeto solo para el Pokémon de mayor nivel
+Tous les combats en double	Todos los combates dobles
+(phase expérimentale)	(experimental)
+phase expérimentale	experimental
+Mélanger les noms des dresseurs	Mezclar los nombres de los entrenadores
+Mélanger les noms de classes (Gamin, Montagnard...)	Mezclar los nombres de clase (Joven, Montañero...)
+Les Pokémon eux-mêmes	Los propios Pokémon
+Types	Tipos
+Aléatoires (évolutions cohérentes)	Aleatorios (evoluciones coherentes)
+Aléatoires (chaque espèce à part)	Aleatorios (cada especie por separado)
+Toujours deux types	Siempre dos tipos
+Talents	Habilidades
+Pas de Garde Mystik	Sin Superguarda
+Toujours deux talents	Siempre dos habilidades
+Pas de talents qui piègent	Sin habilidades que atrapan
+(Marque Ombre, Piège Sable, Magnépiège)	(Sombra Trampa, Trampa Arena, Imán)
+Pas de talents handicapants	Sin habilidades perjudiciales
+(Absentéisme, Début Calme...)	(Ausente, Inicio Lento...)
+Pas de talents inutiles en combat	Sin habilidades inútiles en combate
+(Fuite, Ramassage...)	(Fuga, Recogida...)
+Stats de base	Características base
+Mélangées (mêmes valeurs)	Mezcladas (mismos valores)
+Aléatoires (même total, même répartition dans la famille)	Aleatorias (mismo total, mismo reparto en la familia)
+Aléatoires (même total, chacun la sienne)	Aleatorias (mismo total, cada uno el suyo)
+Courbe d'expérience	Curva de experiencia
+La même pour tous : moyenne	La misma para todos: media
+La même pour tous : rapide	La misma para todos: rápida
+La même pour tous : parabolique	La misma para todos: parabólica
+La même pour tous : lente	La misma para todos: lenta
+Attaques par niveau	Movimientos por nivel
+Aléatoires, types du Pokémon privilégiés	Aleatorios, priorizando los tipos del Pokémon
+Totalement aléatoires	Totalmente aleatorios
+Métronome seulement	Solo Metrónomo
+Pas d'attaques qui cassent le jeu	Sin movimientos que rompen el juego
+(Sonicboom, Draco-Rage, K.O. en un coup, Spore)	(Bomba Sónica, Furia Dragón, fulminantes, Espora)
+Attaques offensives fortes	Movimientos ofensivos fuertes
+Ranger les attaques offensives (faibles d'abord)	Ordenar los movimientos ofensivos (los débiles primero)
+Compatibilité CT	Compatibilidad con MT
+Aléatoire (même nombre)	Aleatoria (mismo número)
+Aléatoire, types du Pokémon privilégiés	Aleatoria, priorizando los tipos del Pokémon
+Toutes les CT	Todas las MT
+Une attaque apprise par niveau qui est une CT : CT compatible	Un movimiento aprendido por nivel que es una MT: MT compatible
+Évolutions	Evoluciones
+Aléatoires (au moins aussi fortes)	Aleatorias (al menos igual de fuertes)
+À chaque niveau	En cada nivel
+Évolution au moins aussi forte	Evolución al menos igual de fuerte
+(si aléatoires)	(si son aleatorias)
+Évolution du même type	Evolución del mismo tipo
+Rendre possibles les évolutions par échange	Hacer posibles las evoluciones por intercambio
+Évolutions plus faciles	Evoluciones más fáciles
+(Nv. 40 maximum)	(Nv. 40 como máximo)
+Évolutions sans condition d'heure	Evoluciones sin condición de hora
+Puissance des attaques aléatoire	Potencia de los movimientos aleatoria
+Type des attaques aléatoire	Tipo de los movimientos aleatorio
+Précision des attaques aléatoire	Precisión de los movimientos aleatoria
+PP des attaques aléatoires	PP de los movimientos aleatorios
+Catégorie physique / spéciale aléatoire	Categoría física / especial aleatoria
+Starters	Iniciales
+Aléatoires (Pokémon de base qui évoluent)	Aleatorios (Pokémon básicos que evolucionan)
+Aléatoires (n'importe quel Pokémon)	Aleatorios (cualquier Pokémon)
+Choisis	Elegidos
+Avec 2 évolutions (si aléatoires)	Con 2 evoluciones (si son aleatorios)
+3 types différents (si aléatoires)	3 tipos distintos (si son aleatorios)
+Mettre à jour les dialogues qui citent les starters	Actualizar los diálogos que mencionan a los iniciales
+~Starter 1 (à la place de	Inicial 1 (en lugar de
+~Starter 2 (à la place de	Inicial 2 (en lugar de
+~Starter 3 (à la place de	Inicial 3 (en lugar de
+CT, échanges, cadeaux, objets	MT, intercambios, regalos, objetos
+Attaques des CT	Movimientos de las MT
+Aléatoires (les CS ne changent pas)	Aleatorios (las MO no cambian)
+Garder Tunnel, Flash et Éclate-Roc	Conservar Excavar, Destello y Golpe Roca
+Tuteurs : attaques	Tutores: movimientos
+Tuteurs : compatibilité	Tutores: compatibilidad
+Tous compatibles	Todos compatibles
+Une attaque apprise par niveau qu'un tuteur enseigne : compatible	Un movimiento aprendido por nivel que enseña un tutor: compatible
+Tuteurs : Émeraude, Rouge Feu, Vert Feuille, Platine, HeartGold, SoulSilver, Noire 2, Blanche 2.	Tutores: Esmeralda, Rojo Fuego, Verde Hoja, Platino, HeartGold, SoulSilver, Negro 2, Blanco 2.
+Échanges en jeu	Intercambios del juego
+Pokémon reçus aléatoires	Pokémon recibidos aleatorios
+Pokémon reçus et demandés aléatoires	Pokémon recibidos y pedidos aleatorios
+Pokémon fixes	Pokémon estáticos
+(légendaires, statues...)	(legendarios, estatuas...)
+Légendaires ↔ légendaires	Legendarios ↔ legendarios
+Aléatoires (force similaire)	Aleatorios (fuerza similar)
+Pokémon offerts	Pokémon regalados
+(Évoli, Zorua, singes...)	(Eevee, Zorua, monos...)
+Offerts : force similaire	Regalos: fuerza similar
+Fossiles	Fósiles
+Œufs offerts	Huevos regalados
+Aléatoires (Pokémon de base)	Aleatorios (Pokémon básicos)
+Objets au sol	Objetos del suelo
+Mélangés	Mezclados
+Aléatoires (les CT restent des CT)	Aleatorios (las MT siguen siendo MT)
+Magasins	Tiendas
+Aléatoires (prix proches, CT et Poké Balls gardés)	Aleatorias (precios parecidos, MT y Poké Balls conservadas)
+Échanges, fixes, offerts, œufs, objets au sol, objets cachés, magasins : 3G, 4G et 5G. Les dialogues citent encore les anciens Pokémon / attaques, et les Pokémon fixes gardent leur apparence sur la carte.	Intercambios, estáticos, regalos, huevos, objetos del suelo, objetos ocultos, tiendas: 3.ª, 4.ª y 5.ª gen. Los diálogos siguen mencionando los Pokémon / movimientos antiguos, y los Pokémon estáticos conservan su aspecto en el mapa.
+Général	General
+Sans légendaires	Sin legendarios
+Même stade d'évolution	Misma fase evolutiva
+(sauvages et dresseurs : non évolué → non évolué, évolué → évolué)	(salvajes y entrenadores: sin evolucionar → sin evolucionar, evolucionado → evolucionado)
+Reprendre la sauvegarde de la ROM d'origine	Usar la partida guardada de la ROM original
+Graine	Semilla
+vide = au hasard	vacío = al azar
+Créer la ROM aléatoire	Crear la ROM aleatoria
+Créer ma partie aléatoire	Crear mi partida aleatoria
+choisis 3 Pokémon dans la liste pour les starters	elige 3 Pokémon de la lista para los iniciales
+Donne un nom.	Ponle un nombre.
+Impossible d'enregistrer (stockage indisponible).	No se puede guardar (almacenamiento no disponible).
+remplacé.	reemplazado.
+enregistré.	guardado.
+chargé.	cargado.
+supprimé.	borrado.
+Supprimer le préréglage	Borrar el ajuste
+~Préréglage	Ajuste
+(aucun)	(ninguno)
+Création en cours...	Creando...
+starters pas encore disponibles pour ce jeu,	iniciales aún no disponibles para este juego,
+starters inchangés,	iniciales sin cambios,
+Créée :	Creada:
+(graine	(semilla
+sauvegarde reprise	partida conservada
+nouvelle partie	nueva partida
+voir le détail	ver el detalle
+Jouer maintenant	Jugar ahora
+(aléatoire)	(aleatorio)
+Aucune ROM 3G/4G/5G dans Téléchargements ou Bureau	Ninguna ROM de 3.ª/4.ª/5.ª gen. en Descargas o Escritorio
+- shiny	- shiny
+
+# ---- shiny tool
+Chance de shiny	Probabilidad de shiny
+Crée une copie de ton jeu (3G, 4G et 5G, d'origine ou déjà aléatoire) où les Pokémon chromatiques sont plus fréquents, jusqu'à 100 %. Rien d'autre ne change et la ROM d'origine n'est jamais modifiée. (phase expérimentale)	Crea una copia de tu juego (3.ª, 4.ª y 5.ª gen., original o ya aleatorio) en la que los Pokémon variocolor son más frecuentes, hasta el 100 %. Nada más cambia y la ROM original nunca se modifica. (experimental)
+Chance	Probabilidad
+1 / 4096 (2 fois plus)	1 / 4096 (2 veces más)
+1 / 1024 (8 fois plus)	1 / 1024 (8 veces más)
+1 / 512 (16 fois plus)	1 / 512 (16 veces más)
+1 / 256 (32 fois plus)	1 / 256 (32 veces más)
+1 / 2 (un sur deux)	1 / 2 (uno de cada dos)
+Tous shiny (100 %)	Todos shiny (100 %)
+Valeur personnalisée	Valor personalizado
+(le menu « Chance » est alors ignoré)	(entonces se ignora el menú « Probabilidad »)
+1 sur	1 de cada
+de 2 à 65536	de 2 a 65536
+entre 2 et 65536	entre 2 y 65536
+Tape un nombre entre 2 et 65536	Escribe un número entre 2 y 65536
+→ chance réelle : 1 sur	→ probabilidad real: 1 de cada
+(plus rare que normal)	(más rara de lo normal)
+Garder ma sauvegarde	Conservar mi partida
+(copie le .sav : tu continues ta partie avec la nouvelle chance)	(copia el .sav: sigues tu partida con la nueva probabilidad)
+Créer la ROM	Crear la ROM
+
+# ---- save editor
+Éditeur de sauvegarde	Editor de partidas
+Notre éditeur : argent, sac, Pokédex, équipe et PC (espèce, niveau, nature, objet, attaques, IV / EV). Une copie .bak de la sauvegarde d'origine est gardée. (phase expérimentale)	Nuestro editor: dinero, mochila, Pokédex, equipo y PC (especie, nivel, naturaleza, objeto, movimientos, IV / EV). Se guarda una copia .bak de la partida original. (experimental)
+Sauvegarde	Partida guardada
+Choisir une sauvegarde...	Elegir una partida...
+Choisis une sauvegarde	Elige una partida
+Sac	Mochila
++ Ajouter un objet	+ Añadir un objeto
+Tous	Todos
+Vus	Vistos
+~Vus	Vistos
+Capturés	Capturados
+~Capturés	Capturados
+Pas encore vus	Aún no vistos
+Tout voir	Ver todos
+Tout capturer	Capturar todos
+Tout effacer	Borrar todo
+Clic sur un Pokémon : pas vu → vu → capturé → pas vu.	Clic en un Pokémon: no visto → visto → capturado → no visto.
+Chercher un Pokémon	Buscar un Pokémon
+Argent	Dinero
+Équipe	Equipo
+PC	PC
+~Boîte	Caja
+Choisis un Pokémon dans l'équipe ou le PC.	Elige un Pokémon del equipo o del PC.
+Enregistrer la sauvegarde	Guardar la partida
+Annuler	Cancelar
+Pokémon illisible	Pokémon ilegible
+Place vide	Hueco vacío
+Pour l'équipe, utilise la première place libre.	Para el equipo, usa el primer hueco libre.
+Créer un Pokémon	Crear un Pokémon
+Espèce	Especie
+Niveau	Nivel
+Nature	Naturaleza
+Chromatique	Variocolor
+oui	sí
+non	no
+ou	o
+ex. Pikachu	p. ej. Pikachu
+Attaques : choisis une espèce	Movimientos: elige una especie
+Attaques :	Movimientos:
+Créer le Pokémon	Crear el Pokémon
+Importer un Pokémon (	Importar un Pokémon (
+Vider la place	Vaciar el hueco
+Objet	Objeto
+aucun	ninguno
+Bonheur	Amistad
+Attaques	Movimientos
+EV max	EV al máximo
+510 EV : 252 + 252 + 6	510 EV: 252 + 252 + 6
+Où mettre les EV	Dónde poner los EV
+EV à zéro	EV a cero
+auto (meilleure attaque + Vitesse)	auto (mejor ataque + Velocidad)
+Attaque + Vitesse	Ataque + Velocidad
+Atq. Spé. + Vitesse	At. Esp. + Velocidad
+PV + Défense	PS + Defensa
+PV + Déf. Spé.	PS + Def. Esp.
+réparti (85 partout)	repartido (85 en todo)
+Contrôle : rien d'anormal	Comprobación: nada anormal
+Contrôle :	Comprobación:
+Exporter (	Exportar (
+Remplacer par un fichier...	Reemplazar por un archivo...
+Retirer de l'équipe	Quitar del equipo
+Retirer de la boîte	Quitar de la caja
+introuvable dans ce jeu	no existe en este juego
+attaque introuvable dans ce jeu	movimiento que no existe en este juego
+Les EV ne peuvent pas dépasser 510 au total	Los EV no pueden superar 510 en total
+Retirer	Quitar
+Poche vide.	Bolsillo vacío.
+Objets rangés dans le PC du jeu.	Objetos guardados en el PC del juego.
+Objet introuvable ou pas dans cette poche	Objeto no encontrado o no va en este bolsillo
+: poche pleine	: bolsillo lleno
+Aucun Pokémon.	Ningún Pokémon.
+Effacer tout le Pokédex (vus et capturés) ?	¿Borrar toda la Pokédex (vistos y capturados)?
+annulé	cancelado
+Pokémon exporté :	Pokémon exportado:
+Enregistre ou annule d'abord tes changements en cours.	Guarda o cancela primero los cambios en curso.
+Pokémon importé et sauvegarde enregistrée (copie de l'originale : .sav.bak).	Pokémon importado y partida guardada (copia de la original: .sav.bak).
+Retirer ce Pokémon de l'équipe ? (pense à l'exporter avant si tu veux le garder)	¿Quitar este Pokémon del equipo? (expórtalo antes si quieres conservarlo)
+Retirer ce Pokémon de la boîte ? (pense à l'exporter avant si tu veux le garder)	¿Quitar este Pokémon de la caja? (expórtalo antes si quieres conservarlo)
+Pokémon retiré et sauvegarde enregistrée (copie de l'originale : .sav.bak).	Pokémon quitado y partida guardada (copia de la original: .sav.bak).
+Choisis une espèce de la liste	Elige una especie de la lista
+Pokémon créé et sauvegarde enregistrée (copie de l'originale : .sav.bak).	Pokémon creado y partida guardada (copia de la original: .sav.bak).
+Lecture...	Leyendo...
+Attention :	Atención:
+Enregistrement...	Guardando...
+Sauvegarde enregistrée (copie de l'originale : .sav.bak). Relance le jeu pour voir les changements.	Partida guardada (copia de la original: .sav.bak). Reinicia el juego para ver los cambios.
+~Dresseur	Entrenador
+vide	vacío
+
+# ---- battle panel
+Combat	Combate
+Votre équipe	Tu equipo
+Adversaire	Rival
+Triches	Trucos
+Carte	Mapa
+Toi	Tú
+Voir les Pokémon de la zone	Ver los Pokémon de la zona
+Clique sur la carte pour l'ouvrir en grand et voir les Pokémon de la zone	Haz clic en el mapa para ampliarlo y ver los Pokémon de la zona
+Pokémon rencontrables dans cette zone	Pokémon que aparecen en esta zona
+Replier/déplier les stats	Plegar/desplegar las características
+Fiche technique	Ficha técnica
+⚠ Faiblesses (subit plus de dégâts)	⚠ Debilidades (recibe más daño)
+🛡 Résistances (subit moins de dégâts)	🛡 Resistencias (recibe menos daño)
+⊘ Immunisé (ne subit aucun dégât)	⊘ Inmune (no recibe daño)
+⚔ Menace pour votre équipe	⚔ Amenaza para tu equipo
+Talent :	Habilidad:
+Nature :	Naturaleza:
+Total :	Total:
+(description non trouvée)	(descripción no encontrada)
+Nature neutre : n'affecte aucune statistique.	Naturaleza neutra: no afecta a ninguna característica.
+~Augmente :	Aumenta:
+~Diminue :	Disminuye:
+✨ Chromatique :	✨ Variocolor:
+En attente d'un jeu	Esperando un juego
+(aucun combat en cours)	(ningún combate en curso)
+(équipe non détectée)	(equipo no detectado)
+- pas de signal (dernières données il y a	- sin señal (últimos datos hace
+: l'émulateur/le script sont-ils bien lancés ?)	: ¿están abiertos el emulador y el script?)
+(pas de script actif - rien à afficher)	(ningún script activo - nada que mostrar)
+Jeu :	Juego:
+- connecté	- conectado
+Pas de données (le script Lua tourne-t-il ? un combat a-t-il eu lieu ?)	Sin datos (¿funciona el script Lua? ¿ha habido algún combate?)
+À pied (herbes)	A pie (hierba)
+Surf	Surf
+Éclate-Roc	Golpe Roca
+Canne	Caña Vieja
+Super Canne	Caña Buena
+Méga Canne	Supercaña
+Aucune rencontre sauvage ici	Aquí no hay Pokémon salvajes
+Master Ball	Master Ball
+Super Bonbon	Caramelo Raro
+Atq	Atq
+Déf	Def
+Vit	Vel
+PV	PS
+ASp	AtE
+DSp	DfE
+A.Spé	At.Esp
+D.Spé	Def.Esp
+Attaque	Ataque
+Défense	Defensa
+Vitesse	Velocidad
+Attaque Spéciale	Ataque Especial
+Défense Spéciale	Defensa Especial
+
+# ---- info sheet (fiche)
+Données de ta ROM aléatoire	Datos de tu ROM aleatoria
+Données du jeu :	Datos del juego:
+Jeu non détecté : données de Noire 2 / Blanche 2	Juego no detectado: datos de Negro 2 / Blanco 2
+Statistiques de base	Características base
+Indisponibles	No disponibles
+Attaques indisponibles (fichier data/fiche manquant).	Movimientos no disponibles (falta el archivo data/fiche).
+· cliquer pour ouvrir la fiche	· clic para abrir la ficha
+Talents possibles	Habilidades posibles
+· survoler pour l'explication	· pasa el ratón para ver la explicación
+(caché)	(oculta)
+Aucun	Ninguno
+Aucune	Ninguna
+· puissance · précision	· potencia · precisión
+Peut apprendre avec les CT et CS	Puede aprender con MT y MO
+~capacités	movimientos
+Chargement…	Cargando…
+pas de données	sin datos
+N'évolue pas	No evoluciona
+~Évol.	Evol.
+~Nv.	Nv.
+~CT	MT
+~CS	MO
+Apparaît quand Ningale évolue (	Aparece cuando Nincada evoluciona (
+) s'il reste une place dans l'équipe et une Poké Ball	) si queda un hueco en el equipo y una Poké Ball
+Beauté au maximum + gain de niveau	Belleza al máximo + subida de nivel
+Bonheur élevé + gain de niveau, la nuit	Amistad alta + subida de nivel, de noche
+Bonheur élevé + gain de niveau, le jour	Amistad alta + subida de nivel, de día
+Bonheur élevé + gain de niveau	Amistad alta + subida de nivel
+Gain de niveau avec	Subida de nivel con
+dans l'équipe	en el equipo
+Gain de niveau en connaissant	Subida de nivel conociendo
+Gain de niveau en tenant	Subida de nivel llevando
+Gain de niveau près de la pierre spéciale	Subida de nivel cerca de la roca especial
+— impossible dans ce jeu	— imposible en este juego
+Gain de niveau à :	Subida de nivel en:
+Gain de niveau dans un lieu spécial	Subida de nivel en un lugar especial
+, la nuit	, de noche
+, le jour	, de día
+, femelle	, hembra
+, mâle	, macho
+, selon la personnalité (aléatoire)	, según la personalidad (aleatorio)
+Attaque < Défense	Ataque < Defensa
+Attaque = Défense	Ataque = Defensa
+Attaque > Défense	Ataque > Defensa
+Échange contre	Intercambio por
+Échange en tenant	Intercambio llevando
+~Échange	Intercambio
+Pierre Aube	Piedra Alba
+Pierre Eau	Piedra Agua
+Pierre Feu	Piedra Fuego
+Pierre Foudre	Piedra Trueno
+Pierre Lune	Piedra Lunar
+Pierre Nuit	Piedra Noche
+Pierre Plante	Piedra Hoja
+Pierre Soleil	Piedra Solar
+Pierre Éclat	Piedra Día
+
+# ---- app messages (Python)
+Le script mGBA ne répond pas (vérifie qu'il est bien chargé)	El script de mGBA no responde (comprueba que está cargado)
+Sauvegarder en Save State 1 avant de quitter ?	¿Guardar en el Save State 1 antes de salir?
+Cette ROM n'est pas prise en charge (Pokémon 3G, 4G ou 5G d'origine)	Esta ROM no es compatible (juego Pokémon original de 3.ª, 4.ª o 5.ª gen.)
+Cette ROM n'est pas prise en charge (Pokémon 3G, 4G ou 5G)	Esta ROM no es compatible (juego Pokémon de 3.ª, 4.ª o 5.ª gen.)
+Nom trop long (100 caractères maximum)	Nombre demasiado largo (100 caracteres como máximo)
+Ce nom est celui de la ROM d'origine : choisis-en un autre	Ese es el nombre de la ROM original: elige otro
+Une ROM porte déjà ce nom dans ce dossier : choisis-en un autre	Ya hay una ROM con ese nombre en esta carpeta: elige otro
+Une ROM porte déjà ce nom dans ce dossier : donne-lui un nom	Ya hay una ROM con ese nombre en esta carpeta: ponle un nombre
+ROM introuvable ou non prise en charge	ROM no encontrada o no compatible
+ROM non prise en charge	ROM no compatible
+Sauvegarde introuvable	Partida guardada no encontrada
+Tous les fichiers (*.*)	Todos los archivos (*.*)
+Moteur inconnu	Motor desconocido
+Aucune sauvegarde dans le state 1 pour ce jeu	No hay guardado en el state 1 para este juego
+Exécutable introuvable dans l'appli	Ejecutable no encontrado en la aplicación
+Triche inconnue	Truco desconocido
+Partie du joueur non localisée (es-tu bien en jeu ?)	Partida del jugador no localizada (¿estás jugando?)
+Aucun jeu détecté	Ningún juego detectado
+Recherche d'un émulateur connu...	Buscando un emulador conocido...
+La graine et les pourcentages doivent être des nombres	La semilla y los porcentajes deben ser números
+place vide	hueco vacío
+choisis un fichier .pk3, .pk4 ou .pk5	elige un archivo .pk3, .pk4 o .pk5
+Adresse argent non configurée pour ce jeu	Dirección del dinero no configurada para este juego
+Objet non configuré	Objeto no configurado
+Sac plein (aucun emplacement libre trouvé)	Mochila llena (ningún hueco libre)
+Adresse argent non confirmée (valeur actuelle improbable)	Dirección del dinero no confirmada (valor actual improbable)
+Lecture mémoire impossible	No se puede leer la memoria
+cette sauvegarde prend les fichiers	esta partida acepta los archivos
+(Pokémon de la même génération)	(Pokémon de la misma generación)
+: pas dans la poche	: no está en el bolsillo
+jeu non pris en charge	juego no compatible
+triche inconnue	truco desconocido
+sac non localisé (vérifie que la partie est bien chargée)	mochila no localizada (comprueba que la partida está cargada)
+argent non configuré pour ce jeu	dinero no configurado para este juego
+sac plein	mochila llena
+échec	fallo
+Chance invalide : tape un nombre (1 sur N)	Probabilidad no válida: escribe un número (1 de cada N)
+Chance hors limites : 1 sur	Probabilidad fuera de límites: 1 de cada
+(ou « Tous shiny »)	(o « Todos shiny »)
+Cette ROM a déjà une chance de shiny modifiée : pars de la ROM d'avant	Esta ROM ya tiene la probabilidad de shiny modificada: parte de la ROM anterior
+Chance de shiny : NON changée (tests introuvables :	Probabilidad de shiny: NO cambiada (comprobaciones no encontradas:
+au lieu de 5)	en lugar de 5)
+Chance de shiny : NON changée (test introuvable :	Probabilidad de shiny: NO cambiada (comprobación no encontrada:
+Chance de shiny : NON changée (code d'un test inattendu)	Probabilidad de shiny: NO cambiada (código de comprobación inesperado)
+Chance de shiny : NON changée (code d'un test inattendu :	Probabilidad de shiny: NO cambiada (código de comprobación inesperado:
+Chance de shiny :	Probabilidad de shiny:
+(au lieu de 1 / 8192 ; non testé en jeu)	(en lugar de 1 / 8192; no probado en el juego)
+Format de sauvegarde pas encore pris en charge (	Formato de partida aún no compatible (
+fichier illisible (somme de contrôle fausse ou mauvaise génération)	archivo ilegible (suma de control errónea o generación equivocada)
+impossible de retirer le dernier Pokémon de l'équipe	no se puede quitar el último Pokémon del equipo
+place déjà vide	hueco ya vacío
+données abîmées (somme de contrôle fausse)	datos dañados (suma de control errónea)
+aucune attaque	ningún movimiento
+la même attaque deux fois	el mismo movimiento dos veces
+attaque inconnue dans ce jeu	movimiento desconocido en este juego
+objet tenu inconnu dans ce jeu	objeto equipado desconocido en este juego
+nature invalide	naturaleza no válida
+aucun Pokémon lisible dans l'équipe pour servir de modèle	ningún Pokémon legible en el equipo para servir de modelo
+Équipe : choisis un Pokémon à remplacer ou la première place libre	Equipo: elige un Pokémon que reemplazar o el primer hueco libre
+Sauvegarde 3G non reconnue (aucun emplacement valide)	Partida de 3.ª gen. no reconocida (ningún hueco válido)
+Équipe illisible	Equipo ilegible
+octets : pas un Pokémon	bytes: no es un Pokémon
+fichier de	archivo de
+inconnue en	desconocida en
+au total (510 maximum)	en total (510 como máximo)
+expérience au-delà du niveau 100	experiencia más allá del nivel 100
+mais expérience du niveau	pero experiencia del nivel
+données de l'espèce	datos de la especie
+absentes : niveau non modifiable	ausentes: no se puede cambiar el nivel
+: somme de contrôle fausse	: suma de control errónea
+: aucune copie valide	: ninguna copia válida
+aucun PID trouvé pour cette nature	ningún PID encontrado para esta naturaleza
+Objets rares	Objetos clave
+noms des Pokémon introuvables	nombres de los Pokémon no encontrados
+table des objets introuvable	tabla de objetos no encontrada
+Pokédex 4G introuvable	Pokédex de 4.ª gen. no encontrada
+Pokédex 5G introuvable	Pokédex de 5.ª gen. no encontrada
+
+# ---- randomizer report (Python)
+Randomizer PKLab	Randomizer PKLab
+ROM d'origine :	ROM original:
+Graine :	Semilla:
+Sans légendaires :	Sin legendarios:
+Dresseurs importants	Entrenadores importantes
+chaque niveau	cada nivel
+refus d'écraser la ROM d'origine	no se sobrescribe la ROM original
+Jeu non pris en charge pour l'instant :	Juego aún no compatible:
+Pas encore disponible en 3G (ignoré) :	Aún no disponible en 3.ª gen. (ignorado):
+Pas encore disponible en 4G (ignoré) :	Aún no disponible en 4.ª gen. (ignorado):
+Pas encore disponible pour ce jeu (ignoré) :	Aún no disponible para este juego (ignorado):
+Pas encore disponible	Aún no disponible
+(ignoré)	(ignorado)
+magasins	tiendas
+objets au sol	objetos del suelo
+Pokémon fixes	Pokémon estáticos
+combats doubles	combates dobles
+noms de dresseurs	nombres de entrenadores
+noms de classes	nombres de clase
+Pokémon en plus (boss)	Pokémon de más (jefes)
+Pokémon en plus (importants)	Pokémon de más (importantes)
+Pokémon en plus (autres)	Pokémon de más (otros)
+objets des dresseurs	objetos de los entrenadores
+catégorie des attaques (fixée par le type en 3G)	categoría de los movimientos (fijada por el tipo en 3.ª gen.)
+Tuteurs : aucun dans ce jeu	Tutores: ninguno en este juego
+Tuteurs : NON modifiés (table introuvable)	Tutores: NO modificados (tabla no encontrada)
+Tuteurs (60) :	Tutores (60):
+Tuteurs :	Tutores:
+attaques aléatoires (les dialogues citent encore les anciennes)	movimientos aleatorios (los diálogos siguen mencionando los antiguos)
+compatibilité aléatoire (même nombre)	compatibilidad aleatoria (mismo número)
+compatibilité aléatoire, types du Pokémon privilégiés	compatibilidad aleatoria, priorizando los tipos del Pokémon
+tous compatibles	todos compatibles
+attaques apprises par niveau compatibles	movimientos aprendidos por nivel compatibles
+Compatibilité CT : NON modifiée (liste des CT inconnue)	Compatibilidad con MT: NO modificada (lista de MT desconocida)
+Compatibilité CT :	Compatibilidad con MT:
+aléatoire, types du Pokémon privilégiés (même nombre)	aleatoria, priorizando los tipos del Pokémon (mismo número)
+toutes les CS pour tous	todas las MO para todos
+les attaques apprises par niveau qui sont des CT sont compatibles	los movimientos aprendidos por nivel que son MT son compatibles
+toutes les CT	todas las MT
+aléatoire (même nombre)	aleatoria (mismo número)
+aléatoires	aleatorios
+Attaques :	Movimientos:
+Types : aléatoires (	Tipos: aleatorios (
+évolutions cohérentes	evoluciones coherentes
+chaque espèce à part	cada especie por separado
+, toujours deux types	, siempre dos tipos
+Talents : aléatoires (évolutions cohérentes),	Habilidades: aleatorias (evoluciones coherentes),
+talents possibles	habilidades posibles
+, toujours deux talents	, siempre dos habilidades
+Stats de base :	Características base:
+mélangées	mezcladas
+aléatoires (même total, même répartition dans la famille)	aleatorias (mismo total, mismo reparto en la familia)
+aléatoires (même total, chacun la sienne)	aleatorias (mismo total, cada uno el suyo)
+Courbe d'expérience : la même pour tous (	Curva de experiencia: la misma para todos (
+Taux de capture minimum :	Ratio de captura mínimo:
+Objets tenus par les Pokémon sauvages : aléatoires (objets utiles en combat)	Objetos equipados de los Pokémon salvajes: aleatorios (objetos útiles en combate)
+Évolutions : à chaque niveau, vers une espèce au hasard	Evoluciones: en cada nivel, a una especie al azar
+Évolutions :	Evoluciones:
+évolutions vers des espèces aléatoires (	evoluciones a especies aleatorias (
+au moins aussi fortes,	al menos igual de fuertes,
+3 stades maximum	3 fases como máximo
+, partageant un type	, compartiendo un tipo
+échanges/beauté remplacés (Nv. 37 ou objet)	intercambios/belleza reemplazados (Nv. 37 u objeto)
+sans condition d'heure	sin condición de hora
+niveaux plafonnés à 40	niveles limitados a 40
+Évolutions plus simples :	Evoluciones más sencillas:
+méthodes changées (	métodos cambiados (
+Attaques par niveau : mode Métronome seulement	Movimientos por nivel: solo modo Metrónomo
+Attaques par niveau : aléatoires	Movimientos por nivel: aleatorios
+(types du Pokémon privilégiés)	(priorizando los tipos del Pokémon)
+% d'attaques offensives fortes	% de movimientos ofensivos fuertes
+, 1re attaque toujours offensive	, 1.er movimiento siempre ofensivo
+, sans attaques qui cassent le jeu	, sin movimientos que rompen el juego
+Attaques offensives rangées de la plus faible à la plus forte	Movimientos ofensivos ordenados del más débil al más fuerte
+images NON changées (Pillow absent)	imágenes NO cambiadas (falta Pillow)
+images NON changées (dossier des sprites inconnu)	imágenes NO cambiadas (carpeta de sprites desconocida)
+images NON changées (archive non reconnue)	imágenes NO cambiadas (archivo no reconocido)
+images redessinées	imágenes redibujadas
+écran de choix mis à jour	pantalla de elección actualizada
+écran de choix NON trouvé	pantalla de elección NO encontrada
+emplacements de script,	huecos de script,
+Starters : NON modifiés (scripts de ce jeu non reconnus)	Iniciales: NO modificados (scripts de este juego no reconocidos)
+Starters : NON modifiés (script du labo non trouvé)	Iniciales: NO modificados (script del laboratorio no encontrado)
+Starters : NON modifiés (table non trouvée)	Iniciales: NO modificados (tabla no encontrada)
+Starters : NON modifiés (table de l'écran de choix non trouvée)	Iniciales: NO modificados (tabla de la pantalla de elección no encontrada)
+Starters choisis : il faut 3 Pokémon	Iniciales elegidos: hacen falta 3 Pokémon
+Starters choisis : il faut 3 Pokémon de la 3G (n° 1 à 386)	Iniciales elegidos: hacen falta 3 Pokémon de 3.ª gen. (n.º 1 a 386)
+Starters choisis : il faut 3 Pokémon de la 4G (n° 1 à 493)	Iniciales elegidos: hacen falta 3 Pokémon de 4.ª gen. (n.º 1 a 493)
+Starters :	Iniciales:
+script du labo (joueur + rival)	script del laboratorio (jugador + rival)
+table du sac du Prof. (image, cri, Pokémon donné)	tabla de la mochila del Prof. (imagen, grito, Pokémon entregado)
+table(s) de l'écran de choix,	tabla(s) de la pantalla de elección,
+comparaisons de script, images de l'écran :	comparaciones de script, imágenes de la pantalla:
+texte(s) de l'écran)	texto(s) de la pantalla)
+table ARM9	tabla ARM9
+hors de portée	fuera de alcance
+Pokémon sauvages : mode	Pokémon salvajes: modo
+emplacements	huecos
+, force similaire	, fuerza similar
+, un type par zone	, un tipo por zona
+, Eau en surf/pêche	, Agua al surfear/pescar
+, attrapez-les tous (	, hazte con todos (
+espèces différentes)	especies distintas)
+lieu inconnu	lugar desconocido
+Dresseurs :	Entrenadores:
+dresseurs	entrenadores
+, Champions / Conseil 4 / Maître : un type chacun	, Líderes / Alto Mando / Campeón: un tipo cada uno
+, complètement évolués dès le Nv.	, totalmente evolucionados desde el Nv.
+, meilleures attaques (dresseurs à attaques choisies)	, mejores movimientos (entrenadores con movimientos elegidos)
+, le rival garde la lignée du starter (	, el rival conserva la línea del inicial (
+, lignée des starters suivie (	, línea de los iniciales seguida (
+, lignée des starters suivie	, línea de los iniciales seguida
+Pokémon en plus (boss	Pokémon de más (jefes
+objets tenus	objetos equipados
+(baies seulement)	(solo bayas)
+(plus haut niveau seulement)	(solo el de mayor nivel)
+dresseurs en combat double (phase expérimentale)	entrenadores en combate doble (experimental)
+Dresseurs, équipes agrandies :	Entrenadores, equipos ampliados:
+rien à changer	nada que cambiar
+; fichier	; archivo
+équipes déplacées dans l'espace libre de la ROM	equipos movidos al espacio libre de la ROM
+Dresseurs : Pokémon en plus NON ajoutés (pas assez de place libre dans la ROM)	Entrenadores: Pokémon de más NO añadidos (no hay suficiente espacio libre en la ROM)
+Combats doubles :	Combates dobles:
+dresseurs de plus (ceux qui ont au moins 2 Pokémon) (phase expérimentale)	entrenadores más (los que tienen al menos 2 Pokémon) (experimental)
+Noms mélangés :	Nombres mezclados:
+classes de dresseurs	clases de entrenador
+Noms des dresseurs :	Nombres de los entrenadores:
+Noms des classes de dresseurs :	Nombres de las clases de entrenador:
+Noms des classes : NON modifiés (table introuvable)	Nombres de clase: NO modificados (tabla no encontrada)
+Noms des	Nombres de
+: NON modifiés (banque introuvable)	: NO modificados (banco no encontrado)
+noms des	nombres de
+Textes système : fichier	Textos del sistema: archivo
+Textes des starters (« quel était ton premier Pokémon ? ») :	Textos de los iniciales (« ¿cuál fue tu primer Pokémon? »):
+phrases mises à jour ; fichier	frases actualizadas; archivo
+CT : NON modifiées (table introuvable dans ce jeu)	MT: NO modificadas (tabla no encontrada en este juego)
+CT : NON modifiées (table introuvable)	MT: NO modificadas (tabla no encontrada)
+Attaques des CT : aléatoires (CS gardées	Movimientos de las MT: aleatorios (MO conservadas
+, Tunnel/Flash/Éclate-Roc gardées	, Excavar/Destello/Golpe Roca conservados
+, Tunnel/Flash gardées	, Excavar/Destello conservados
+/Force Cachée	/Daño Secreto
+) ; programme du jeu (ARM9) recompressé	); programa del juego (ARM9) recomprimido
+Échanges en jeu :	Intercambios del juego:
+échanges (	intercambios (
+Pokémon reçus et demandés	Pokémon recibidos y pedidos
+(Pokémon reçus et demandés)	(Pokémon recibidos y pedidos)
+Pokémon reçus	Pokémon recibidos
+(Pokémon reçus)	(Pokémon recibidos)
+Échanges : NON modifiés (table introuvable)	Intercambios: NO modificados (tabla no encontrada)
+Échanges : NON modifiés (fichier introuvable)	Intercambios: NO modificados (archivo no encontrado)
+Pokémon fixes (légendaires, statues...) :	Pokémon estáticos (legendarios, estatuas...):
+Pokémon fixes :	Pokémon estáticos:
+remplacés (	reemplazados (
+remplacés	reemplazados
+(force similaire)	(fuerza similar)
+; le Pokémon visible sur la carte garde son apparence	; el Pokémon visible en el mapa conserva su aspecto
+Pokémon offerts :	Pokémon regalados:
+Pokémon offerts / fossiles :	Pokémon regalados / fósiles:
+espèces changées (les dialogues citent encore les anciennes)	especies cambiadas (los diálogos siguen mencionando las antiguas)
+; fossiles et œufs non concernés	; fósiles y huevos no afectados
+remplacés (œufs : Pokémon de base)	reemplazados (huevos: Pokémon básicos)
+Œufs offerts :	Huevos regalados:
+changé(s) (Pokémon de base)	cambiado(s) (Pokémon básicos)
+Fossiles : 7 Pokémon ressuscités aléatoires	Fósiles: 7 Pokémon revividos aleatorios
+Fossiles : NON modifiés (table introuvable)	Fósiles: NO modificados (tabla no encontrada)
+Objets au sol : NON modifiés (script des objets introuvable)	Objetos del suelo: NO modificados (script de objetos no encontrado)
+Objets au sol :	Objetos del suelo:
+Objets cachés :	Objetos ocultos:
+Objets cachés	Objetos ocultos
+objets	objetos
+aléatoires (CT -> CT)	aleatorios (MT -> MT)
+aléatoires (parmi les objets au sol du jeu ; les CT restent des CT)	aleatorios (entre los objetos del suelo del juego; las MT siguen siendo MT)
+aléatoires (les CT restent des CT)	aleatorios (las MT siguen siendo MT)
+CT restent des CT)	MT siguen siendo MT)
+boutiques du jeu,	tiendas del juego,
+objets changés (CT et Poké Balls gardés) -	objetos cambiados (MT y Poké Balls conservadas) -
+objets changés (CT et Poké Balls gardés)	objetos cambiados (MT y Poké Balls conservadas)
+parmi les objets vendus dans le jeu	entre los objetos que se venden en el juego
+- prix proches	- precios parecidos
+Magasins :	Tiendas:
+, Munja garde 1 PV	, Shedinja conserva 1 PS
+Course (chaussures) autorisée partout, même à l'intérieur (phase expérimentale)	Correr (deportivas) permitido en todas partes, incluso en interiores (experimental)
+Course en intérieur : NON appliquée (code introuvable :	Correr en interiores: NO aplicado (código no encontrado:
+Chaussures de course : déjà disponibles dès le début dans ce jeu (rien à changer)	Deportivas: ya disponibles desde el principio en este juego (nada que cambiar)
+Chaussures de course disponibles dès le début (phase expérimentale)	Deportivas disponibles desde el principio (experimental)
+Chaussures dès le début : NON appliquées (code introuvable :	Deportivas desde el principio: NO aplicado (código no encontrado:
+Texte : vitesse « rapide » instantanée, « moyen » et « lent » accélérés (phase expérimentale)	Texto: velocidad « rápida » instantánea, « media » y « lenta » aceleradas (experimental)
+Texte rapide : NON appliqué (	Texto rápido: NO aplicado (
+pas disponible pour Rubis / Saphir	no disponible para Rubí / Zafiro
+table introuvable :	tabla no encontrada:
+introuvable (	no encontrado (
+table des attaques introuvable	tabla de movimientos no encontrada
+table des évolutions introuvable	tabla de evoluciones no encontrada
+pointeurs des attaques par niveau introuvables	punteros de los movimientos por nivel no encontrados
+table de compatibilité CT introuvable	tabla de compatibilidad con MT no encontrada
+liste des CT introuvable	lista de MT no encontrada
+correspondance des numéros d'espèces incomplète	correspondencia de números de especie incompleta
+attaques par niveau	movimientos por nivel
+Pokédex national	Pokédex Nacional
+ARM9 : paramètres introuvables	ARM9: parámetros no encontrados
+ARM9 : compression impossible	ARM9: compresión imposible
+: compression impossible	: compresión imposible
+: NARC invalide	: NARC no válido
+NARC invalide	NARC no válido
+Rencontres de la ROM aléatoire illisibles :	Encuentros de la ROM aleatoria ilegibles:
+oui	sí
+non	no
+Taux de capture	Ratio de captura
+Nv	Nv
+~NON	NO
+Sauvegarde (*.sav)	Partida guardada (*.sav)
+Sans légendaires : oui	Sin legendarios: sí
+Sans légendaires : non	Sin legendarios: no
+
+# ---- single words inside report / log sentences
+~aléatoires	aleatorios
+~aléatoire	aleatorio
+~puissance	potencia
+~précision	precisión
+~catégorie	categoría
+prix proches	precios parecidos
+~combats	combates
+~espèces	especies
+Tunnel gardées	Excavar conservado
+~gardées	conservadas
+~gardés	conservados
+~mélangés	mezclados
+~Mélangés	Mezclados
+~importants	importantes
+~autres	otros
+~équipes	equipos
+~niveaux	niveles
+Tuteurs (	Tutores (
+~déplacé	movido
+~dresseurs	entrenadores
+~dresseur	entrenador
+~emplacements	huecos
+~donne	da
+~reçoit	recibe
+~contre	por
+~Échange	Intercambio
+~échange	intercambio
+~Maître	Campeón
+~Champions	Líderes de Gimnasio
+~Champion	Líder de Gimnasio
+~Conseil 4	Alto Mando
+~listes	listas
+~Métronome	Metrónomo
+~Fer	Hierro
+~objets	objetos
+Fossiles et œufs :	Fósiles y huevos:
+~boutiques	tiendas
+en place	en su sitio
+~PV	PS
+PV:	PS:
+Atq:	Atq:
+Def:	Def:
+ASp:	AtE:
+DSp:	DfE:
+Vit:	Vel:
+~magasins	tiendas
+EV :	EV:
+
+# ---- map: building labels (made in French by gen4_maps / gen5_maps)
+Centre Pokémon	Centro Pokémon
+Ascenseur	Ascensor
+Salle du Maître	Sala del Campeón
+Couloir	Pasillo
+Ligue Pokémon	Liga Pokémon
+Salle de connexion	Sala de conexión
+Tente de Combat	Tienda Batalla
+Port	Puerto
+Centre Spatial	Centro Espacial
+Institut Météo	Instituto Meteorológico
+Société Devon	Devon S.A.
+Chantier naval	Astillero
+Atelier de verre	Taller de vidrio
+Téléphérique	Teleférico
+Halte	Área de descanso
+Panthéon	Hall de la Fama
+Hall d'entrée	Vestíbulo
+Boutique	Tienda Pokémon
+Arène	Gimnasio
+Centre Commercial	Centro Comercial
+Casino	Casino
+Échange de lots	Canje de premios
+Tour Radio	Torre Radio
+Télévision	Televisión
+QG Team Galaxie	Cuartel General Galaxia
+Bâtiment Team Galaxie	Edificio Galaxia
+Laboratoire	Laboratorio
+École des Dresseurs	Escuela de Entrenadores
+Pension	Guardería
+Phare	Faro
+Musée	Museo
+Bibliothèque	Biblioteca
+Salle des Concours	Sala de Concursos
+Magasin de vélos	Tienda de bicis
+Fleuriste	Floristería
+Herboristerie	Herbolario
+Pharmacie	Farmacia
+Marché	Mercado
+Magasin	Tienda
+Restaurant	Restaurante
+Café	Café
+Société Pokétch	Compañía Poképolis
+Presse	Prensa
+Sylphe SARL	Silph S.A.
+Fan Club	Club de Fans
+Ruban Club	Club de Cintas
+Échanges mondiaux (GTS)	Terminal Global (GTS)
+Gare	Estación
+Centrale	Central eléctrica
+Tour de Combat	Torre Batalla
+Zone de Combat	Frente Batalla
+Salle de combat	Sala Batalla
+Salle Union	Sala Unión
+Club Wi-Fi	Club Wi-Fi
+Poste de passage	Garita
+Dôme Pokéathlon	Cúpula Pokéathlon
+Parc des Amis	Parque Compi
+Parc Safari	Zona Safari
+Grand Marais	Gran Pantano
+Manoir Pokémon	Mansión Pokémon
+Hôtel	Hotel
+Gîte	Albergue
+Résidence	Residencia
+Maison du joueur	Casa del jugador
+Maison du rival	Casa del rival
+Maison	Casa
+Observatoire	Observatorio
+Théâtre	Teatro
+Four à charbon	Horno de carbón
+Ferme	Granja
+Sanctuaire	Santuario
+Aquaria	S.S. Aqua
+Souterrain	Pasadizo
+Tour Perdue	Torre Perdida
+Tour	Torre
+Ruines	Ruinas
+Grotte	Cueva
+Bâtiment	Edificio
+Salle du Conseil 4	Sala del Alto Mando
+Jardin d'enfants	Guardería infantil
+Aéroport	Aeropuerto
+Music-Hall	Teatro Musical
+Stade	Estadio
+Villa	Villa
+Cabine	Cabina
+Porte	Puerta
+Atelier	Taller
+Magasin de meubles	Tienda de muebles
+Salle de concert	Sala de conciertos
+Bar	Bar
+Église	Iglesia
+
+# ---- Gen 3 ROM place names (unaccented, as the ROMs spell them)
+Fond Marin	Fondo marino
+Planque Ë	Guarida Aqua
+Camionnette	Camión
+Cramois’Ile	Isla Canela
+L’Oceane	S.S. Anne
+Repaire Rocket	Escondite Rocket
+Ile Sevii 6	Isla Sete 6
+Ile Sevii 7	Isla Sete 7
+Ile Sevii 8	Isla Sete 8
+Ile Sevii 9	Isla Sete 9
+Ile Sevii 22	Isla Sete 22
+Ile Sevii 23	Isla Sete 23
+Ile Sevii 24	Isla Sete 24
+Labyrinthe D’O	Laberinto Agua
+Entree Canyon	Entrada Cañón
+Entrepot	Almacén Rocket
+Trou Perce	Cueva Punteada
+Chambres Tanoby	Cámaras Tanoby
+Cle Tanoby	Llave Tanoby
+Chambre Jonquatr	Cámara Dilford
+Source Braise	Baños Ascuas
+Ile Lointaine	Isla Suprema
+Mont Dresseurs	Monte Entrenador
+Cent. Commercial	Centro Comercial Azulona
+
+# ---- Spanish place names (PokeAPI has few; a place missing here keeps its English name)
+~Route	Ruta
+~Bourg Palette	Pueblo Paleta
+~Jadielle	Ciudad Verde
+~Argenta	Ciudad Plateada
+~Azuria	Ciudad Celeste
+~Lavanville	Pueblo Lavanda
+~Carmin sur Mer	Ciudad Carmín
+~Céladopole	Ciudad Azulona
+~Parmanie	Ciudad Fucsia
+~Safrania	Ciudad Azafrán
+~Cramois'Ile	Isla Canela
+~Plateau Indigo	Meseta Añil
+~Ile 1	Isla Prima
+~Île 2	Isla Secunda
+~Île 3	Isla Tera
+~Ile 4	Isla Quarta
+~Ile 5	Isla Quinta
+~Île 6	Isla Sexta
+~Île 7	Isla Séptima
+~Île Aurore	Isla Origen
+~Ile du Lointain	Isla Exilio
+~Île lointaine	Isla Suprema
+~Bourg Geon	Pueblo Primavera
+~Ville Griotte	Ciudad Cerezo
+~Mauville	Ciudad Malva
+~Ecorcia	Pueblo Azalea
+~Doublonville	Ciudad Trigal
+~Rosalia	Ciudad Iris
+~Oliville	Ciudad Olivo
+~Irisia	Ciudad Orquídea
+~Acajou	Pueblo Caoba
+~Ebènelle	Ciudad Endrino
+~Portail Safari	Entrada Zona Safari
+~Bonaugure	Pueblo Hojaverde
+~Littorella	Pueblo Arena
+~Floraville	Pueblo Aromaflor
+~Bonville	Pueblo Sosiego
+~Célestia	Pueblo Caelestis
+~Féli-Cité	Ciudad Jubileo
+~Charbourg	Ciudad Pirita
+~Entrée Charbourg	Puerta Pirita
+~Vestigion	Ciudad Vetusta
+~Unionpolis	Ciudad Corazón
+~Verchamps	Ciudad Pradera
+~Voilaroc	Ciudad Rocavelo
+~Joliberges	Ciudad Canal
+~Frimapic	Ciudad Puntaneva
+~Rivamar	Ciudad Marina
+~Ile de Fer	Isla Hierro
+~Ile Nouvellelune	Isla Lunanueva
+~Ile Pleine Lune	Isla Lunallena
+~Renouet	Pueblo Arcilla
+~Arabelle	Pueblo Terracota
+~Ogoesse	Ciudad Gres
+~Maillard	Ciudad Esmalte
+~Volucité	Ciudad Porcelana
+~Méanville	Ciudad Mayólica
+~Port Yoneuve	Ciudad Fayenza
+~Parsemille	Ciudad Loza
+~Flocombe	Ciudad Caolín
+~Janusia	Ciudad Teja
+~Entrelasque	Pueblo Ocre
+~Vaguelone	Pueblo Chamota
+~Ville Noire	Ciudad Negra
+~Pavonnay	Ciudad Engobe
+~Porte Arabelle	Puerta Terracota
+~Porte Maillard	Puerta Esmalte
+~Porte Méanville	Puerta Mayólica
+~Porte Janusia	Puerta Teja
+~Porte Vaguelone	Puerta Chamota
+~Porte Volucité	Puerta Porcelana
+~Porte Pavonnay	Puerta Engobe
+~Forêt de Jade	Bosque Verde
+~Mont Sélénite	Mt. Moon
+~Cave TAUPIQUEUR	Cueva Diglett
+~Cave Taupiqueur	Cueva Diglett
+~Route Victoire	Calle Victoria
+~Iles Ecume	Islas Espuma
+~Îles Écume	Islas Espuma
+~Tour Pokémon	Torre Pokémon
+~Caverne Azurée	Cueva Celeste
+~Antre Noir	Cueva Oscura
+~Antre du Dragon	Guarida Dragón
+~Bois aux Chênes	Encinar
+~Caves Jumelles	Cueva Unión
+~Lac Colère	Lago de la Furia
+~Mont Argenté	Monte Plateado
+~Mont Creuset	Monte Mortero
+~Parc Naturel	Parque Nacional
+~Puits RAMOLOSS	Pozo Slowpoke
+~Puits Ramoloss	Pozo Slowpoke
+~Route de Glace	Ruta Helada
+~Ruines d'Alpha	Ruinas Alfa
+~Tour CHETIFLOR	Torre Bellsprout
+~Tour Chetiflor	Torre Bellsprout
+~Tour Carillon	Torre Campana
+~Tour Cendrée	Torre Quemada
+~Tourb'Iles	Islas Remolino
+~Colonnes Lances	Columna Lanza
+~Forêt Vestigion	Bosque Vetusto
+~Grotte Revèche	Cueva Extravío
+~Lac Courage	Lago Valor
+~Lac Savoir	Lago Agudeza
+~Lac Vérité	Lago Veraz
+~Mont Couronné	Monte Corona
+~Vieux Château	Vieja Mansión
+~Château Enfoui	Castillo Varado
+~Forêt d'Empoigne	Bosque Azulejo
+~Grotte Cyclopéenne	Cueva Gigante
+~Grotte Électrolithe	Cueva Electrorroca
+~Hangar Frigorifique	Almacén Frigorífico
+~Mont Foré	Monte Tuerca
+~Tour Dragospire	Torre Dragospiral
+~Tour des Cieux	Torre Cielo
+~Vestiges du Rêve	Solar de los Sueños
+~oui	sí
+noms des classes	nombres de clase
+noms des dresseurs	nombres de entrenadores
+~œuf	huevo
+
+# ---- welcome screen
+Bienvenue !	¡Bienvenido!
+PKLab lance ton jeu Pokémon dans un émulateur et t'aide pendant tes combats : faiblesses et résistances de l'adversaire, ton équipe, la carte et les Pokémon de chaque zone.	PKLab abre tu juego Pokémon en un emulador y te ayuda en los combates: debilidades y resistencias del rival, tu equipo, el mapa y los Pokémon de cada zona.
+Les ROM ne sont pas fournies	Las ROM no están incluidas
+Tu dois télécharger toi-même les ROM de tes jeux : des fichiers .gba (Game Boy Advance) ou .nds (Nintendo DS). L'appli n'en contient aucune.	Tienes que descargar tú mismo las ROM de tus juegos: archivos .gba (Game Boy Advance) o .nds (Nintendo DS). La aplicación no incluye ninguna.
+Range-les dans Téléchargements ou sur le Bureau	Guárdalas en Descargas o en el Escritorio
+L'appli les y trouve toute seule : clique sur un jeu de la bibliothèque et il se lance. Sinon, elle te demande où se trouve le fichier.	La aplicación las encuentra sola: haz clic en un juego de la biblioteca y se inicia. Si no, te pregunta dónde está el archivo.
+Une ROM modifiée ?	¿Una ROM modificada?
+Hack, version aléatoire, traduction... Choisis-la avec le lien « Choisir un fichier... » sous le titre de la bibliothèque.	Hack, versión aleatoria, traducción... Elígela con el enlace « Elegir un archivo... » bajo el título de la biblioteca.
+Tu peux revoir cet écran à tout moment avec le bouton ? en haut à droite.	Puedes volver a ver esta pantalla cuando quieras con el botón ? de arriba a la derecha.
+C'est parti !	¡Vamos!
+Aide	Ayuda
+Et ce n'est pas tout : les outils inclus	Y eso no es todo: las herramientas incluidas
+Redécouvre ton jeu préféré : starters, Pokémon sauvages, dresseurs, types, attaques... tout peut changer. Une nouvelle aventure à chaque partie.	Redescubre tu juego favorito: iniciales, Pokémon salvajes, entrenadores, tipos, movimientos... todo puede cambiar. Una nueva aventura en cada partida.
+Marre d'attendre ? Rends les Pokémon chromatiques bien plus fréquents, jusqu'à 100 %, dans une copie de ton jeu.	¿Cansado de esperar? Haz que los Pokémon variocolor sean mucho más frecuentes, hasta el 100 %, en una copia de tu juego.
+Argent, sac, Pokédex et Pokémon : change le niveau, la nature, les attaques ou les IV / EV, ou crée le Pokémon de tes rêves.	Dinero, mochila, Pokédex y Pokémon: cambia el nivel, la naturaleza, los movimientos o los IV / EV, o crea el Pokémon de tus sueños.
+Aide au combat	Ayuda en combate
+Pendant ta partie : faiblesses et résistances de l'adversaire, menace pour ton équipe et fiche technique de chaque Pokémon.	Durante tu partida: debilidades y resistencias del rival, amenazas para tu equipo y la ficha técnica de cada Pokémon.
+Carte et rencontres	Mapa y encuentros
+Ta position sur la carte et tous les Pokémon que tu peux trouver dans la zone : herbes, surf, pêche.	Tu posición en el mapa y todos los Pokémon que puedes encontrar en la zona: hierba, surf, pesca.
+Une Master Ball ou un Super Bonbon en un clic, quand tu en as besoin.	Una Master Ball o un Caramelo Raro con un clic, cuando lo necesites.
+Essayer →	Probar →
+En jeu	En el juego
+Fond bleu nuit	Fondo azul marino
+Fond noir	Fondo negro
+Couleur du fond	Color del fondo
+Changement de couleur	Cambiar color
+Fond clair	Fondo claro
+Mes ROMs créées	Mis ROM creadas
+L'original n'est jamais modifié	El original nunca se modifica
+Mises à jour	Actualizaciones
+Installée	Instalada
+Disponible	Disponible
+Nouveautés	Novedades
+Mettre à jour	Actualizar
+Plus tard	Más tarde
+Vérifier	Comprobar
+Vérifier au démarrage	Comprobar al iniciar
+La vérification en ligne n'est pas encore activée.	La comprobación en línea aún no está activada.
+Pas de connexion au serveur de mises à jour	Sin conexión con el servidor de actualizaciones
+PKLab est à jour	PKLab está actualizado
+vérification...	comprobando...
+Tout	Todo
+Rien dans cette catégorie.	Nada en esta categoría.
+Aucune ROM créée pour l'instant : utilise le Randomizer ou Chances de shiny juste au-dessus.	Aún no has creado ninguna ROM: usa el Randomizer o Probabilidad shiny justo arriba.
+Chances de shiny	Probabilidad shiny
+graine	semilla
+Créée aujourd'hui	Creada hoy
+Créée hier	Creada ayer
+Créée le	Creada el
+Détails	Detalles
+Ouvrir le dossier	Abrir carpeta
+Mettre à la corbeille	Mover a la papelera
+Jouer	Jugar
+Mettre cette ROM à la corbeille ?	¿Mover esta ROM a la papelera?
+Sa sauvegarde (.sav) est gardée. Tu peux la récupérer dans la corbeille de Windows.	Su partida guardada (.sav) se conserva. Puedes recuperarla desde la papelera de Windows.
+Impossible de la mettre à la corbeille (ROM ouverte ?)	No se pudo mover a la papelera (¿ROM abierta?)
+Outils	Herramientas
+Mes ROMs	Mis ROM
+Installer	Instalar
+Télécharger	Descargar
+Téléchargement de la mise à jour...	Descargando la actualización...
+Mise à jour installée. Ferme et relance PKLab pour l'utiliser.	Actualización instalada. Cierra y vuelve a abrir PKLab para usarla.
+Aucune mise à jour légère disponible	No hay ninguna actualización ligera disponible
+Mise à jour légère impossible avec cette installation	Actualización ligera imposible con esta instalación
+Téléchargement impossible	No se pudo descargar
+Fichier de mise à jour trop gros	Archivo de actualización demasiado grande
+Fichier de mise à jour corrompu (empreinte différente)	Archivo de actualización dañado (huella distinta)
+Fichier de mise à jour illisible	Archivo de actualización ilegible
+Fichier de mise à jour incohérent	Archivo de actualización incoherente
+Cette mise à jour demande le nouveau PKLab.exe	Esta actualización necesita el nuevo PKLab.exe
+Écriture impossible dans le dossier de PKLab	No se puede escribir en la carpeta de PKLab
+Mise à jour installée. PKLab redémarre...	Actualización instalada. PKLab se está reiniciando...
+Aucune mise à jour automatique disponible	No hay ninguna actualización automática disponible
+Mise à jour automatique impossible avec cette installation	Actualización automática imposible con esta instalación
+Empreinte du nouvel exe absente	Falta la huella del nuevo exe
+Remplacement de PKLab.exe impossible	No se pudo reemplazar PKLab.exe
+PKLab est déjà ouvert.	PKLab ya está abierto.

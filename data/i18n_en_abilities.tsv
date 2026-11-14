@@ -1,0 +1,171 @@
+# English ability descriptions, keyed by the French ability name (site's ABILITY_DESCRIPTIONS).
+Torrent	Strengthens Water moves to deal 1.5× damage at 1/3 max HP or less.
+Fuite	Guarantees escape from wild battles.
+Œil Composé	Raises the accuracy of moves by 30%.
+Cuvette	Heals 1/16 of max HP after every turn in rain.
+Engrais	Strengthens Grass moves to deal 1.5× damage at 1/3 max HP or less.
+Brasier	Strengthens Fire moves to deal 1.5× damage at 1/3 max HP or less.
+Écran Poudre	Protects against the additional effects of incoming moves.
+Chlorophylle	Doubles Speed in strong sunlight.
+Mue	Has a 33% chance of curing any major status ailment after each turn.
+Lentiteintée	Doubles the damage dealt with not very effective moves.
+Pieds Confus	Doubles evasion when confused.
+Sniper	Strengthens critical hits to deal 3× damage instead of 2×.
+Regard Vif	Prevents accuracy from being lowered.
+Essaim	Strengthens Bug moves to deal 1.5× damage at 1/3 max HP or less.
+Cœur de Coq	Protects against Defense drops.
+Cran	Raises Attack by 1.5× with a major status ailment.
+Intimidation	Lowers the opponents' Attack by one stage when entering battle.
+Agitation	Strengthens physical moves to deal 1.5× damage, but lowers their accuracy to 0.8×.
+Tension	Prevents opposing Pokémon from eating held Berries.
+Statik	Has a 30% chance of paralyzing an attacking Pokémon on contact.
+Paratonnerre	Redirects single-target Electric moves to this Pokémon when possible.  Absorbs Electric moves, raising Special Attack by one stage.
+Voile Sable	Raises evasion by 25% during a sandstorm.  Protects against sandstorm damage.
+Baigne Sable	Doubles Speed during a sandstorm.  Protects against sandstorm damage.
+Rivalité	Raises damage dealt by 1.25× against Pokémon of the same gender, but lowers it to 0.75× against the opposite gender.
+Sans Limite	Strengthens moves with extra effects by 1.3×, but prevents those additional effects.
+Joli Sourire	Has a 30% chance of infatuating an attacking Pokémon on contact.
+Point Poison	Has a 30% chance of poisoning an attacking Pokémon on contact.
+Garde Magik	Protects against damage not directly caused by a move.
+Torche	Protects against Fire moves.  Once one has been blocked, the Pokémon's own Fire moves deal 50% more damage until it leaves battle.
+Garde-Ami	Reduces all direct damage taken by allied Pokémon to 0.75×.
+Battant	Raises Special Attack by two stages when any stat is lowered.
+Sécheresse	Summons strong sunlight that lasts indefinitely when entering battle.
+Inconscient	Ignores other Pokémon's stat changes when calculating damage and accuracy.
+Fouille	Reveals an opponent's held item when entering battle.
+Puanteur	Has a 10% chance of making the target flinch with each hit.
+Attention	Prevents flinching.
+Infiltration	Bypasses Light Screen, Reflect and Safeguard.
+Pose Spore	Has a 30% chance of inflicting paralysis, poison or sleep on an attacking Pokémon on contact.
+Peau Sèche	Deals 1/8 max HP damage every turn in strong sunlight, but heals 1/8 max HP in rain.  Raises damage from Fire moves by 1.25×, but absorbs Water moves, healing 1/4 max HP.
+Piège Sable	Prevents opponents from fleeing or switching out.  Doesn't affect Flying types and airborne Pokémon.
+Ramassage	Picks up held items used and thrown by other Pokémon.  May also pick up an item after a battle.
+Technicien	Strengthens moves with 60 base power or less by 1.5×.
+Moiteur	Prevents Self-Destruct, Explosion and Aftermath while the Pokémon is in battle.
+Peau Miracle	Lowers the base accuracy of incoming non-damaging moves to exactly 50%.
+Échauffement	Prevents paralysis.
+Acharné	Raises Attack by two stages when any stat is lowered.
+Glissade	Doubles Speed in rain.
+Ciel Gris	Cancels all weather effects, but doesn't stop the weather itself.
+Force Soleil	Raises Special Attack by 1.5× but costs 1/8 max HP after each turn in strong sunlight.
+Esprit Vital	Prevents sleep.
+Colérique	Maxes Attack (six stages) when hit by a critical hit.
+Force Sable	Strengthens Rock, Ground and Steel moves by 1.3× during a sandstorm.  Protects against sandstorm damage.
+Cœur Noble	Raises Attack by one stage when hit by a Dark move.
+Synchro	Passes a burn, paralysis or poison received back to the Pokémon that inflicted it.
+Absorbe-Eau	Absorbs Water moves, healing 1/4 max HP.
+Annule Garde	Ensures all moves used by and against the Pokémon hit.
+Corps Sain	Prevents stats from being lowered by other Pokémon.
+Suintement	Damages opponents using draining moves by as much as they would heal.
+Impassible	Raises Speed by one stage when flinching.
+Gloutonnerie	Makes the Pokémon eat any held Berry triggered by low HP below half its max HP.
+Fermeté	Prevents being knocked out from full HP, leaving 1 HP instead.  Protects against OHKO moves regardless of HP.
+Benêt	Prevents infatuation and protects against Captivate.
+Régé-Force	Heals 1/3 max HP when switching out.
+Magnépiège	Prevents Steel opponents from fleeing or switching out.
+Analyste	Strengthens moves by 1.3× when moving last.
+Tempo Perso	Prevents confusion.
+Hydratation	Cures any major status ailment after each turn in rain.
+Corps Ardent	Has a 30% chance of burning an attacking Pokémon on contact.
+Corps Gel	Heals 1/16 max HP after each turn in hail.  Protects against hail damage.
+Isograisse	Halves damage from Fire and Ice moves.
+Toxitouche	Has a 30% chance of poisoning the target on contact.
+Glu	Prevents a held item from being removed by another Pokémon.
+Coque Armure	Protects against critical hits.
+Multi-Coups	Extends two-to-five-hit moves and Triple Kick to their full length every time.
+Envelocape	Protects against weather damage.
+Armurouillée	Raises Speed and lowers Defense by one stage each after being hit by a physical move.
+Prédiction	Reveals the opponents' strongest move when entering battle.
+Lévitation	Evades Ground moves.
+Insomnia	Prevents sleep.
+Corps Maudit	Has a 30% chance of disabling any move that hits the Pokémon.
+Hyper Cutter	Prevents Attack from being lowered.
+Boom Final	Damages the attacker by 1/4 of its max HP when knocked out by a contact move.
+Téméraire	Strengthens recoil moves by 1.2×.
+Récolte	Has a 50% chance of restoring a used Berry after each turn if the Pokémon held no item in the meantime.
+Armurbaston	Protects against critical hits.
+Anti-Bruit	Protects against sound-based moves.
+Délestage	Doubles Speed when using or losing a held item.
+Gaz Inhibiteur	Neutralizes the abilities of all Pokémon in battle.
+Poing de Fer	Strengthens punching moves by 1.2×.
+Sérénité	Doubles the chance of moves' additional effects.
+Feuille Garde	Protects against major status ailments in strong sunlight.
+Querelleur	Lets the Pokémon's Normal and Fighting moves hit Ghost Pokémon.
+Filtre	Reduces damage taken from super effective moves by 1/4.
+Cœur Soin	Has a 30% chance of curing an adjacent ally of any major status ailment after each turn.
+Lumiattirance	Doubles the wild encounter rate.
+Médic Nature	Cures any major status ailment when switching out.
+Ignifu-Voile	Prevents burns.
+Phobique	Raises Speed by one stage when hit by a Dark, Ghost or Bug move.
+Impudence	Raises Attack by one stage when knocking out a Pokémon.
+Brise Moule	Bypasses the targets' abilities if they could hinder or prevent a move.
+Anticipation	Notifies all trainers when entering battle if an opponent has a super effective move, Self-Destruct, Explosion or an OHKO move.
+Tête de Roc	Protects against recoil damage.
+Absorbe-Volt	Absorbs Electric moves, healing 1/4 max HP.
+Calque	Copies an opponent's ability when entering battle.
+Pied Véloce	Raises Speed by 1.5× with a major status ailment.
+Adaptabilité	Raises STAB from 1.5× to 2×.
+Imposteur	Transforms when entering battle.
+Matinal	Makes sleep pass twice as fast.
+Télécharge	Raises the attacking stat matching the opponent's weaker defense by one stage when entering battle.
+Pression	Raises the PP cost of moves targeting this Pokémon by one.
+Vaccin	Prevents poison.
+Multiécaille	Halves damage taken at full HP.
+Écaille Spéciale	Raises Defense by 1.5× with a major status ailment.
+Rideau Neige	Raises evasion by 1.25× in hail.  Protects against hail damage.
+Plus	Raises Special Attack by 1.5× when an ally has Plus or Minus.
+Chanceux	Raises moves' critical hit ratio by one stage.
+Miroir Magik	Reflects most non-damaging moves back at their user.
+Coloforce	Doubles Attack in battle.
+Herbivore	Absorbs Grass moves, raising Attack by one stage.
+Turbo	Raises Speed by one stage after each turn.
+Télépathe	Protects against allies' damaging moves.
+Light Metal	Halves the Pokémon's weight.
+Cherche Miel	The Pokémon may pick up Honey after battle.
+Crachin	Summons rain that lasts indefinitely when entering battle.
+Marque Ombre	Prevents the opponent from fleeing or switching out.
+Farceur	Raises the priority of non-damaging moves by one.
+Pickpocket	Steals the held items of attacking Pokémon on contact.
+Armumagma	Prevents freezing.
+Contestation	Reverses stat changes.
+Aéroporté	Grants immunity to wind moves, and raises the Pokémon's Attack by one stage when hit by one.
+Soin Poison	Heals 1/8 max HP after each turn when poisoned instead of taking damage.
+Ventouse	Prevents being forced out of battle by other Pokémon's moves.
+Lunatique	Raises a random stat by two stages and lowers another by one stage after each turn.
+Sable Volant	Summons a sandstorm that lasts indefinitely when entering the field.
+Absentéisme	Skips every second turn.
+Garde Mystik	Protects against damage from damaging moves that aren't super effective.
+Normalise	Makes all of the Pokémon's moves act as Normal type.
+Force Pure	Doubles Attack in battle.
+Frein	Makes the Pokémon move last within the same priority.
+Moins	Raises Special Attack by 1.5× when an ally has Plus or Minus.
+Heavy Metal	Doubles the Pokémon's weight.
+Solide Roc	Reduces damage taken from super effective moves by 1/4.
+Peau Dure	Damages an attacking Pokémon by 1/8 of its max HP on contact.
+Lavabo	Redirects single-target Water moves to this Pokémon if possible.  Absorbs Water moves, raising Special Attack by one stage.
+Écran Fumée	Prevents stats from being lowered by other Pokémon.
+Simple	Doubles the Pokémon's stat changes.  These doubled changes are still capped between stages -6 and 6.
+Rage Poison	Raises Attack by 1.5× when poisoned.
+Météo	Changes Castform's type and form to match the weather.
+Homochromie	Changes type to match the damaging move that just hit it.
+Protéen	Changes the user's type to match each move it uses.
+Don Floral	Raises allies' Attack and Special Defense by 1.5× in strong sunlight.
+Rage Brûlure	Raises Special Attack by 1.5× when burned.
+Ignifugé	Halves damage from Fire moves and burns.
+Maladresse	Prevents the Pokémon from using its held item in battle.
+Air Lock	Cancels all weather effects, but doesn't stop the weather itself.
+Alerte Neige	Summons hail that lasts indefinitely when entering the field.
+Début Calme	Halves Attack and Speed for five turns when entering battle.
+Incisif	Raises the power of slicing moves.
+Mauvais Rêve	Damages sleeping opponents by 1/8 of their max HP after each turn.
+Motorisé	Absorbs Electric moves, raising Speed by one stage.
+Victorieux	Raises allies' move accuracy by 1.1×.
+Momie	Changes attacking Pokémon's abilities to Mummy on contact.
+Mode Transe	Changes Darmanitan's form after each turn depending on its HP: Zen Mode below 50% max HP, Standard Mode otherwise.
+Illusion	Takes the look of the last conscious Pokémon of the team when sent into battle, until hit by a damaging move.
+Épine de Fer	Damages an attacking Pokémon by 1/8 of its max HP on contact.
+Téra-Voltage	Bypasses the targets' abilities if they could hinder or prevent a move.
+Turbo Brasier	Bypasses the targets' abilities if they could hinder or prevent a move.
+Chasse-Neige	Doubles this Pokémon's Speed in hail.
+Défaitiste	Halves Attack and Special Attack at 50% max HP or less.
+Multi-Type	Changes Arceus's type and form to match its held Plate.

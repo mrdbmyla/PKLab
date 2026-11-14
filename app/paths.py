@@ -1,0 +1,74 @@
+import os
+import sys
+
+FROZEN = getattr(sys, "frozen", False)
+
+
+def _base_dir():
+    if not FROZEN:
+        return "C:/pkmn"
+    exe_dir = os.path.dirname(sys.executable)
+    if os.path.isfile(os.path.join(exe_dir, "pklab.html")):
+        return exe_dir
+    d = os.path.join(os.environ.get("LOCALAPPDATA") or os.path.expanduser("~"), "PKLab")
+    try:
+        os.makedirs(d, exist_ok=True)
+        return d
+    except OSError:
+        return exe_dir
+
+
+BASE_DIR = _base_dir().replace("\\", "/")
+RES_DIR = (os.path.join(sys._MEIPASS, "pklab_res") if FROZEN else "C:/pkmn").replace("\\", "/")
+os.environ["PKLAB_BASE_DIR"] = BASE_DIR
+
+
+def res(*parts):
+    p = os.path.join(BASE_DIR, *parts)
+    if os.path.exists(p):
+        return p
+    return os.path.join(RES_DIR, *parts)
+
+APP_VERSION = "1.0.6"
+EXE_DIR = os.path.dirname(sys.executable).replace("\\", "/") if FROZEN else ""
+UPDATABLE = FROZEN and os.path.normcase(BASE_DIR) != os.path.normcase(EXE_DIR)
+MAJ_FILE = os.path.join(BASE_DIR, "maj_installee.json")
+
+
+def ver_tuple(v):
+    import re
+    return tuple(int(x) for x in re.findall(r"\d+", v or "")[:3])
+
+
+def _drop_light_update():
+    import shutil
+    for name in ("pklab.html", "mgba_gen3_bridge.lua", "favicon.png", "maj_installee.json"):
+        try:
+            os.remove(os.path.join(BASE_DIR, name))
+        except OSError:
+            pass
+    for d in ("data", "boxart"):
+        shutil.rmtree(os.path.join(BASE_DIR, d), ignore_errors=True)
+
+
+def _light_version():
+    if not UPDATABLE:
+        return APP_VERSION
+    if not os.path.isfile(MAJ_FILE):
+        if os.path.isfile(os.path.join(BASE_DIR, "pklab.html")) or os.path.isdir(os.path.join(BASE_DIR, "data")):
+            _drop_light_update()
+        return APP_VERSION
+    import json
+    try:
+        with open(MAJ_FILE, encoding="utf-8") as f:
+            info = json.load(f)
+    except (OSError, ValueError):
+        _drop_light_update()
+        return APP_VERSION
+    if ver_tuple(info.get("version")) <= ver_tuple(APP_VERSION) or ver_tuple(info.get("min_exe")) > ver_tuple(APP_VERSION):
+        _drop_light_update()
+        return APP_VERSION
+    return info.get("version") or APP_VERSION
+
+
+CURRENT_VERSION = _light_version()
