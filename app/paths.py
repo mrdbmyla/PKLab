@@ -29,7 +29,7 @@ def res(*parts):
         return p
     return os.path.join(RES_DIR, *parts)
 
-APP_VERSION = "1.0.6"
+APP_VERSION = "1.0.7"
 EXE_DIR = os.path.dirname(sys.executable).replace("\\", "/") if FROZEN else ""
 UPDATABLE = FROZEN and os.path.normcase(BASE_DIR) != os.path.normcase(EXE_DIR)
 MAJ_FILE = os.path.join(BASE_DIR, "maj_installee.json")

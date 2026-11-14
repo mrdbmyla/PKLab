@@ -33,6 +33,7 @@ Ce que fait le programme, en bref :
 | `app/engine.py` | décodage des Pokémon et calcul des faiblesses |
 | `app/randomizer*.py`, `app/save_editor.py`, `app/shiny_patch.py` | outils |
 | `app/updater.py` | mises à jour |
+| `app/rom_finder.py` | recherche des ROM sur le PC (lit seulement l'en-tête des fichiers) |
 | `pklab.html`, `data/` | interface et données |
 | `app/PKLab.spec` | recette PyInstaller |
 

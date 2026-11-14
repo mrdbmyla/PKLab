@@ -142,6 +142,7 @@ local GEN3_CONFIG = {
 local gMainAddr = nil
 local gMainProbe = nil
 local GMAIN_PROBE_FRAMES = 10
+local gMainNextProbe = 0
 
 local function isRomPtr(v)
     return v >= 0x08000000 and v < 0x0A000000
@@ -150,6 +151,7 @@ end
 local function probeGMain(frame)
     if gMainAddr then return end
     if gMainProbe == nil then
+        if frame < gMainNextProbe then return end
         local cands = {}
         for a = 0x03000000, 0x03007800, 4 do
             local cb1, vbl = emu:read32(a), emu:read32(a + 0x0C)
@@ -177,7 +179,7 @@ local function probeGMain(frame)
     end
     gMainProbe = nil
     local found = #both > 0 and both or secondOnly
-    if #found == 1 then gMainAddr = found[1] end
+    if #found == 1 then gMainAddr = found[1] else gMainNextProbe = frame + 120 end
 end
 
 local function inBattle(cfg)

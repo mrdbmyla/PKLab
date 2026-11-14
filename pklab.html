@@ -3106,22 +3106,44 @@ function renderLibrary() {
     }
 }
 
+async function fetchRomList(engineKey, rescan) {
+    try {
+        const res = await fetch("/api/roms?engine=" + encodeURIComponent(engineKey) + (rescan ? "&rescan=1" : ""), { cache: "no-store" });
+        return await res.json();
+    } catch (e) {
+        return { roms: [], found: [], scanning: false };
+    }
+}
+
+function pickRomFor(data, gameValue) {
+    const aliases = GAME_ALIASES[gameValue] || [];
+    const byName = p => { const n = p.split("\\").pop().toLowerCase(); return aliases.some(a => n.includes(a)); };
+    const found = (data.found || []).filter(r => r.game === gameValue);
+    const mod = new Set(found.filter(r => r.modified).map(r => r.path));
+    const plain = p => !mod.has(p) && !/(\((Aleatoire|Aleatorio|Random) \d)|randomi[sz]ed/i.test(p.split("\\").pop());
+    const base = p => p.split("\\").pop();
+    const ids = found.map(r => r.path).sort((a, b) => (plain(b) && byName(b)) - (plain(a) && byName(a)) || plain(b) - plain(a) || base(a).length - base(b).length);
+    return ids[0] || null;
+}
+
 async function launchFromLibrary(gameValue, platform, card) {
     const statusEl = card.querySelector(".lib-status");
     const engineKey = platform === "GBA" ? "mgba" : "melonds";
     statusEl.textContent = "recherche de la ROM...";
     statusEl.className = "lib-status";
-    let roms = [];
-    try {
-        const res = await fetch("/api/roms?engine=" + encodeURIComponent(engineKey), { cache: "no-store" });
-        const data = await res.json();
-        roms = data.roms || [];
-    } catch (e) {  }
-    const aliases = GAME_ALIASES[gameValue] || [];
-    const match = roms.find(path => {
-        const name = path.split("\\").pop().toLowerCase();
-        return aliases.some(a => name.includes(a));
-    });
+    let data = await fetchRomList(engineKey, false);
+    let match = pickRomFor(data, gameValue);
+    if (!match) {
+        data = await fetchRomList(engineKey, true);
+        match = pickRomFor(data, gameValue);
+        const until = Date.now() + 300000;
+        while (!match && data.scanning && Date.now() < until) {
+            statusEl.textContent = "recherche dans tout le PC...";
+            await new Promise(r => setTimeout(r, 1500));
+            data = await fetchRomList(engineKey, false);
+            match = pickRomFor(data, gameValue);
+        }
+    }
     if (!match) {
         statusEl.textContent = "ROM introuvable";
         statusEl.className = "lib-status error";
@@ -4542,7 +4564,7 @@ loadEngines();
 
 const hackToggle = document.getElementById("hackToggle");
 const hackToggleLabel = document.getElementById("hackToggleLabel");
-let hackModeOn = true;
+let hackModeOn = false;
 
 function renderHackToggle() {
     hackToggle.classList.toggle("on", hackModeOn);
@@ -4554,7 +4576,7 @@ async function loadHackMode() {
         const res = await fetch("/api/hackmode", { cache: "no-store" });
         if (!res.ok) return;
         const data = await res.json();
-        hackModeOn = data.hackMode !== "off";
+        hackModeOn = data.hackMode === "on" || data.hackMode === "true";
         renderHackToggle();
     } catch (e) {  }
 }
@@ -4685,6 +4707,8 @@ async function sendSpeed(i) {
         renderSpeedUI(data.ok ? data.speed : currentSpeed, data.ok ? true : undefined);
     } catch (e) {
         if (speedSending === want) renderSpeedUI(currentSpeed);
+    } finally {
+        if (speedSending === want) speedSending = null;
     }
 }
 
@@ -4735,7 +4759,12 @@ setInterval(async () => {
     try {
         const d = await (await fetch("/api/fast-forward", { cache: "no-store" })).json();
         if (!d.available) { renderSpeedUI(d.speed, false); return; }
-        if (d.speed !== currentSpeed || speedDrag) return;
+        if (speedDrag || speedSending !== null) return;
+        if (d.speed !== currentSpeed) {
+            renderSpeedUI(d.speed, true);
+            if (d.autoReset) speedWrap.querySelector(".sp-val span").textContent = tr("PC saturé : x1");
+            return;
+        }
         if (d.fps) speedWrap.querySelector(".sp-val span").textContent = (currentSpeed > 1 ? "≈ " : "") + d.fps + " " + tr("i/s");
     } catch (e) {}
 }, 1500);
@@ -5556,6 +5585,9 @@ try {
 (() => {
     const N = {
       fr: { h: "Dernières nouveautés", items: [
+        ["15 nov. 2026", "fix", "Vitesse sans plantage", "Sur les petits PC, l'émulateur passe en priorité basse en vitesse rapide et revient tout seul à x1 s'il ne répond plus."],
+        ["15 nov. 2026", "new", "ROM trouvées partout", "PKLab cherche les ROM sur tout le PC et reconnaît le jeu même si le fichier porte un autre nom."],
+        ["15 nov. 2026", "ui", "Mode hack désactivé", "Le mode hack (type Fée, retypages) est maintenant OFF par défaut."],
         ["14 nov. 2026", "ui", "Nouveau logo", "Nouveau logo PKLab : dans l'appli, la fenêtre et l'icône de PKLab.exe."],
         ["14 nov. 2026", "new", "Curseur de vitesse jusqu'à Max", "Curseur x1 à x20 et Max dans la barre du jeu (glisser, molette, double-clic = x1), avec la vitesse réelle affichée. Jeux DS plus rapides."],
         ["14 nov. 2026", "new", "Vitesse x1 / x2 / x5 / x10", "Le bouton vitesse revient dans la barre du jeu, pour mGBA et melonDS."],
@@ -5579,6 +5611,9 @@ try {
         ["12 nov. 2026", "new", "Chance de shiny", "Copie d'un jeu avec des chromatiques plus fréquents, de 1 / 4096 à 100 %."],
         ["12 nov. 2026", "new", "Randomizer", "Notre propre randomizer 3G, 4G et 5G : Pokémon, dresseurs, objets, magasins, CT..."]] },
       en: { h: "Latest changes", items: [
+        ["Nov 15, 2026", "fix", "Speed without crashes", "On small PCs, the emulator runs at low priority at high speed and goes back to x1 by itself if it stops responding."],
+        ["Nov 15, 2026", "new", "ROMs found anywhere", "PKLab looks for ROMs on the whole PC and recognizes the game even if the file has another name."],
+        ["Nov 15, 2026", "ui", "Hack mode off", "Hack mode (Fairy type, retypes) is now OFF by default."],
         ["Nov 14, 2026", "ui", "New logo", "New PKLab logo: in the app, the window and the PKLab.exe icon."],
         ["Nov 14, 2026", "new", "Speed slider up to Max", "Slider from x1 to x20 and Max in the game bar (drag, mouse wheel, double-click = x1), showing the real speed. Faster DS games."],
         ["Nov 14, 2026", "new", "Speed x1 / x2 / x5 / x10", "The speed button is back in the game bar, for mGBA and melonDS."],
@@ -5602,6 +5637,9 @@ try {
         ["Nov 12, 2026", "new", "Shiny odds", "A copy of a game with more frequent shinies, from 1 / 4096 to 100%."],
         ["Nov 12, 2026", "new", "Randomizer", "Our own Gen 3, 4 and 5 randomizer: Pokémon, trainers, items, shops, TMs..."]] },
       es: { h: "Últimas novedades", items: [
+        ["15 nov. 2026", "fix", "Velocidad sin bloqueos", "En PC modestos, el emulador pasa a prioridad baja a alta velocidad y vuelve solo a x1 si deja de responder."],
+        ["15 nov. 2026", "new", "ROM encontradas en todo el PC", "PKLab busca las ROM en todo el PC y reconoce el juego aunque el archivo tenga otro nombre."],
+        ["15 nov. 2026", "ui", "Modo hack desactivado", "El modo hack (tipo Hada, cambios de tipo) ahora está en OFF por defecto."],
         ["14 nov. 2026", "ui", "Nuevo logo", "Nuevo logo de PKLab: en la aplicación, la ventana y el icono de PKLab.exe."],
         ["14 nov. 2026", "new", "Control de velocidad hasta Máx", "Control de x1 a x20 y Máx en la barra del juego (arrastrar, rueda, doble clic = x1), con la velocidad real. Juegos de DS más rápidos."],
         ["14 nov. 2026", "new", "Velocidad x1 / x2 / x5 / x10", "El botón de velocidad vuelve a la barra del juego, para mGBA y melonDS."],

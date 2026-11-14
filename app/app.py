@@ -35,6 +35,7 @@ import save_editor
 import shiny_patch
 import updater
 import i18n
+import rom_finder
 
 from paths import BASE_DIR, res
 HACKMODE_OVERRIDE_PATH = os.path.join(BASE_DIR, "hackmode_override.txt")
@@ -87,10 +88,12 @@ def gen3_game_key_from_code(code):
 
 
 MGBA_SCRIPT_PATH = res("mgba_gen3_bridge.lua")
-ROM_SCAN_DIRS = [
-    os.path.join(os.path.expanduser("~"), "Downloads"),
-    os.path.join(os.path.expanduser("~"), "Desktop"),
-]
+ROM_SCAN_DIRS = [os.path.join(os.path.expanduser("~"), d) for d in ("Downloads", "Desktop", "Documents")]
+ROM_INDEX = rom_finder.RomIndex(os.path.join(BASE_DIR, "rom_index.json"), ROM_SCAN_DIRS)
+
+
+def rom_scan_dirs():
+    return ROM_INDEX.dirs()
 
 EMULATOR_BUNDLES = {
     "melonds": {
@@ -203,19 +206,9 @@ def _ensure_bundled_extracted(engine_key):
 
 
 def scan_roms(engine_key):
-    cfg = EMULATOR_BUNDLES.get(engine_key)
-    if not cfg:
+    if engine_key not in EMULATOR_BUNDLES:
         return []
-    ext = cfg["rom_ext"]
-    found = []
-    for d in ROM_SCAN_DIRS:
-        try:
-            for name in os.listdir(d):
-                if name.lower().endswith(ext):
-                    found.append(os.path.join(d, name))
-        except Exception:
-            continue
-    return found
+    return [r["path"] for r in ROM_INDEX.roms(engine_key)]
 
 
 def rando_rom_entry(path):
@@ -1383,6 +1376,8 @@ _MGBA_SYNC_SIG = bytes.fromhex("d007000200000000")
 CURRENT_SPEED = 1
 _SPEED_TARGET = {"pid": None, "addr": None, "fmt": None, "base": None, "pm": None}
 _SPEED_LOCK = threading.Lock()
+_SPEED_SCAN_CHUNK = 0x200000
+SPEED_AUTO_RESET = {"pending": False}
 
 
 def _speed_available():
@@ -1404,24 +1399,28 @@ def _find_speed_target(pm, engine_key):
         if not size:
             break
         if mbi.State == 0x1000 and mbi.Protect == 0x04 and mbi.Type == 0x20000 and size < 0x10000000:
-            try:
-                data = pm.read_bytes(base, size)
-            except Exception:
-                data = b""
-            if engine_key == "melonds":
-                i = data.find(_MELONDS_FPS_SIG)
-                while i >= 0:
-                    if i % 8 == 0:
-                        hits.append((base + i, "<d", MELONDS_FPS[0]))
-                    i = data.find(_MELONDS_FPS_SIG, i + 1)
-            else:
-                i = data.find(_MGBA_SYNC_SIG)
-                while i >= 0:
-                    if i % 4 == 0 and i + 0x14 <= len(data):
-                        fps = struct.unpack_from("<f", data, i + 0x10)[0]
-                        if 59.0 <= fps <= 61.0:
-                            hits.append((base + i + 0x10, "<f", fps))
-                    i = data.find(_MGBA_SYNC_SIG, i + 1)
+            off = 0
+            while off < size and len(hits) < 2:
+                try:
+                    data = pm.read_bytes(base + off, min(_SPEED_SCAN_CHUNK + 32, size - off))
+                except Exception:
+                    break
+                if engine_key == "melonds":
+                    i = data.find(_MELONDS_FPS_SIG)
+                    while 0 <= i < _SPEED_SCAN_CHUNK:
+                        if (off + i) % 8 == 0:
+                            hits.append((base + off + i, "<d", MELONDS_FPS[0]))
+                        i = data.find(_MELONDS_FPS_SIG, i + 1)
+                else:
+                    i = data.find(_MGBA_SYNC_SIG)
+                    while 0 <= i < _SPEED_SCAN_CHUNK:
+                        if (off + i) % 4 == 0 and i + 0x14 <= len(data):
+                            fps = struct.unpack_from("<f", data, i + 0x10)[0]
+                            if 59.0 <= fps <= 61.0:
+                                hits.append((base + off + i + 0x10, "<f", fps))
+                        i = data.find(_MGBA_SYNC_SIG, i + 1)
+                off += _SPEED_SCAN_CHUNK
+                time.sleep(0)
         addr = base + size
     return hits[0] if len(hits) == 1 else None
 
@@ -1438,7 +1437,7 @@ def _speed_target():
     except Exception:
         return None
     found = None
-    for _ in range(3):
+    for _ in range(8):
         found = _find_speed_target(pm, CURRENT_ENGINE_KEY)
         if found:
             break
@@ -1473,7 +1472,52 @@ def set_emulator_speed(speed):
             _forget_speed_target()
             return False
         CURRENT_SPEED = speed
+    _set_emulator_priority(speed > 1)
     return True
+
+
+def _take_auto_reset():
+    hit = SPEED_AUTO_RESET["pending"]
+    SPEED_AUTO_RESET["pending"] = False
+    return hit
+
+
+def _set_emulator_priority(fast):
+    proc = CURRENT_EMULATOR_PROC
+    if proc is None:
+        return
+    try:
+        k = ctypes.windll.kernel32
+        k.SetPriorityClass.argtypes = [ctypes.c_void_p, ctypes.c_uint]
+        k.SetPriorityClass(ctypes.c_void_p(int(proc._handle)), 0x4000 if fast else 0x20)
+    except Exception:
+        pass
+
+
+def _speed_watchdog_loop():
+    u = ctypes.windll.user32
+    u.SendMessageTimeoutW.argtypes = [ctypes.c_void_p, ctypes.c_uint, ctypes.c_size_t, ctypes.c_ssize_t,
+                                      ctypes.c_uint, ctypes.c_uint, ctypes.POINTER(ctypes.c_size_t)]
+    u.SendMessageTimeoutW.restype = ctypes.c_ssize_t
+    res = ctypes.c_size_t()
+    misses = 0
+    while True:
+        time.sleep(0.5)
+        h = CURRENT_CANVAS_HWND
+        if CURRENT_SPEED == 1 or not h:
+            misses = 0
+            continue
+        try:
+            ok = u.SendMessageTimeoutW(h, 0, 0, 0, 0x0002, 400, ctypes.byref(res))
+        except Exception:
+            ok = 1
+        misses = 0 if ok else misses + 1
+        if misses >= 3:
+            misses = 0
+            if set_emulator_speed(1):
+                SPEED_AUTO_RESET["pending"] = True
+                if STATE:
+                    STATE.log("Vitesse remise à x1 : l'émulateur ne répondait plus")
 
 
 _FPS_TITLE = (re.compile(r"\((\d+(?:[.,]\d+)?)\s*(?:ips|fps)\)", re.I), re.compile(r"\[(\d+)/\d+\]"))
@@ -1855,7 +1899,7 @@ def give_cheat_item(cheat_key):
 class State:
     def __init__(self):
         self.mem = None
-        self.hack_mode = True
+        self.hack_mode = False
         self.tick = 0
         self.last_signature = ""
         self.last_write_time = 0
@@ -1974,7 +2018,7 @@ class State:
             loc = {"x": loc["x"], "y": loc["y"], "mapGroup": 0, "mapNum": loc["zone"]}
         self._update_minimap(self.nds_game_key, loc,
                              fetch_bundle=lambda key, pos: (gen5_maps if key in gen5_maps.GAMES else gen4_maps).get_zone_bundle(
-                                 key, pos["mapNum"], progress=self.log, scan_dirs=ROM_SCAN_DIRS))
+                                 key, pos["mapNum"], progress=self.log, scan_dirs=rom_scan_dirs()))
         return True
 
     def tick_once_gen3_lua(self, raw):
@@ -2033,7 +2077,7 @@ class State:
                 self.minimap_bundle = fetch_bundle(game_key, pos)
             else:
                 self.minimap_bundle = gen3_maps.get_map_bundle(game_key, pos["mapGroup"], pos["mapNum"], progress=self.log,
-                                                               scan_dirs=ROM_SCAN_DIRS)
+                                                               scan_dirs=rom_scan_dirs())
         except Exception as e:
             self.log(f"Erreur rendu minimap: {e}")
             self.minimap_bundle = None
@@ -2158,7 +2202,10 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             from urllib.parse import urlparse, parse_qs
             qs = parse_qs(urlparse(self.path).query)
             engine_key = (qs.get("engine") or [""])[0]
-            self._send_json({"roms": scan_roms(engine_key)})
+            if (qs.get("rescan") or [""])[0] == "1":
+                ROM_INDEX.start(force=True)
+            found = ROM_INDEX.roms(engine_key) if engine_key in EMULATOR_BUNDLES else []
+            self._send_json({"roms": [r["path"] for r in found], "found": found, "scanning": ROM_INDEX.scanning})
             return
         if self.path.startswith("/api/state1"):
             from urllib.parse import urlparse, parse_qs
@@ -2236,7 +2283,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 self._send_json({"available": False, "volume": None, "muted": None})
             return
         if self.path == "/api/fast-forward":
-            self._send_json({"available": _speed_available(), "speed": CURRENT_SPEED, "speeds": list(SPEED_STEPS), "fps": emulator_fps()})
+            self._send_json({"available": _speed_available(), "speed": CURRENT_SPEED, "speeds": list(SPEED_STEPS), "fps": emulator_fps(),
+                             "autoReset": _take_auto_reset()})
             return
         if self.path == "/api/minimap":
             if STATE and STATE.minimap_bundle and STATE.minimap_pos:
@@ -2506,6 +2554,8 @@ def main():
     threading.Thread(target=poll_loop, args=(state,), daemon=True).start()
     threading.Thread(target=run_server, args=(httpd,), daemon=True).start()
     threading.Thread(target=_focus_guard_loop, daemon=True).start()
+    threading.Thread(target=_speed_watchdog_loop, daemon=True).start()
+    ROM_INDEX.start()
 
     atexit.register(stop_emulator)
 
