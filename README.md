@@ -2,6 +2,8 @@
 
 # PKLab
 
+English / [Français](.github/README-fr.md) / [Español](.github/README-es.md)
+
 PKLab is a companion app for Pokémon games (Gen 3, 4 and 5) played on an emulator. It reads your party and the opponent live from the emulator's memory and shows weaknesses, stats and moves. It also includes a randomizer, a save editor and a game speed slider.
 
 Download: [Releases](https://github.com/mrdbmyla/PKLab/releases) → `PKLab.exe` (no installation needed). ROMs are not included.
