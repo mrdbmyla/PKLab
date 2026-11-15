@@ -20,7 +20,7 @@ import os as _os
 _ROOT = "C:/pkmn"
 def _res(rel_file, dest_dir):
     datas.append((_os.path.join(_ROOT, rel_file), ("pklab_res/" + dest_dir) if dest_dir else "pklab_res"))
-for _f in ("pklab.html", "mgba_gen3_bridge.lua", "favicon.png"):
+for _f in ("pklab.html", "mgba_gen3_bridge.lua", "mgba_gen2_bridge.lua", "favicon.png"):
     _res(_f, "")
 _res("app/assets/app_icon.ico", "app/assets")
 for _top in ("data", "boxart"):

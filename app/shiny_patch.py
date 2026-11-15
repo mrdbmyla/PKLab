@@ -1,4 +1,5 @@
 import os
+import re
 import struct
 
 
@@ -137,6 +138,57 @@ def patch_gba(rom, value, log):
     return True
 
 
+GBC_DV_SITE = re.compile(rb"\xcd(..)\x47\xcd\1\x4f\x21(?:\x0c\xd2|\xf5\xd0)\x78\x22\x71", re.S)
+
+
+def _gbc_free(rom, bank, need):
+    start, end = bank * 0x4000, bank * 0x4000 + 0x4000
+    i = end
+    while i > start and rom[i - 1] == 0:
+        i -= 1
+    a = i + 16
+    return a if a + need <= end else None
+
+
+def gbc_checksum(rom):
+    struct.pack_into(">H", rom, 0x14E, (sum(rom) - rom[0x14E] - rom[0x14F]) & 0xFFFF)
+
+
+def patch_gbc(rom, value, log):
+    p = resolve(value)
+    sites = list(GBC_DV_SITE.finditer(bytes(rom)))
+    if len(sites) != 1:
+        log.append(f"Chance de shiny : NON changée (code des DV introuvable : {len(sites)} au lieu de 1)")
+        return False
+    site = sites[0].start()
+    rnd = sites[0].group(1)
+    call = b"\xcd" + rnd
+    code = bytearray(call + b"\x47" + call + b"\x4f\xc5")
+    if not p["always"]:
+        t = min(p["t"], 0xFFFF)
+        hi, lo = t >> 8, t & 0xFF
+        code += call + bytes([0xFE, hi, 0x38, 0, 0x20, 0]) + call + bytes([0xFE, lo, 0x38, 0])
+        no = len(code)
+        code += b"\xc1\xc9"
+        yes = len(code)
+        j1, j2, j3 = no - 11, no - 9, no - 2
+        code[j1 + 1] = yes - (j1 + 2)
+        code[j2 + 1] = no - (j2 + 2)
+        code[j3 + 1] = yes - (j3 + 2)
+    code += b"\xc1\x78\xe6\xf0\xf6\x2a\x47\x0e\xaa\xc9"
+    bank = site // 0x4000
+    at = _gbc_free(rom, bank, len(code))
+    if at is None:
+        log.append("Chance de shiny : NON changée (pas de place libre dans la ROM)")
+        return False
+    rom[at:at + len(code)] = code
+    gb = 0x4000 + at % 0x4000 if bank else at
+    rom[site:site + 8] = bytes([0xCD, gb & 0xFF, gb >> 8, 0, 0, 0, 0, 0])
+    gbc_checksum(rom)
+    log.append(f"Chance de shiny : {p['label']} pour les Pokémon sauvages (au lieu de 1 / 8192)")
+    return True
+
+
 def _ds_shifts(a9, a):
     return [o for o in range(a - 0x24, a, 2) if _h(a9, o) >> 6 == (0x0800 >> 6 | 16)]
 
@@ -204,7 +256,10 @@ def make_shiny_rom(src, out, value):
     with open(src, "rb") as f:
         rom = bytearray(f.read())
     log = []
-    ok = patch_nds(rom, value, log) if ds else patch_gba(rom, value, log)
+    if src.lower().endswith((".gbc", ".gb")):
+        ok = patch_gbc(rom, value, log)
+    else:
+        ok = patch_nds(rom, value, log) if ds else patch_gba(rom, value, log)
     if not ok:
         raise ValueError(log[-1] if log else "ROM non prise en charge")
     with open(out, "wb") as f:

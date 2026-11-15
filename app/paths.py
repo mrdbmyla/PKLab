@@ -29,7 +29,7 @@ def res(*parts):
         return p
     return os.path.join(RES_DIR, *parts)
 
-APP_VERSION = "1.0.8"
+APP_VERSION = "1.1.0"
 EXE_DIR = os.path.dirname(sys.executable).replace("\\", "/") if FROZEN else ""
 UPDATABLE = FROZEN and os.path.normcase(BASE_DIR) != os.path.normcase(EXE_DIR)
 MAJ_FILE = os.path.join(BASE_DIR, "maj_installee.json")
@@ -42,7 +42,7 @@ def ver_tuple(v):
 
 def _drop_light_update():
     import shutil
-    for name in ("pklab.html", "mgba_gen3_bridge.lua", "favicon.png", "maj_installee.json"):
+    for name in ("pklab.html", "mgba_gen3_bridge.lua", "mgba_gen2_bridge.lua", "favicon.png", "maj_installee.json"):
         try:
             os.remove(os.path.join(BASE_DIR, name))
         except OSError:

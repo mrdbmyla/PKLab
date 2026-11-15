@@ -483,28 +483,6 @@ if (I18N) {
     }
     #libraryScreen[hidden] { display: none; }
     #libraryGrid, #libraryManualWrap, #libraryHeader { flex-shrink: 0; }
-    #resumeBtn[hidden], #resumeStateBtn[hidden] { display: none; }
-    #resumeBtn, #resumeStateBtn {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        flex-shrink: 0;
-        background: var(--card-bg);
-        border: 1px solid var(--accent-dim);
-        border-radius: 12px;
-        padding: 13px 18px;
-        margin-bottom: 18px;
-        cursor: pointer;
-        font-family: inherit;
-        font-size: 13px;
-        color: var(--text);
-        text-align: left;
-        width: 100%;
-        transition: all 0.2s;
-    }
-    #resumeBtn:hover, #resumeStateBtn:hover { border-color: var(--accent); background: var(--card-bg-hover); }
-    #resumeBtn .resume-icon, #resumeStateBtn .resume-icon { color: var(--accent); font-size: 14px; flex-shrink: 0; }
-    #resumeBtn strong, #resumeStateBtn strong { color: var(--accent); }
 
     .tool-dock {
         flex-shrink: 0;
@@ -731,6 +709,11 @@ if (I18N) {
     .rando-level:hover { border-color: var(--accent-dim); }
     .rando-level.active { border: 2px solid var(--accent); padding: 9px 11px; }
     .rando-extras { display: flex; flex-direction: column; gap: 4px; }
+    .rando-nuz { display: flex; flex-direction: column; gap: 4px; padding: 10px 14px; background: var(--card-bg); border-left: 4px solid var(--accent); font-size: 12.5px; }
+    .rando-nuz[hidden] { display: none; }
+    .rando-nuz b { font-size: 13.5px; }
+    .rando-nuz span { color: var(--text-dim); }
+    .rando-nuz ul { margin: 2px 0 0; padding-left: 18px; display: flex; flex-direction: column; gap: 2px; }
     .rando-extras label { line-height: 1.6; }
     .rando-extras input { vertical-align: middle; margin: 0 6px 0 0; }
     .rando-extras small { color: var(--text-dim); font-size: 11px; }
@@ -1568,7 +1551,6 @@ if (I18N) {
 
     #libraryScreen { padding: 20px 28px 20px; }
     #libraryHeader { margin-bottom: 14px; }
-    #resumeStateBtn { margin-bottom: 12px; padding: 9px 16px; }
     .lib-grid { grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 10px; flex-shrink: 0; justify-content: center; }
     .lib-info { padding: 6px 8px 7px; }
     .lib-title { font-size: 14px; line-height: 1.15; min-height: 2.3em; margin-bottom: 2px; }
@@ -1650,9 +1632,9 @@ if (I18N) {
     .fond-pick button:hover { border-color: #fff; }
     html, body { font-family: "Segoe UI", system-ui, sans-serif; }
 
-    .bar-btn, #launchBtn, #hackToggle, #muteToggle, #engineSelect, #romSelect, .dsm-flyout, .dsm-item-label, .dsm-menu-label, .lang-list, .lang-list button, #resumeBtn, #resumeStateBtn, .tool-toggle, .tool-dock-area, .lib-card, .lib-platform-badge, .rando-panel, .rando-row select, .rando-row input[type=text], .se-tabs button, .se-pockets button, .se-bagrow input, .se-dexbar select, .se-dexbar input, .se-dx, .se-card, .se-mon, .se-mon select, .se-card input, .se-mon input, .se-slot, .rando-small-btn, .rando-mode, .rando-mode button, .rando-level, .rando-box, .rando-box select, .rando-box input, .rando-starter, #randoGo, #shinyGo, .map-modal-card, .map-modal-wrap, .enc-cat, .fiche-card, .fiche-img, .fiche-chip, .fiche-chip.ability:hover::after, .evo-mon, .empty-col, .info-popover, .cheat-btn, .minimap-wrap, #detectBackBtn, #detectSkipBtn, .welcome-card, .welcome-step, .welcome-tool, .welcome-tool-tag, #welcomeOkBtn, #sidebarToggle, #shinyBanner { border-radius: 0; }
+    .bar-btn, #launchBtn, #hackToggle, #muteToggle, #engineSelect, #romSelect, .dsm-flyout, .dsm-item-label, .dsm-menu-label, .lang-list, .lang-list button, .tool-toggle, .tool-dock-area, .lib-card, .lib-platform-badge, .rando-panel, .rando-row select, .rando-row input[type=text], .se-tabs button, .se-pockets button, .se-bagrow input, .se-dexbar select, .se-dexbar input, .se-dx, .se-card, .se-mon, .se-mon select, .se-card input, .se-mon input, .se-slot, .rando-small-btn, .rando-mode, .rando-mode button, .rando-level, .rando-box, .rando-box select, .rando-box input, .rando-starter, #randoGo, #shinyGo, .map-modal-card, .map-modal-wrap, .enc-cat, .fiche-card, .fiche-img, .fiche-chip, .fiche-chip.ability:hover::after, .evo-mon, .empty-col, .info-popover, .cheat-btn, .minimap-wrap, #detectBackBtn, #detectSkipBtn, .welcome-card, .welcome-step, .welcome-tool, .welcome-tool-tag, #welcomeOkBtn, #sidebarToggle, #shinyBanner { border-radius: 0; }
 
-    .bar-btn, #launchBtn, #hackToggle, .dsm-menu-label, #hackToggleWrap label, #status, .col-title, .accordion-header, .tool-toggle-title, .lib-title, .lib-platform-badge, .enc-cat-head, .map-modal-title, .fiche-name, .fiche-sec-title, .fiche-kicker, .cheat-btn, .minimap-name, .rando-mode button, .rando-level b, .rando-box legend, #randoGo, #shinyGo, .se-tabs button, #detectTitle, #detectBackBtn, #detectSkipBtn, .welcome-step h2, .welcome-section, .welcome-tool-title, .welcome-tool-go, .welcome-tool-tag, #welcomeOkBtn, .info-popover-title, #resumeBtn strong, #resumeStateBtn strong {
+    .bar-btn, #launchBtn, #hackToggle, .dsm-menu-label, #hackToggleWrap label, #status, .col-title, .accordion-header, .tool-toggle-title, .lib-title, .lib-platform-badge, .enc-cat-head, .map-modal-title, .fiche-name, .fiche-sec-title, .fiche-kicker, .cheat-btn, .minimap-name, .rando-mode button, .rando-level b, .rando-box legend, #randoGo, #shinyGo, .se-tabs button, #detectTitle, #detectBackBtn, #detectSkipBtn, .welcome-step h2, .welcome-section, .welcome-tool-title, .welcome-tool-go, .welcome-tool-tag, #welcomeOkBtn, .info-popover-title {
         font-family: var(--cond);
     }
 
@@ -1680,12 +1662,12 @@ if (I18N) {
     #hackToggleWrap label { font-size: 13px; }
     #hackToggle .knob { border-radius: 0; transform: skewX(-15deg); }
     #muteToggle { background: var(--plate); border-color: transparent; }
-    #pickRomBtn, #welcomeOkBtn, #randoGo, #shinyGo {
+    #pickRomBtn, #welcomeOkBtn, #randoGo, #shinyGo, #saOk {
         background: var(--accent); border: 0; color: #fff; text-shadow: none; box-shadow: none;
         font-family: var(--cond); font-size: 18px; font-weight: 800; letter-spacing: 0.03em; text-transform: uppercase;
         padding: 7px 32px 7px 18px; clip-path: polygon(0 0, 100% 0, calc(100% - 16px) 100%, 0 100%);
     }
-    #pickRomBtn:hover, #welcomeOkBtn:hover, #randoGo:hover:not(:disabled), #shinyGo:hover:not(:disabled) {
+    #pickRomBtn:hover, #welcomeOkBtn:hover, #randoGo:hover:not(:disabled), #shinyGo:hover:not(:disabled), #saOk:hover {
         background: #ff5a4f; color: #fff; box-shadow: none; }
     #welcomeOkBtn { padding: 9px 44px 9px 28px; font-size: 20px; }
 
@@ -1700,8 +1682,6 @@ if (I18N) {
     .lib-card:hover { transform: none; background: var(--plate-hover); box-shadow: inset 0 -4px 0 var(--accent); }
     .lib-title { font-size: 17px; font-weight: 700; letter-spacing: 0.01em; }
     .lib-platform-badge { background: transparent; border-left: 3px solid var(--accent); padding: 0 6px; font-size: 13px; }
-    #resumeBtn, #resumeStateBtn { border: 0; border-left: 4px solid var(--accent); background: var(--card-bg); }
-    #resumeBtn strong, #resumeStateBtn strong { font-size: 16px; font-style: italic; text-transform: uppercase; }
     .tool-dock { border-top: 0; }
     .tool-toggle { border: 0; border-left: 4px solid var(--accent); background: var(--card-bg); clip-path: var(--cut); }
     .tool-toggle:hover { background: var(--card-bg-hover); }
@@ -1785,6 +1765,18 @@ if (I18N) {
     #aboutModal { position: fixed; inset: 0; z-index: 2400; background: rgba(0, 0, 0, .62); display: flex;
         align-items: center; justify-content: center; padding: 24px; }
     #aboutModal[hidden] { display: none; }
+    #seAskModal { position: fixed; inset: 0; z-index: 2600; background: rgba(0, 0, 0, .62); display: flex;
+        align-items: center; justify-content: center; padding: 24px; }
+    #seAskModal[hidden] { display: none; }
+    #seAskModal .tm-card { --c: var(--accent); width: min(720px, 100%); }
+    #seAskModal.danger .tm-card { --c: var(--bad, #e8455a); }
+    .sa-body { padding: 16px 22px 8px; overflow: auto; min-height: 0; color: var(--text); font-size: 13.5px; line-height: 1.5; }
+    .sa-h { font-family: var(--cond); font-size: 16px; font-weight: 800; font-style: italic; text-transform: uppercase; color: var(--text-dim); margin: 12px 0 6px; }
+    .sa-h:first-child { margin-top: 0; }
+    .sa-body ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 3px; }
+    .sa-body .se-party { pointer-events: none; }
+    .sa-note { margin-top: 12px; color: var(--text-dim); font-size: 12.5px; }
+    .sa-actions { display: flex; justify-content: flex-end; gap: 10px; padding: 12px 22px 18px; flex: none; }
     #aboutModal .tm-card { --c: var(--accent); width: min(980px, 100%); }
     .ab-body { padding: 18px 24px 22px; overflow: auto; min-height: 0; color: var(--text); font-size: 13.5px; line-height: 1.55; }
     .ab-top { display: flex; flex-wrap: wrap; gap: 10px 22px; align-items: baseline; margin-bottom: 4px; }
@@ -1857,6 +1849,9 @@ if (I18N) {
     #newsModal[hidden] { display: none; }
     #newsModal .tm-card { --c: var(--accent); width: min(760px, 100%); }
     .nm-body { padding: 8px 22px 18px; overflow: auto; min-height: 0; }
+    .nm-ver { margin: 8px 0 4px; padding: 10px 14px; background: color-mix(in srgb, var(--accent) 14%, var(--card-bg)); border-left: 4px solid var(--accent);
+        font-size: 14px; font-weight: 600; color: var(--text); }
+    .nm-ver[hidden] { display: none; }
     .nm-day { font-family: var(--cond); font-size: 17px; font-weight: 800; font-style: italic; text-transform: uppercase; color: var(--accent);
         margin: 14px 0 4px; }
     .nm-item { padding: 6px 0 6px 12px; border-left: 3px solid var(--plate); margin: 4px 0; font-size: 13.5px; line-height: 1.45; color: var(--text-dim); }
@@ -2007,7 +2002,7 @@ if (I18N) {
     #libraryGrid.lib-list .lib-art::after { display: none; }
     #libEmpty { padding: 30px; text-align: center; color: var(--text-dim); }
     #libEmpty[hidden] { display: none; }
-    #libraryScreen[data-view="roms"] :is(#libraryHeader, #libBar, #resumeBtn, #resumeStateBtn, #libraryGrid, #libEmpty, #libraryManualWrap, #sideRoms) { display: none !important; }
+    #libraryScreen[data-view="roms"] :is(#libraryHeader, #libBar, #resumeCard, #libraryGrid, #libEmpty, #libraryManualWrap, #sideRoms) { display: none !important; }
     #libraryScreen:not([data-view="roms"]) #libRomsView { display: none; }
     #libRomsView { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; gap: 12px; }
     #libRomsView h1 { margin: 0; font-family: var(--cond); font-weight: 800; font-style: italic; text-transform: uppercase; }
@@ -2068,6 +2063,18 @@ if (I18N) {
     #sidebarToggle .sb-chev { transition: transform .2s ease; transform-origin: 14.5px 12px; }
     #sidebarToggle.collapsed .sb-chev { transform: scaleX(-1); }
     #sidebarToggle.collapsed { left: auto; }
+    #resumeCard { display: flex; align-items: center; gap: 14px; flex-shrink: 0; margin: 0 0 14px; padding: 8px 10px 8px 12px; cursor: pointer;
+        background: var(--plate); clip-path: var(--cut); box-shadow: inset 4px 0 0 var(--accent); transition: background .15s; }
+    #resumeCard[hidden] { display: none; }
+    #resumeCard:hover, #resumeCard:focus-visible { background: color-mix(in srgb, var(--accent) 12%, var(--plate)); outline: none; }
+    #resumeCard.busy { cursor: progress; opacity: .75; }
+    #resumeCard img { width: 40px; height: 48px; object-fit: cover; object-position: top; flex: none; }
+    #resumeCard .rc-t { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+    #resumeCard .rc-k { font: italic 800 13px var(--cond); text-transform: uppercase; color: var(--accent); letter-spacing: .02em; }
+    #resumeCard .rc-t b { font: italic 800 19px/1.1 var(--cond); text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    #resumeCard .rc-when, #resumeCard .rc-msg { font-size: 12px; color: var(--text-dim); }
+    #resumeCard .rc-go { flex: none; font: italic 800 17px var(--cond); text-transform: uppercase; color: #fff; background: var(--accent);
+        padding: 7px 24px 7px 14px; clip-path: var(--slant); }
 </style>
 </head>
 <body>
@@ -2131,7 +2138,7 @@ if (I18N) {
                     <span class="welcome-num">1</span>
                     <div>
                         <h2>Les ROM ne sont pas fournies</h2>
-                        <p>Tu dois télécharger toi-même les ROM de tes jeux : des fichiers .gba (Game Boy Advance) ou .nds (Nintendo DS). L'appli n'en contient aucune.</p>
+                        <p>Tu dois télécharger toi-même les ROM de tes jeux : des fichiers .gbc (Game Boy Color), .gba (Game Boy Advance) ou .nds (Nintendo DS). L'appli n'en contient aucune.</p>
                     </div>
                 </div>
                 <div class="welcome-step">
@@ -2236,18 +2243,16 @@ if (I18N) {
         </div>
         <div id="libBar" translate="no">
             <label class="lb-search"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input id="libSearch" type="text" autocomplete="off" spellcheck="false"><kbd>Ctrl + K</kbd></label>
-            <label class="lb-sel"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="3"/><line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="15" y1="11" x2="15.01" y2="11"/><line x1="18" y1="13" x2="18.01" y2="13"/></svg><select id="libPlat"><option value=""></option><option value="NDS">NDS</option><option value="GBA">GBA</option></select></label>
+            <label class="lb-sel"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="3"/><line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="15" y1="11" x2="15.01" y2="11"/><line x1="18" y1="13" x2="18.01" y2="13"/></svg><select id="libPlat"><option value=""></option><option value="NDS">NDS</option><option value="GBA">GBA</option><option value="GBC">GBC</option></select></label>
             <label class="lb-sel"><select id="libSort"><option value="gen"></option><option value="az"></option><option value="za"></option></select></label>
             <div class="lb-views"><button type="button" data-view="grid" class="on"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></button><button type="button" data-view="list"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="9" y1="6" x2="21" y2="6"/><line x1="9" y1="12" x2="21" y2="12"/><line x1="9" y1="18" x2="21" y2="18"/><line x1="4" y1="6" x2="4.01" y2="6"/><line x1="4" y1="12" x2="4.01" y2="12"/><line x1="4" y1="18" x2="4.01" y2="18"/></svg></button></div>
         </div>
-        <button id="resumeBtn" type="button" hidden>
-            <span class="resume-icon">&#9654;</span>
-            <span class="resume-text">Reprendre : <strong id="resumeLabel"></strong></span>
-        </button>
-        <button id="resumeStateBtn" type="button" hidden>
-            <span class="resume-icon">&#9655;</span>
-            <span class="resume-text">Charger la dernière sauvegarde (state 1) : <strong id="resumeStateLabel"></strong></span>
-        </button>
+        <div id="resumeCard" role="button" tabindex="0" hidden>
+            <img id="rcArt" alt="" hidden>
+            <div class="rc-t"><span class="rc-k" id="rcKick" translate="no"></span><b id="rcName"></b><span class="rc-when" id="rcWhen" translate="no"></span></div>
+            <span class="rc-msg" id="rcMsg" translate="no"></span>
+            <span class="rc-go" id="rcGo" translate="no"></span>
+        </div>
         <div id="libraryGrid" class="lib-grid"></div>
         <div id="libEmpty" translate="no" hidden></div>
         <div id="libraryManualWrap">
@@ -2293,7 +2298,7 @@ if (I18N) {
                 <span class="cat-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.3" fill="currentColor"/><circle cx="16" cy="8" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/><circle cx="8" cy="16" r="1.3" fill="currentColor"/><circle cx="16" cy="16" r="1.3" fill="currentColor"/></svg></span>
                 <div class="tool-toggle-text">
                     <span class="tool-toggle-title">Randomizer</span>
-                    <span class="tool-toggle-desc">Crée une version aléatoire de ton jeu (3G, 4G et 5G) en quelques clics. Mode simple pour jouer tout de suite, mode détaillé pour tout régler. La ROM d'origine n'est jamais modifiée.</span>
+                    <span class="tool-toggle-desc">Crée une version aléatoire de ton jeu (2G, 3G, 4G et 5G) en quelques clics. Mode simple pour jouer tout de suite, mode détaillé pour tout régler. La ROM d'origine n'est jamais modifiée.</span>
                 </div>
                 <span class="tool-toggle-arrow">&rsaquo;</span>
             </button>
@@ -2315,6 +2320,16 @@ if (I18N) {
                             <span>En plus : dresseurs (Pokémon évolués selon leur niveau), légendaires, fossiles, objets au sol, CT et tuteurs. Force équilibrée.</span></button>
                         <button type="button" class="rando-level" data-level="chaos"><b>Chaos</b>
                             <span>Tout change : types, talents, stats, attaques apprises, évolutions, compatibilités CT et tuteurs, objets.</span></button>
+                        <button type="button" class="rando-level" data-level="nuzlocke"><b>Nuzlocke</b>
+                            <span>Fait pour le Nuzlocke : chaque zone a ses propres Pokémon, le plus d'espèces différentes possible, captures plus faciles. Dresseurs aléatoires, force équilibrée.</span></button>
+                    </div>
+                    <div id="nuzRules" class="rando-nuz" hidden>
+                        <b>Règles Nuzlocke</b>
+                        <span>PKLab prépare la ROM, mais ne vérifie pas les règles : c'est à toi de les suivre.</span>
+                        <ul><li>Un seul Pokémon par zone : le premier que tu rencontres. Si tu le rates, tant pis.</li>
+                            <li>Un Pokémon K.O. est mort : relâche-le ou range-le pour de bon dans une boîte du PC.</li>
+                            <li>Donne un surnom à chaque Pokémon capturé.</li>
+                            <li>Si toute ton équipe est K.O., la partie est perdue.</li></ul>
                     </div>
                     <div class="rando-step">Petits plus</div>
                     <div class="rando-extras">
@@ -2460,7 +2475,7 @@ if (I18N) {
                 <span class="cat-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3l1.9 5.6L17.5 10.5l-5.6 1.9L10 18l-1.9-5.6L2.5 10.5l5.6-1.9z"/><path d="M18.5 14l.9 2.6 2.6.9-2.6.9-.9 2.6-.9-2.6-2.6-.9 2.6-.9z"/></svg></span>
                 <div class="tool-toggle-text">
                     <span class="tool-toggle-title">Chance de shiny</span>
-                    <span class="tool-toggle-desc">Crée une copie de ton jeu (3G, 4G et 5G, d'origine ou déjà aléatoire) où les Pokémon chromatiques sont plus fréquents, jusqu'à 100 %. Rien d'autre ne change et la ROM d'origine n'est jamais modifiée. (phase expérimentale)</span>
+                    <span class="tool-toggle-desc">Crée une copie de ton jeu (2G, 3G, 4G et 5G, d'origine ou déjà aléatoire) où les Pokémon chromatiques sont plus fréquents, jusqu'à 100 %. Rien d'autre ne change et la ROM d'origine n'est jamais modifiée. (phase expérimentale)</span>
                 </div>
                 <span class="tool-toggle-arrow">&rsaquo;</span>
             </button>
@@ -2532,6 +2547,7 @@ if (I18N) {
                 </div>
                 <div class="rando-actions"><button id="seSave" type="button" disabled>Enregistrer la sauvegarde</button>
                     <button id="seCancel" type="button" class="rando-small-btn" disabled>Annuler</button>
+                    <button id="seRestore" type="button" class="rando-small-btn" hidden>Restaurer l'original</button>
                     <span id="seHint"></span></div>
                 <datalist id="seSpeciesList"></datalist><datalist id="seMoveList"></datalist><datalist id="seItemList"></datalist>
             </div>
@@ -2648,6 +2664,9 @@ const GAMES = [
     { value: "EMERALD", label: "Pokémon Émeraude" },
     { value: "FIRERED", label: "Pokémon Rouge Feu" },
     { value: "LEAFGREEN", label: "Pokémon Vert Feuille" },
+    { value: "GOLD", label: "Pokémon Or" },
+    { value: "SILVER", label: "Pokémon Argent" },
+    { value: "CRYSTAL", label: "Pokémon Cristal" },
 ];
 const GAME_LABELS = Object.fromEntries(GAMES.map(g => [g.value, g.label]));
 
@@ -2684,15 +2703,19 @@ function hpColor(ratio) {
     return "#ff5c5c";
 }
 
-function ivCell(label, val) {
+function ivCell(label, val, max = 31) {
     let cls = "";
-    if (val === 31) cls = "iv-perfect";
+    if (val === max) cls = "iv-perfect";
     else if (val <= 5) cls = "iv-bad";
     return `<span class="iv-cell ${cls}">${label}:<b>${val}</b></span>`;
 }
 
 function renderIvs(ivs) {
     if (!ivs) return "";
+    if (ivs.dv) return `<div class="iv-row" title="DV (0 à 15)">`
+        + ivCell("PV", ivs.hp, 15) + ivCell("Atq", ivs.atk, 15) + ivCell("Déf", ivs.def, 15)
+        + ivCell("Spé", ivs.spa, 15) + ivCell("Vit", ivs.spe, 15)
+        + `</div>`;
     return `<div class="iv-row">`
         + ivCell("PV", ivs.hp) + ivCell("Atq", ivs.atk) + ivCell("Def", ivs.def)
         + ivCell("ASp", ivs.spa) + ivCell("DSp", ivs.spd) + ivCell("Vit", ivs.spe)
@@ -3027,6 +3050,7 @@ document.addEventListener("click", (e) => {
 });
 
 const GBA_GAMES = new Set(["RUBY", "SAPPHIRE", "EMERALD", "FIRERED", "LEAFGREEN"]);
+const GBC_GAMES = new Set(["GOLD", "SILVER", "CRYSTAL"]);
 const GAME_ALIASES = {
     "POKEMON D": ["diamant", "diamond"],
     "POKEMON P": ["perle", "pearl"],
@@ -3043,6 +3067,9 @@ const GAME_ALIASES = {
     "EMERALD": ["emeraude", "emerald"],
     "FIRERED": ["rouge feu", "firered", "fire red"],
     "LEAFGREEN": ["vert feuille", "leafgreen", "leaf green"],
+    "GOLD": ["version or", "gold"],
+    "SILVER": ["version argent", "argent", "silver"],
+    "CRYSTAL": ["cristal", "crystal"],
 };
 const GAME_COLORS = {
     "POKEMON D": "linear-gradient(135deg,#4a7bc8,#2a4a80)",
@@ -3059,6 +3086,9 @@ const GAME_COLORS = {
     "EMERALD": "linear-gradient(135deg,#4ac878,#1a7840)",
     "FIRERED": "linear-gradient(135deg,#f08048,#b03c10)",
     "LEAFGREEN": "linear-gradient(135deg,#78c850,#3a7820)",
+    "GOLD": "linear-gradient(135deg,#e8c040,#a07810)",
+    "SILVER": "linear-gradient(135deg,#c8ccd8,#707888)",
+    "CRYSTAL": "linear-gradient(135deg,#60b8e8,#2068a0)",
 };
 const GAME_BOXART = {
     "POKEMON D": "boxart/POKEMON_D.png",
@@ -3075,6 +3105,9 @@ const GAME_BOXART = {
     "EMERALD": "boxart/EMERALD.png",
     "FIRERED": "boxart/FIRERED.png",
     "LEAFGREEN": "boxart/LEAFGREEN.png",
+    "GOLD": "boxart/GOLD.png",
+    "SILVER": "boxart/SILVER.png",
+    "CRYSTAL": "boxart/CRYSTAL.png",
 };
 
 function gameInitials(label) {
@@ -3084,7 +3117,7 @@ function gameInitials(label) {
 function renderLibrary() {
     libraryGrid.innerHTML = "";
     for (const g of GAMES) {
-        const platform = GBA_GAMES.has(g.value) ? "GBA" : "NDS";
+        const platform = GBA_GAMES.has(g.value) ? "GBA" : GBC_GAMES.has(g.value) ? "GBC" : "NDS";
         const art = GAME_BOXART[g.value];
         const fallbackBg = GAME_COLORS[g.value] || "linear-gradient(135deg,#555,#222)";
         const artHtml = art
@@ -3128,7 +3161,7 @@ function pickRomFor(data, gameValue) {
 
 async function launchFromLibrary(gameValue, platform, card) {
     const statusEl = card.querySelector(".lib-status");
-    const engineKey = platform === "GBA" ? "mgba" : "melonds";
+    const engineKey = platform === "NDS" ? "melonds" : "mgba";
     statusEl.textContent = "recherche de la ROM...";
     statusEl.className = "lib-status";
     let data = await fetchRomList(engineKey, false);
@@ -3156,7 +3189,7 @@ async function launchFromLibrary(gameValue, platform, card) {
         return;
     }
     statusEl.textContent = "lancement...";
-    const result = await launchGame(engineKey, match, GAMES.find(g => g.value === gameValue)?.label);
+    const result = await launchGame(engineKey, match, GAMES.find(g => g.value === gameValue)?.label, false, gameValue);
     if (!result.ok) {
         statusEl.textContent = result.error || "erreur";
         statusEl.className = "lib-status error";
@@ -3269,7 +3302,7 @@ async function waitForDetection() {
     return outcome;
 }
 
-async function launchGame(engineKey, rom, label, loadState = false) {
+async function launchGame(engineKey, rom, label, loadState = false, game = null) {
     if (!engineKey || !rom) return { ok: false, error: "choisis une ROM" };
     clearEmbeddedMenu();
     try {
@@ -3282,7 +3315,7 @@ async function launchGame(engineKey, rom, label, loadState = false) {
         lastLaunchNewGame = !!(data.ok && data.newGame);
         if (data.ok) {
 
-            saveLastLaunch(engineKey, rom, label || rom.split("\\").pop().replace(/\.[^.]+$/, ""));
+            saveLastLaunch(engineKey, rom, label || rom.split("\\").pop().replace(/\.[^.]+$/, ""), game);
 
             let attempts = 0;
             const tryLoad = async () => {
@@ -3346,45 +3379,81 @@ reopenLibraryBtn.addEventListener("click", async () => {
 
 renderLibrary();
 
-const resumeBtn = document.getElementById("resumeBtn");
-const resumeLabel = document.getElementById("resumeLabel");
+const RC_ALL = {
+    fr: { kick: "Ta dernière partie", today: "Jouée aujourd'hui à", yest: "Jouée hier à", on: "Jouée le", cont: "Continuer",
+          contTip: "Reprend ta sauvegarde rapide (state 1)", play: "Jouer", launching: "Lancement...", err: "erreur" },
+    en: { kick: "Your last game", today: "Played today at", yest: "Played yesterday at", on: "Played on", cont: "Continue",
+          contTip: "Loads your quick save (state 1)", play: "Play", launching: "Launching...", err: "error" },
+    es: { kick: "Tu última partida", today: "Jugada hoy a las", yest: "Jugada ayer a las", on: "Jugada el", cont: "Continuar",
+          contTip: "Carga tu guardado rápido (state 1)", play: "Jugar", launching: "Iniciando...", err: "error" },
+};
+const RC_T = RC_ALL[PKLAB_LANG] || RC_ALL.en;
+const resumeCard = document.getElementById("resumeCard");
+let resumeWithState = false, resumeBusy = false;
 
 function loadLastLaunch() {
     try {
         const raw = localStorage.getItem("pklab_last_launch");
-        return raw ? JSON.parse(raw) : null;
+        const last = raw ? JSON.parse(raw) : null;
+        if (last && !last.game && last.label) {
+            const g = GAMES.filter(x => last.label.startsWith(x.label)).sort((x, y) => y.label.length - x.label.length)[0];
+            if (g) last.game = g.value;
+        }
+        return last;
     } catch (e) { return null; }
 }
-function saveLastLaunch(engineKey, rom, label) {
+function saveLastLaunch(engineKey, rom, label, game) {
     try {
-        localStorage.setItem("pklab_last_launch", JSON.stringify({ engineKey, rom, label }));
+        localStorage.setItem("pklab_last_launch", JSON.stringify({ engineKey, rom, label, game: game || null, ts: Date.now() }));
     } catch (e) {  }
+}
+function resumeWhen(ts) {
+    if (!ts) return "";
+    const lang = document.documentElement.lang || "fr", d = new Date(ts), now = new Date();
+    const days = Math.round((new Date(now.toDateString()) - new Date(d.toDateString())) / 86400000);
+    const hm = d.toLocaleTimeString(lang, { hour: "2-digit", minute: "2-digit" });
+    if (days === 0) return RC_T.today + " " + hm;
+    if (days === 1) return RC_T.yest + " " + hm;
+    return RC_T.on + " " + d.toLocaleDateString(lang, { day: "numeric", month: "long" });
 }
 function renderResumeBanner() {
     const last = loadLastLaunch();
-    resumeBtn.hidden = true;
-    if (last) resumeLabel.textContent = last.label;
-
-    resumeStateBtn.hidden = true;
-    if (last) {
-        resumeStateLabel.textContent = last.label;
-        fetch(`/api/state1?engine=${encodeURIComponent(last.engineKey)}&rom=${encodeURIComponent(last.rom)}`)
-            .then(r => r.json()).then(d => { resumeStateBtn.hidden = !d.exists; }).catch(() => {});
-    }
+    resumeCard.hidden = !last;
+    document.getElementById("rcMsg").textContent = "";
+    if (!last) return;
+    const art = document.getElementById("rcArt"), src = last.game && GAME_BOXART[last.game];
+    art.hidden = !src;
+    if (src) art.src = src;
+    document.getElementById("rcKick").textContent = RC_T.kick;
+    document.getElementById("rcName").textContent = last.label;
+    document.getElementById("rcWhen").textContent = resumeWhen(last.ts);
+    const go = document.getElementById("rcGo");
+    resumeWithState = false;
+    go.textContent = "▶ " + RC_T.play;
+    resumeCard.removeAttribute("title");
+    fetch(`/api/state1?engine=${encodeURIComponent(last.engineKey)}&rom=${encodeURIComponent(last.rom)}`)
+        .then(r => r.json()).then(d => {
+            if (!d.exists) return;
+            resumeWithState = true;
+            go.textContent = "▶ " + RC_T.cont;
+            resumeCard.title = RC_T.contTip;
+        }).catch(() => {});
 }
-const resumeStateBtn = document.getElementById("resumeStateBtn");
-const resumeStateLabel = document.getElementById("resumeStateLabel");
-resumeStateBtn.addEventListener("click", async () => {
+async function resumeLastGame() {
     const last = loadLastLaunch();
-    if (!last) return;
-    resumeStateBtn.disabled = true;
-    resumeStateLabel.textContent = last.label + " (lancement...)";
-    const result = await launchGame(last.engineKey, last.rom, last.label, true);
-    resumeStateBtn.disabled = false;
+    if (!last || resumeBusy) return;
+    const msg = document.getElementById("rcMsg");
+    resumeBusy = true;
+    resumeCard.classList.add("busy");
+    msg.textContent = RC_T.launching;
+    const result = await launchGame(last.engineKey, last.rom, last.label, resumeWithState, last.game);
+    resumeBusy = false;
+    resumeCard.classList.remove("busy");
     if (!result.ok) {
-        resumeStateLabel.textContent = last.label + " - " + (result.error || "erreur");
+        msg.textContent = result.error || RC_T.err;
         return;
     }
+    msg.textContent = "";
     resetStatsOverlay();
     const outcome = await waitForDetection();
     if (outcome === "back") {
@@ -3392,27 +3461,9 @@ resumeStateBtn.addEventListener("click", async () => {
         return;
     }
     hideLibraryScreen();
-});
-
-resumeBtn.addEventListener("click", async () => {
-    const last = loadLastLaunch();
-    if (!last) return;
-    resumeBtn.disabled = true;
-    resumeLabel.textContent = last.label + " (lancement...)";
-    const result = await launchGame(last.engineKey, last.rom, last.label);
-    resumeBtn.disabled = false;
-    if (!result.ok) {
-        resumeLabel.textContent = last.label + " - " + (result.error || "erreur");
-        return;
-    }
-    resetStatsOverlay();
-    const outcome = await waitForDetection();
-    if (outcome === "back") {
-        renderResumeBanner();
-        return;
-    }
-    hideLibraryScreen();
-});
+}
+resumeCard.addEventListener("click", resumeLastGame);
+resumeCard.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); resumeLastGame(); } });
 
 renderResumeBanner();
 
@@ -3440,6 +3491,7 @@ async function loadRoms(engineKey) {
 }
 
 const ENGINE_ROM_EXT = {};
+const ENGINE_ROM_EXTS = {};
 
 async function loadEngines() {
     try {
@@ -3451,6 +3503,7 @@ async function loadEngines() {
             opt.textContent = eng.label;
             engineSelect.appendChild(opt);
             ENGINE_ROM_EXT[eng.key] = eng.romExt;
+            ENGINE_ROM_EXTS[eng.key] = eng.romExts || [eng.romExt];
         }
         if (engineSelect.value) await loadRoms(engineSelect.value);
     } catch (e) {  }
@@ -3473,7 +3526,7 @@ pickRomBtn.addEventListener("click", async () => {
             return;
         }
         const ext = "." + path.split(".").pop().toLowerCase();
-        let engineKey = Object.keys(ENGINE_ROM_EXT).find(k => ENGINE_ROM_EXT[k] === ext);
+        let engineKey = Object.keys(ENGINE_ROM_EXT).find(k => (ENGINE_ROM_EXTS[k] || [ENGINE_ROM_EXT[k]]).includes(ext));
         if (!engineKey) {
             pickRomHint.textContent = "extension non reconnue (" + ext + ")";
             pickRomHint.className = "error";
@@ -3557,7 +3610,7 @@ window.addEventListener("resize", pklabFitSoon);
 new ResizeObserver(pklabFitSoon).observe(document.documentElement);
 window.addEventListener("load", () => { pklabFitSoon(); setTimeout(pklabFitSoon, 600); setTimeout(pklabFitSoon, 1800); });
 new MutationObserver(pklabFitSoon).observe(libraryScreen, { attributes: true, attributeFilter: ["hidden"] });
-["resumeStateBtn", "toolRow", "libraryManualWrap"].forEach(id => new MutationObserver(pklabFitSoon).observe(document.getElementById(id),
+["resumeCard", "toolRow", "libraryManualWrap"].forEach(id => new MutationObserver(pklabFitSoon).observe(document.getElementById(id),
     { attributes: true, subtree: true, attributeFilter: ["hidden", "class"] }));
 document.fonts && document.fonts.ready.then(pklabFitSoon);
 
@@ -3643,7 +3696,7 @@ createdList.addEventListener("click", async e => {
 async function playCreatedRom(r, hint) {
     hint.className = "lx-hint";
     hint.textContent = tr("lancement...");
-    const result = await launchGame(r.engine, r.path, gameLabel(r.game) + (r.kind === "rando" ? " (aléatoire)" : " (shiny)"));
+    const result = await launchGame(r.engine, r.path, gameLabel(r.game) + (r.kind === "rando" ? " (aléatoire)" : " (shiny)"), false, r.game);
     if (!result.ok) { hint.className = "lx-hint error"; hint.textContent = result.error || tr("erreur"); return; }
     resetStatsOverlay();
     const outcome = await waitForDetection();
@@ -3790,6 +3843,10 @@ const RANDO_LEVELS = {
              tmMoves: "random", statics: "random", fossils: "random", fieldItems: "random", tutorMoves: "random",
              tutorCompat: "type", types: "random", abilities: "random", stats: "random", learnsets: "type",
              tms: "type", evolutions: "random", shops: "random" },
+    nuzlocke: { wild: "zone", wildSimilar: true, catchEmAll: true, minCatchRate: "150", starters: "random", gifts: "random",
+                giftSimilar: true, eggs: "random", trades: "received", trainers: "random", trainerSimilar: true, bossTheme: true,
+                rivalStarter: true, evolveByLevel: true, tmMoves: "random", statics: "swap", fossils: "random", fossilSimilar: true,
+                fieldItems: "shuffle", tutorMoves: "random" },
 };
 
 const RANDO_OFF = { wild: "off", trainers: "off", tmMoves: "off", starters: "off", types: "off", abilities: "off",
@@ -3841,6 +3898,7 @@ function renderRandoMode() {
     document.getElementById("randoDetailed").hidden = simple;
     document.querySelectorAll(".rando-mode button").forEach(b => b.classList.toggle("active", b.dataset.mode === randoSimple.mode));
     document.querySelectorAll(".rando-level").forEach(b => b.classList.toggle("active", b.dataset.level === randoSimple.level));
+    document.getElementById("nuzRules").hidden = randoSimple.level !== "nuzlocke";
     document.getElementById("simpleTotal").checked = !!randoSimple.total;
     document.getElementById("simpleNoLegend").checked = !!randoSimple.noLegend;
     document.getElementById("simpleHarder").checked = !!randoSimple.harder;
@@ -3977,7 +4035,7 @@ randoGo.addEventListener("click", async () => {
         document.getElementById("randoPlay").addEventListener("click", async () => {
             randoHint.className = "";
             randoHint.textContent = "lancement...";
-            const result = await launchGame(d.engine || "melonds", d.out, gameLabel(d.game) + " (aléatoire)");
+            const result = await launchGame(d.engine || "melonds", d.out, gameLabel(d.game) + " (aléatoire)", false, d.game);
             if (!result.ok) { randoHint.className = "error"; randoHint.textContent = result.error || "erreur"; return; }
             resetStatsOverlay();
             const outcome = await waitForDetection();
@@ -4078,7 +4136,7 @@ shinyGo.addEventListener("click", async () => {
         document.getElementById("shinyPlay").addEventListener("click", async () => {
             shinyHint.className = "";
             shinyHint.textContent = "lancement...";
-            const result = await launchGame(d.engine || "melonds", d.out, gameLabel(d.game) + " (shiny)");
+            const result = await launchGame(d.engine || "melonds", d.out, gameLabel(d.game) + " (shiny)", false, d.game);
             if (!result.ok) { shinyHint.className = "error"; shinyHint.textContent = result.error || "erreur"; return; }
             resetStatsOverlay();
             const outcome = await waitForDetection();
@@ -4168,7 +4226,7 @@ function seRenderMon() {
                <div class="se-grid2">
                  <span class="se-dim">Espèce</span><input id="seNewSp" list="seSpeciesList" placeholder="ex. Pikachu">
                  <span class="se-dim">Niveau</span><input id="seNewLv" type="number" min="1" max="100" value="5" style="width:80px">
-                 <span class="se-dim">Nature</span><select id="seNewNat">${SE_NATURES.map((n, k) => `<option value="${k}">${n}${SE_NATURE_FX(k)}</option>`).join("")}</select>
+                 ${seData.gen === 2 ? "" : `<span class="se-dim">Nature</span><select id="seNewNat">${SE_NATURES.map((n, k) => `<option value="${k}">${n}${SE_NATURE_FX(k)}</option>`).join("")}</select>`}
                  <span class="se-dim">Chromatique</span><label style="justify-self:start"><input id="seNewShiny" type="checkbox"> oui</label>
                </div>
                <div class="se-dim" id="seNewMoves">Attaques : choisis une espèce</div>
@@ -4183,19 +4241,16 @@ function seRenderMon() {
     }
     const types = ((seFiche && seFiche.species[String(m.species)]) || {}).types || [];
     const evTotal = m.evs.reduce((a, b) => a + b, 0);
-    box.innerHTML = `<div class="se-head"><img src="/data/sprites/${m.species}.png" alt="">
-        <div><b>${escapeAttr(m.nickname || seName("sp", m.species))}</b>${m.shiny ? " ★" : ""}${m.egg ? " (œuf)" : ""}
-        <div class="se-dim">${escapeAttr(types.map(typeLabel).join(" / "))}${m.level ? " · Nv." + m.level : ""} · Nature ${SE_NATURES[m.nature] || "?"}</div></div></div>
-      <div class="se-grid2">
-        <span class="se-dim">Espèce</span><input id="seSp" list="seSpeciesList" value="${escapeAttr(seName("sp", m.species))}">
-        <span class="se-dim">Objet</span><input id="seIt" list="seItemList" value="${escapeAttr(seName("it", m.item))}" placeholder="aucun">
-        <span class="se-dim">Niveau</span><input id="seLv" type="number" min="1" max="100" value="${m.level || ""}" style="width:80px">
-        <span class="se-dim">Nature</span><select id="seNat">${SE_NATURES.map((n, k) => `<option value="${k}"${k === m.nature ? " selected" : ""}>${n}${SE_NATURE_FX(k)}</option>`).join("")}</select>
-        <span class="se-dim">Bonheur</span><input id="seFr" type="number" min="0" max="255" value="${m.friendship}" style="width:80px">
-      </div>
-      <div class="se-dim">Attaques</div>
-      <div class="se-moves">${[0, 1, 2, 3].map(k => `<input class="seMv" data-k="${k}" list="seMoveList" value="${escapeAttr(seName("mv", m.moves[k]))}" placeholder="—">`).join("")}</div>
-      <div class="se-stats"><span></span>${SE_STATS.map(x => `<span>${x}</span>`).join("")}
+    const g2 = seData.gen === 2;
+    const hpDv = iv => ((iv[0] & 1) << 3) | ((iv[1] & 1) << 2) | ((iv[2] & 1) << 1) | (iv[3] & 1);
+    const statsHtml = g2
+        ? `<div class="se-stats" style="grid-template-columns:auto repeat(5, minmax(0, 1fr))"><span></span>${["PV", "Atq", "Déf", "Vit", "Spé"].map(x => `<span>${x}</span>`).join("")}
+        <span class="se-dim" title="DV : 0 à 15. Le DV de PV se déduit des quatre autres.">DV</span><input type="number" value="${hpDv(m.ivs)}" disabled title="Calculé à partir des autres DV">${m.ivs.map((v, k) => `<input class="seIv" data-k="${k}" type="number" min="0" max="15" value="${v}">`).join("")}
+        <span class="se-dim" title="Expérience de stat : 0 à 65535 par stat">Exp.</span>${m.evs.map((v, k) => `<input class="seEv" data-k="${k}" type="number" min="0" max="65535" value="${v}">`).join("")}</div>
+      <div><button id="seIvMax" type="button" class="rando-small-btn">DV max</button>
+        <button id="seEvZero" type="button" class="rando-small-btn">Exp. de stat à zéro</button>
+        <button id="seEvMax" type="button" class="rando-small-btn">Exp. de stat max</button></div>`
+        : `<div class="se-stats"><span></span>${SE_STATS.map(x => `<span>${x}</span>`).join("")}
         <span class="se-dim">IV</span>${m.ivs.map((v, k) => `<input class="seIv" data-k="${k}" type="number" min="0" max="31" value="${v}">`).join("")}
         <span class="se-dim">EV</span>${m.evs.map((v, k) => `<input class="seEv" data-k="${k}" type="number" min="0" max="255" value="${v}">`).join("")}</div>
       <div><button id="seIvMax" type="button" class="rando-small-btn">IV max</button>
@@ -4205,7 +4260,20 @@ function seRenderMon() {
           <option value="auto">auto (meilleure attaque + Vitesse)</option><option value="atk">Attaque + Vitesse</option>
           <option value="spa">Atq. Spé. + Vitesse</option><option value="phys">PV + Défense</option>
           <option value="spec">PV + Déf. Spé.</option><option value="all">réparti (85 partout)</option></select>
-        <span class="se-dim" id="seEvTot">EV : ${evTotal} / 510</span></div>
+        <span class="se-dim" id="seEvTot">EV : ${evTotal} / 510</span></div>`;
+    box.innerHTML = `<div class="se-head"><img src="/data/sprites/${m.species}.png" alt="">
+        <div><b>${escapeAttr(m.nickname || seName("sp", m.species))}</b>${m.shiny ? " ★" : ""}${m.egg ? " (œuf)" : ""}
+        <div class="se-dim">${escapeAttr(types.map(typeLabel).join(" / "))}${m.level ? " · Nv." + m.level : ""}${g2 ? "" : " · Nature " + (SE_NATURES[m.nature] || "?")}</div></div></div>
+      <div class="se-grid2">
+        <span class="se-dim">Espèce</span><input id="seSp" list="seSpeciesList" value="${escapeAttr(seName("sp", m.species))}">
+        <span class="se-dim">Objet</span><input id="seIt" list="seItemList" value="${escapeAttr(seName("it", m.item))}" placeholder="aucun">
+        <span class="se-dim">Niveau</span><input id="seLv" type="number" min="1" max="100" value="${m.level || ""}" style="width:80px">
+        ${g2 ? "" : `<span class="se-dim">Nature</span><select id="seNat">${SE_NATURES.map((n, k) => `<option value="${k}"${k === m.nature ? " selected" : ""}>${n}${SE_NATURE_FX(k)}</option>`).join("")}</select>`}
+        <span class="se-dim">Bonheur</span><input id="seFr" type="number" min="0" max="255" value="${m.friendship}" style="width:80px">
+      </div>
+      <div class="se-dim">Attaques</div>
+      <div class="se-moves">${[0, 1, 2, 3].map(k => `<input class="seMv" data-k="${k}" list="seMoveList" value="${escapeAttr(seName("mv", m.moves[k]))}" placeholder="—">`).join("")}</div>
+      ${statsHtml}
       ${(m.warnings || []).length ? `<div class="se-warn">Contrôle : ${escapeAttr(m.warnings.join(" ; "))}</div>`
           : `<div class="se-ok">Contrôle : rien d'anormal</div>`}
       <div class="se-actions"><button id="seExport" type="button" class="rando-small-btn">Exporter (${seData.ext})</button>
@@ -4232,7 +4300,7 @@ function seRenderMon() {
     byName("it", document.getElementById("seIt"), "item", true);
     document.getElementById("seFr").addEventListener("change", e => edit("friendship", Math.max(0, Math.min(255, +e.target.value || 0))));
     document.getElementById("seLv").addEventListener("change", e => { edit("level", Math.max(1, Math.min(100, +e.target.value || 1))); seRenderMon(); });
-    document.getElementById("seNat").addEventListener("change", e => { edit("nature", +e.target.value); seRenderMon(); });
+    if (!g2) document.getElementById("seNat").addEventListener("change", e => { edit("nature", +e.target.value); seRenderMon(); });
     document.querySelectorAll("#seMon .seMv").forEach(inp => inp.addEventListener("change", () => {
         const v = inp.value.trim().toLowerCase();
         const id = v ? seNames.mv[v] : 0;
@@ -4245,15 +4313,19 @@ function seRenderMon() {
     const stat = (cls, field, hi) => document.querySelectorAll("#seMon ." + cls).forEach(inp => inp.addEventListener("change", () => {
         const arr = seMonAt(seSel)[field].slice();
         arr[+inp.dataset.k] = Math.max(0, Math.min(hi, +inp.value || 0));
-        if (field === "evs" && arr.reduce((a, b) => a + b, 0) > 510) { err.textContent = "Les EV ne peuvent pas dépasser 510 au total"; seRenderMon(); return; }
+        if (field === "evs" && !g2 && arr.reduce((a, b) => a + b, 0) > 510) { err.textContent = "Les EV ne peuvent pas dépasser 510 au total"; seRenderMon(); return; }
         err.textContent = "";
         edit(field, arr);
         seRenderMon();
     }));
-    stat("seIv", "ivs", 31);
-    stat("seEv", "evs", 255);
-    document.getElementById("seIvMax").addEventListener("click", () => { edit("ivs", [31, 31, 31, 31, 31, 31]); seRenderMon(); });
-    document.getElementById("seEvZero").addEventListener("click", () => { edit("evs", [0, 0, 0, 0, 0, 0]); seRenderMon(); });
+    stat("seIv", "ivs", g2 ? 15 : 31);
+    stat("seEv", "evs", g2 ? 65535 : 255);
+    document.getElementById("seIvMax").addEventListener("click", () => { edit("ivs", g2 ? [15, 15, 15, 15] : [31, 31, 31, 31, 31, 31]); seRenderMon(); });
+    document.getElementById("seEvZero").addEventListener("click", () => { edit("evs", g2 ? [0, 0, 0, 0, 0] : [0, 0, 0, 0, 0, 0]); seRenderMon(); });
+    if (g2) {
+        document.getElementById("seEvMax").addEventListener("click", () => { edit("evs", [65535, 65535, 65535, 65535, 65535]); seRenderMon(); });
+        return;
+    }
     const spreadSel = document.getElementById("seEvSpread");
     try { spreadSel.value = localStorage.getItem("pklab.evSpread") || "auto"; } catch (e) {  }
     spreadSel.addEventListener("change", () => { try { localStorage.setItem("pklab.evSpread", spreadSel.value); } catch (e) {  } });
@@ -4263,7 +4335,7 @@ function seRenderMon() {
 function seRefreshDirty() { if (seData) seRender(); }
 function seBagRender() {
     const box = document.getElementById("sePockets");
-    box.innerHTML = seBag.map((pk, k) => `<button type="button" data-k="${k}" class="${k === sePocket ? "sel" : ""}">${escapeAttr(pk.label)} (${pk.items.length}/${pk.size})</button>`).join("");
+    box.innerHTML = seBag.map((pk, k) => `<button type="button" data-k="${k}" class="${k === sePocket ? "sel" : ""}"><span>${escapeAttr(pk.label)}</span> (${pk.items.length}/${pk.size})</button>`).join("");
     box.querySelectorAll("button").forEach(b => b.addEventListener("click", () => { sePocket = +b.dataset.k; seBagRender(); }));
     const pk = seBag[sePocket];
     const names = {};
@@ -4274,7 +4346,7 @@ function seBagRender() {
         return `<option value="${escapeAttr(n)}">`;
     }).join("");
     pk._names = names;
-    const top = pk.key === "pc" ? 999 : (seData.gen === 3 ? 99 : 999);
+    const top = pk.key === "pc" ? (seData.gen === 2 ? 99 : 999) : (seData.gen <= 3 ? 99 : 999);
     document.getElementById("seBagList").innerHTML = pk.items.map(([id, q], i) => `<div class="se-bagrow">
         <input class="it" data-i="${i}" list="seBagItems" value="${escapeAttr(seName("it", id))}">
         <input class="qty" data-i="${i}" type="number" min="1" max="${top}" value="${q}">
@@ -4442,7 +4514,8 @@ function seWireCreate() {
         if (seIsDirty()) { err.textContent = "Enregistre ou annule d'abord tes changements en cours."; return; }
         const level = Math.max(1, Math.min(100, +lvIn.value || 5));
         const keep = seSel.slice();
-        const r = await seSlotCall("/api/save-create-mon", { species: sp, level, nature: +document.getElementById("seNewNat").value,
+        const natSel = document.getElementById("seNewNat");
+        const r = await seSlotCall("/api/save-create-mon", { species: sp, level, nature: natSel ? +natSel.value : 0,
             shiny: document.getElementById("seNewShiny").checked, moves: seMovesAt(sp, level) });
         if (r.ok) {
             await seOpen(saveFile.value);
@@ -4454,6 +4527,7 @@ function seWireCreate() {
 
 async function seOpen(path) {
     seData = null; seSel = null; seEdits = {}; seBox = 0;
+    document.getElementById("seRestore").hidden = true;
     seBag = null; seBagDirty = new Set(); seDexDirty = false;
     document.getElementById("saveBody").hidden = true;
     document.getElementById("seTabs").hidden = true;
@@ -4466,10 +4540,10 @@ async function seOpen(path) {
             body: JSON.stringify({ path }) })).json();
         if (!d.ok) throw new Error(d.error || "erreur");
         seData = d;
-        const vg = GAME_VG[d.game] || { 3: 6, 4: 9, 5: 14 }[d.gen];
+        const vg = GAME_VG[d.game] || { 2: 4, 3: 6, 4: 9, 5: 14 }[d.gen];
         seFiche = await loadFicheData(vg);
         seNames = { sp: {}, mv: {}, it: {} };
-        const maxSp = { 3: 386, 4: 493, 5: 649 }[d.gen];
+        const maxSp = { 2: 251, 3: 386, 4: 493, 5: 649 }[d.gen];
         document.getElementById("seSpeciesList").innerHTML = Object.entries(seFiche.species).filter(([id]) => +id <= maxSp).map(([id, sp]) => {
             seNames.sp[sp.name.toLowerCase()] = +id; return `<option value="${escapeAttr(sp.name)}">`; }).join("");
         document.getElementById("seMoveList").innerHTML = Object.entries(seFiche.moves).map(([id, mv]) => {
@@ -4480,6 +4554,7 @@ async function seOpen(path) {
         seBag = d.bag.map(pk => Object.assign({}, pk, { items: pk.items.map(x => x.slice()) }));
         if (sePocket >= seBag.length) sePocket = 0;
         seDexSeen = new Set(d.dex.seen); seDexCaught = new Set(d.dex.caught);
+        document.getElementById("seRestore").hidden = !(d.backup && d.backup.exists);
         document.getElementById("seTabs").hidden = false;
         seShowTab(seTab);
         seHint.className = d.problems.length ? "error" : "";
@@ -4503,8 +4578,103 @@ document.getElementById("seBoxPrev").addEventListener("click", () => { if (seDat
 document.getElementById("seBoxNext").addEventListener("click", () => { if (seData) { seBox = (seBox + 1) % seData.boxes.length; seRender(); } });
 document.getElementById("seMoney").addEventListener("input", () => { if (seData) seRender(); });
 document.getElementById("seCancel").addEventListener("click", () => seOpen(saveFile.value));
+
+function seAsk(title, html, okLabel, danger) {
+    let modal = document.getElementById("seAskModal");
+    if (!modal) {
+        modal = document.createElement("div");
+        modal.id = "seAskModal";
+        modal.hidden = true;
+        modal.innerHTML = `<div class="tm-card" role="dialog" aria-modal="true"><div class="tm-head"><b class="tm-title"></b>
+            <button type="button" class="tm-close" aria-label="×">×</button></div><div class="sa-body"></div>
+            <div class="sa-actions"><button type="button" class="rando-small-btn sa-no"></button><button type="button" class="sa-ok" id="saOk"></button></div></div>`;
+        document.body.appendChild(modal);
+    }
+    modal.classList.toggle("danger", !!danger);
+    modal.querySelector(".tm-title").textContent = title;
+    modal.querySelector(".sa-body").innerHTML = html;
+    modal.querySelector(".sa-ok").textContent = okLabel;
+    modal.querySelector(".sa-no").textContent = tr("Revenir");
+    modal.hidden = false;
+    modal.querySelector(".sa-body").scrollTop = 0;
+    return new Promise(resolve => {
+        const done = v => {
+            modal.hidden = true;
+            modal.querySelector(".sa-ok").onclick = modal.querySelector(".sa-no").onclick = modal.querySelector(".tm-close").onclick = null;
+            document.removeEventListener("keydown", esc, true);
+            resolve(v);
+        };
+        const esc = e => { if (e.key === "Escape") { e.stopPropagation(); done(false); } };
+        document.addEventListener("keydown", esc, true);
+        modal.querySelector(".sa-ok").onclick = () => done(true);
+        modal.querySelector(".sa-no").onclick = modal.querySelector(".tm-close").onclick = () => done(false);
+    });
+}
+
+function seChangeList() {
+    const out = [], same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+    const money = document.getElementById("seMoney").value;
+    if (String(seData.trainer.money) !== money) out.push(`${tr("Argent")} : ${seData.trainer.money} → ${+money}`);
+    Object.entries(seEdits).forEach(([key, ch]) => {
+        const p = key.split(":");
+        const base = p[0] === "party" ? seData.party[+p[1]] : seData.boxes[+p[1]][+p[2]];
+        if (!base) return;
+        const place = p[0] === "party" ? `${tr("Équipe")} ${+p[1] + 1}`
+            : `${seData.boxNames[+p[1]] || tr("Boîte") + " " + (+p[1] + 1)}, ${tr("place")} ${+p[2] + 1}`;
+        const parts = [];
+        if ("species" in ch && ch.species !== base.species) parts.push(`${seName("sp", base.species)} → ${seName("sp", ch.species)}`);
+        if ("level" in ch && ch.level !== base.level) parts.push(`${tr("niveau")} ${base.level} → ${ch.level}`);
+        if ("nature" in ch && ch.nature !== base.nature) parts.push(`${tr("nature")} ${tr(SE_NATURES[base.nature] || "?")} → ${tr(SE_NATURES[ch.nature] || "?")}`);
+        if ("item" in ch && ch.item !== base.item) parts.push(`${tr("objet")} ${seName("it", base.item) || tr("aucun")} → ${seName("it", ch.item) || tr("aucun")}`);
+        if ("moves" in ch && !same(ch.moves, base.moves)) parts.push(`${tr("attaques")} : ${ch.moves.filter(Boolean).map(m => seName("mv", m)).join(" / ")}`);
+        if ("ivs" in ch && !same(ch.ivs, base.ivs)) parts.push(`${seData.gen === 2 ? "DV" : "IV"} ${ch.ivs.join("/")}`);
+        if ("evs" in ch && !same(ch.evs, base.evs)) parts.push(`${seData.gen === 2 ? tr("Exp. de stat") : "EV"} ${ch.evs.join("/")}`);
+        if ("friendship" in ch && ch.friendship !== base.friendship) parts.push(`${tr("bonheur")} ${base.friendship} → ${ch.friendship}`);
+        if (parts.length) out.push(`<b>${escapeAttr(place)} · ${escapeAttr(seName("sp", base.species))}</b> : ${escapeAttr(parts.join(" ; "))}`);
+    });
+    if (seBagDirty.size) out.push(`${tr("Sac")} : ${seBag.filter(pk => seBagDirty.has(pk.key)).map(pk => escapeAttr(tr(pk.label))).join(", ")}`);
+    if (seDexDirty) out.push(`${tr("Pokédex")} : ${tr("vus")} ${seData.dex.seen.length} → ${seDexSeen.size}, ${tr("capturés")} ${seData.dex.caught.length} → ${seDexCaught.size}`);
+    return out;
+}
+
+document.getElementById("seRestore").addEventListener("click", async () => {
+    if (!seData || !seData.backup || !seData.backup.exists) return;
+    const name = (saveFile.value.split(/[\\/]/).pop()) || "";
+    const when = new Date(seData.backup.date).toLocaleString(document.documentElement.lang || "fr", { day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" });
+    const ok = await seAsk(tr("Restaurer l'original"),
+        `<div>${tr("Ta sauvegarde va revenir à son état d'avant le premier changement fait avec PKLab.")}</div>
+         <div class="sa-h">${tr("Version d'origine")}</div><div>${escapeAttr(name)}.bak · ${escapeAttr(when)}</div>
+         <div class="sa-h">${tr("À savoir")}</div><ul><li>${tr("Tout ce que tu as fait depuis, en jeu comme dans l'éditeur, sera perdu.")}</li>
+         <li>${tr("Ta sauvegarde actuelle est gardée à côté, dans")} ${escapeAttr(name)}.avant_restauration</li>
+         <li>${tr("Ferme le jeu avant, sinon l'émulateur peut réécrire la sauvegarde en quittant.")}</li></ul>`,
+        tr("Restaurer"), true);
+    if (!ok) return;
+    seHint.className = ""; seHint.textContent = tr("Restauration...");
+    try {
+        const path = saveFile.value;
+        const d = await (await fetch("/api/save-restore", { method: "POST", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ path }) })).json();
+        if (!d.ok) throw new Error(d.error || "erreur");
+        await seOpen(path);
+        seHint.className = "saved";
+        seHint.textContent = tr("Sauvegarde d'origine restaurée. Ta version d'avant est gardée dans") + " " + d.kept;
+    } catch (e) {
+        seHint.className = "error";
+        seHint.textContent = "Échec : " + e.message;
+    }
+});
+
 document.getElementById("seSave").addEventListener("click", async () => {
     if (!seData) return;
+    const changes = seChangeList();
+    const ok = await seAsk(tr("Vérifie avant d'enregistrer"),
+        `<div class="sa-h">${tr("Ton équipe après l'enregistrement")}</div>
+         <div class="se-party">${[0, 1, 2, 3, 4, 5].map(i => seSlot(["party", i])).join("")}</div>
+         <div class="sa-h">${tr("Changements")}</div>
+         ${changes.length ? `<ul>${changes.map(c => `<li>${c}</li>`).join("")}</ul>` : `<div>${tr("Aucun changement réel.")}</div>`}
+         <div class="sa-note">${tr("Une copie de la sauvegarde d'origine est gardée (.sav.bak). Relance le jeu pour voir les changements.")}</div>`,
+        tr("Enregistrer"));
+    if (!ok) return;
     const edits = Object.entries(seEdits).map(([k, changes]) => {
         const p = k.split(":");
         return { where: p[0] === "party" ? ["party", +p[1]] : ["box", +p[1], +p[2]], changes };
@@ -5134,6 +5304,7 @@ document.addEventListener("keydown", (e) => {
 });
 
 const GAME_VG = {
+    "GOLD": 3, "SILVER": 3, "CRYSTAL": 4,
     "RUBY": 5, "SAPPHIRE": 5, "EMERALD": 6, "FIRERED": 7, "LEAFGREEN": 7,
     "POKEMON D": 8, "POKEMON P": 8, "POKEMON PL": 9, "POKEMON HG": 10, "POKEMON SS": 10,
     "POKEMON B": 11, "POKEMON W": 11, "POKEMON B2": 14, "POKEMON W2": 14,
@@ -5175,7 +5346,7 @@ function renderFiche(id, data, vgKnown) {
     html += ficheSection("Évolutions <small>· cliquer pour ouvrir la fiche</small>", renderEvolutions(id, data));
     const abil = sp.ab.map(([n, hidden]) =>
         `<span class="fiche-chip ability${hidden ? " hidden-ab" : ""}" data-tip="${escapeAttr(abilityDescription(n))}">${n}${hidden ? " (caché)" : ""}</span>`).join("");
-    html += ficheSection("Talents possibles <small>· survoler pour l'explication</small>",
+    if (data.gen !== 2) html += ficheSection("Talents possibles <small>· survoler pour l'explication</small>",
         `<div class="fiche-chips">${abil || '<span class="fiche-empty">Aucun</span>'}</div>`);
     const lvRows = sp.lv.map(([lv, mid]) => {
         const mv = data.moves[mid] || ["?", "?", null, null];
@@ -5444,6 +5615,7 @@ try {
           "<b>Éditeur de sauvegarde</b> : argent, sac, Pokédex, équipe, PC, création et import/export de Pokémon.",
           "<b>Mes ROMs</b> (jeux créés) et interface en français, anglais et espagnol."],
         gamesH: "Jeux et émulateurs", games: [
+          "<b>Game Boy Color</b> (mGBA) : Or, Argent, Cristal.",
           "<b>Game Boy Advance</b> (mGBA) : Rubis, Saphir, Émeraude, Rouge Feu, Vert Feuille.",
           "<b>Nintendo DS</b> (melonDS) : Diamant, Perle, Platine, Or HeartGold, Argent SoulSilver, Noire, Blanche, Noire 2, Blanche 2.",
           "Testé d'abord sur les versions françaises ; les autres langues sont gérées en partie."],
@@ -5474,6 +5646,7 @@ try {
           "<b>Save editor</b>: money, bag, Pokédex, party, PC, creating and importing/exporting Pokémon.",
           "<b>My ROMs</b> (games you created) and an interface in English, French and Spanish."],
         gamesH: "Games and emulators", games: [
+          "<b>Game Boy Color</b> (mGBA): Gold, Silver, Crystal.",
           "<b>Game Boy Advance</b> (mGBA): Ruby, Sapphire, Emerald, FireRed, LeafGreen.",
           "<b>Nintendo DS</b> (melonDS): Diamond, Pearl, Platinum, HeartGold, SoulSilver, Black, White, Black 2, White 2.",
           "Tested on the French versions first; other languages are partly supported."],
@@ -5504,6 +5677,7 @@ try {
           "<b>Editor de partidas</b>: dinero, mochila, Pokédex, equipo, PC, creación e importación/exportación de Pokémon.",
           "<b>Mis ROMs</b> (juegos creados) e interfaz en español, inglés y francés."],
         gamesH: "Juegos y emuladores", games: [
+          "<b>Game Boy Color</b> (mGBA): Oro, Plata, Cristal.",
           "<b>Game Boy Advance</b> (mGBA): Rubí, Zafiro, Esmeralda, Rojo Fuego, Verde Hoja.",
           "<b>Nintendo DS</b> (melonDS): Diamante, Perla, Platino, Oro HeartGold, Plata SoulSilver, Negro, Blanco, Negro 2, Blanco 2.",
           "Probado primero con las versiones francesas; los demás idiomas están soportados en parte."],
@@ -5585,6 +5759,14 @@ try {
 (() => {
     const N = {
       fr: { h: "Dernières nouveautés", items: [
+        ["v1.1.0", "new", "Pokémon Or, Argent et Cristal", "Les jeux Game Boy Color arrivent : aide au combat (DV, faiblesses), carte des rencontres selon l'heure, triches et sauvegarde rapide."],
+        ["v1.1.0", "new", "Éditeur de sauvegarde 2G", "Argent, sac, Pokédex, équipe et PC d'Or, Argent et Cristal : niveau, attaques, DV, expérience de stat, création et import / export .pk2."],
+        ["v1.1.0", "new", "Randomizer et shiny 2G", "Pokémon sauvages, dresseurs, starters et niveaux aléatoires, et chance de shiny jusqu'à 100 % pour les trois jeux."],
+        ["v1.0.9", "new", "Randomizer : mode Nuzlocke", "Nouveau niveau « Nuzlocke » en mode simple : chaque zone a ses propres Pokémon, le plus d'espèces différentes possible, captures plus faciles. Avec un rappel des règles."],
+        ["v1.0.9", "new", "Reprendre ta dernière partie", "Sur l'écran des jeux : ta dernière partie avec sa jaquette et la date. Un clic pour continuer depuis ta sauvegarde rapide ou relancer le jeu."],
+        ["v1.0.9", "new", "Éditeur : vérifier avant d'enregistrer", "Avant d'enregistrer, l'éditeur montre ton équipe et la liste de tous les changements (argent, Pokémon, sac, Pokédex)."],
+        ["v1.0.9", "new", "Éditeur : restaurer l'original", "Nouveau bouton pour remettre la sauvegarde comme avant le premier changement fait avec PKLab. La version actuelle est gardée à côté."],
+        ["v1.0.9", "ui", "Quoi de neuf", "Après une mise à jour, PKLab affiche les nouveautés au démarrage."],
         ["15 nov. 2026", "new", "Carte et triches dès le début", "Jeux GBA et 4G (Diamant à SoulSilver) : la carte et les triches s'affichent avant d'avoir ton premier Pokémon."],
         ["15 nov. 2026", "fix", "Vitesse sans plantage", "Sur les petits PC, l'émulateur passe en priorité basse en vitesse rapide et revient tout seul à x1 s'il ne répond plus."],
         ["15 nov. 2026", "new", "ROM trouvées partout", "PKLab cherche les ROM sur tout le PC et reconnaît le jeu même si le fichier porte un autre nom."],
@@ -5612,6 +5794,14 @@ try {
         ["12 nov. 2026", "new", "Chance de shiny", "Copie d'un jeu avec des chromatiques plus fréquents, de 1 / 4096 à 100 %."],
         ["12 nov. 2026", "new", "Randomizer", "Notre propre randomizer 3G, 4G et 5G : Pokémon, dresseurs, objets, magasins, CT..."]] },
       en: { h: "Latest changes", items: [
+        ["v1.1.0", "new", "Pokémon Gold, Silver and Crystal", "Game Boy Color games are here: battle helper (DVs, weaknesses), encounter map by time of day, cheats and quick save."],
+        ["v1.1.0", "new", "Gen 2 save editor", "Money, bag, Pokédex, party and PC for Gold, Silver and Crystal: level, moves, DVs, stat experience, creating and importing / exporting .pk2."],
+        ["v1.1.0", "new", "Gen 2 randomizer and shiny", "Random wild Pokémon, trainers, starters and levels, and shiny odds up to 100% for all three games."],
+        ["v1.0.9", "new", "Randomizer: Nuzlocke mode", "New \u201cNuzlocke\u201d level in simple mode: each area has its own Pokémon, as many different species as possible, easier catches. With a reminder of the rules."],
+        ["v1.0.9", "new", "Resume your last game", "On the games screen: your last game with its box art and date. One click to continue from your quick save or start the game again."],
+        ["v1.0.9", "new", "Editor: check before saving", "Before saving, the editor shows your party and the list of every change (money, Pokémon, bag, Pokédex)."],
+        ["v1.0.9", "new", "Editor: restore the original", "New button to put the save back as it was before the first change made with PKLab. The current version is kept next to it."],
+        ["v1.0.9", "ui", "What's new", "After an update, PKLab shows what's new at start-up."],
         ["Nov 15, 2026", "new", "Map and cheats from the start", "GBA and Gen 4 games (Diamond to SoulSilver): the map and cheats show up before you get your first Pokémon."],
         ["Nov 15, 2026", "fix", "Speed without crashes", "On small PCs, the emulator runs at low priority at high speed and goes back to x1 by itself if it stops responding."],
         ["Nov 15, 2026", "new", "ROMs found anywhere", "PKLab looks for ROMs on the whole PC and recognizes the game even if the file has another name."],
@@ -5639,6 +5829,14 @@ try {
         ["Nov 12, 2026", "new", "Shiny odds", "A copy of a game with more frequent shinies, from 1 / 4096 to 100%."],
         ["Nov 12, 2026", "new", "Randomizer", "Our own Gen 3, 4 and 5 randomizer: Pokémon, trainers, items, shops, TMs..."]] },
       es: { h: "Últimas novedades", items: [
+        ["v1.1.0", "new", "Pokémon Oro, Plata y Cristal", "Llegan los juegos de Game Boy Color: ayuda en combate (DV, debilidades), mapa de encuentros según la hora, trucos y guardado rápido."],
+        ["v1.1.0", "new", "Editor de partidas 2G", "Dinero, mochila, Pokédex, equipo y PC de Oro, Plata y Cristal: nivel, movimientos, DV, experiencia de estadística, creación e importación / exportación .pk2."],
+        ["v1.1.0", "new", "Randomizer y shiny 2G", "Pokémon salvajes, entrenadores, iniciales y niveles aleatorios, y probabilidad de shiny hasta el 100 % para los tres juegos."],
+        ["v1.0.9", "new", "Randomizer: modo Nuzlocke", "Nuevo nivel «Nuzlocke» en modo simple: cada zona tiene sus propios Pokémon, el mayor número de especies distintas posible, capturas más fáciles. Con un recordatorio de las reglas."],
+        ["v1.0.9", "new", "Retomar tu última partida", "En la pantalla de juegos: tu última partida con su portada y la fecha. Un clic para continuar desde tu guardado rápido o volver a iniciar el juego."],
+        ["v1.0.9", "new", "Editor: revisar antes de guardar", "Antes de guardar, el editor muestra tu equipo y la lista de todos los cambios (dinero, Pokémon, mochila, Pokédex)."],
+        ["v1.0.9", "new", "Editor: restaurar el original", "Nuevo botón para dejar la partida como estaba antes del primer cambio hecho con PKLab. La versión actual se guarda al lado."],
+        ["v1.0.9", "ui", "Novedades", "Tras una actualización, PKLab muestra las novedades al iniciar."],
         ["15 nov. 2026", "new", "Mapa y trucos desde el principio", "Juegos de GBA y 4.ª gen. (Diamante a SoulSilver): el mapa y los trucos aparecen antes de tener tu primer Pokémon."],
         ["15 nov. 2026", "fix", "Velocidad sin bloqueos", "En PC modestos, el emulador pasa a prioridad baja a alta velocidad y vuelve solo a x1 si deja de responder."],
         ["15 nov. 2026", "new", "ROM encontradas en todo el PC", "PKLab busca las ROM en todo el PC y reconoce el juego aunque el archivo tenga otro nombre."],
@@ -5683,10 +5881,30 @@ try {
     });
     modal.innerHTML = `<div class="tm-card" role="dialog" aria-modal="true"><div class="tm-head"><b class="tm-title">${n.h}</b>
         <button type="button" class="tm-close" aria-label="×">×</button></div>
-        <div class="nm-body">${days.map(([d, it]) => `<div class="nm-day">${d}</div>${it.join("")}`).join("")}</div></div>`;
+        <div class="nm-body"><div class="nm-ver" hidden></div>${days.map(([d, it]) => `<div class="nm-day">${d}</div>${it.join("")}`).join("")}</div></div>`;
     document.body.appendChild(modal);
     const close = () => { modal.hidden = true; };
-    el.querySelector(".mn-more").addEventListener("click", () => { modal.hidden = false; modal.querySelector(".nm-body").scrollTop = 0; });
+    el.querySelector(".mn-more").addEventListener("click", () => { modal.querySelector(".nm-ver").hidden = true; modal.hidden = false; modal.querySelector(".nm-body").scrollTop = 0; });
+    const UPD = { fr: v => `PKLab est passé en version ${v}. Voici les nouveautés.`, en: v => `PKLab has been updated to version ${v}. Here is what's new.`,
+                  es: v => `PKLab se ha actualizado a la versión ${v}. Estas son las novedades.` };
+    const newer = (a, b) => {
+        const x = String(a).split(".").map(Number), y = String(b).split(".").map(Number);
+        for (let i = 0; i < 3; i++) if ((x[i] || 0) !== (y[i] || 0)) return (x[i] || 0) > (y[i] || 0);
+        return false;
+    };
+    fetch("/api/check-update?local=1", { cache: "no-store" }).then(r => r.json()).then(d => {
+        const v = d && d.version;
+        if (!v) return;
+        let seen = null, welcomed = false;
+        try { seen = localStorage.getItem("pklab.seenVersion"); welcomed = !!localStorage.getItem("pklab.welcomed"); } catch (e) {  }
+        try { localStorage.setItem("pklab.seenVersion", v); } catch (e) {  }
+        if (!(seen ? newer(v, seen) : welcomed) || !n.items.some(i => i[0] === "v" + v)) return;
+        const ver = modal.querySelector(".nm-ver");
+        ver.textContent = (UPD[PKLAB_LANG] || UPD.en)(v);
+        ver.hidden = false;
+        modal.hidden = false;
+        modal.querySelector(".nm-body").scrollTop = 0;
+    }).catch(() => {});
     modal.querySelector(".tm-close").addEventListener("click", close);
     modal.addEventListener("mousedown", (e) => { if (e.target === modal) close(); });
     document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !modal.hidden) close(); });
@@ -5774,22 +5992,22 @@ const LIB_T = ({
           grid: "Grille", list: "Liste", none: "Aucun jeu ne correspond.", tools: "Outils", roms: "Tes ROMs", seeAll: "Tout voir", romsTitle: "Mes ROMs",
           noRoms: "Aucune ROM pour l’instant : utilise un outil au-dessus.", settings: "Paramètres", help: "Aide", play: "Jouer", shiny: "Chance de shiny",
           dRando: "Une version aléatoire de ton jeu, en quelques clics.", dShiny: "Plus de Pokémon chromatiques, jusqu’à 100 %.", dSave: "Argent, sac, Pokédex, équipe et PC.", back: "Retour aux jeux",
-          tRando: ["Gen 3 · 4 · 5", "Mode simple ou détaillé", "Pokémon, dresseurs, objets, magasins", "ROM d’origine jamais modifiée"],
-          tShiny: ["Gen 3 · 4 · 5", "De 1/8192 jusqu’à 1/1", "Garde ta sauvegarde", "Rien d’autre ne change"],
+          tRando: ["Gen 2 · 3 · 4 · 5", "Mode simple ou détaillé", "Pokémon, dresseurs, objets, magasins", "ROM d’origine jamais modifiée"],
+          tShiny: ["Gen 2 · 3 · 4 · 5", "De 1/8192 jusqu’à 1/1", "Garde ta sauvegarde", "Rien d’autre ne change"],
           tSave: ["Argent · Sac · Pokédex", "Équipe et PC : niveau, nature, attaques, IV / EV", "Copie .bak automatique"] },
     en: { games: "Games", count: "games", search: "Search a game…", all: "All consoles", gen: "By generation", az: "Name (A → Z)", za: "Name (Z → A)",
           grid: "Grid", list: "List", none: "No game matches.", tools: "Tools", roms: "Your ROMs", seeAll: "See all", romsTitle: "My ROMs",
           noRoms: "No ROM yet: use a tool above.", settings: "Settings", help: "Help", play: "Play", shiny: "Shiny odds",
           dRando: "A random version of your game, in a few clicks.", dShiny: "More shiny Pokémon, up to 100%.", dSave: "Money, bag, Pokédex, party and PC.", back: "Back to games",
-          tRando: ["Gen 3 · 4 · 5", "Simple or detailed mode", "Pokémon, trainers, items, shops", "Original ROM never changed"],
-          tShiny: ["Gen 3 · 4 · 5", "From 1/8192 up to 1/1", "Keeps your save", "Nothing else changes"],
+          tRando: ["Gen 2 · 3 · 4 · 5", "Simple or detailed mode", "Pokémon, trainers, items, shops", "Original ROM never changed"],
+          tShiny: ["Gen 2 · 3 · 4 · 5", "From 1/8192 up to 1/1", "Keeps your save", "Nothing else changes"],
           tSave: ["Money · Bag · Pokédex", "Party and PC: level, nature, moves, IVs / EVs", "Automatic .bak copy"] },
     es: { games: "Juegos", count: "juegos", search: "Buscar un juego…", all: "Todas las consolas", gen: "Por generación", az: "Nombre (A → Z)", za: "Nombre (Z → A)",
           grid: "Cuadrícula", list: "Lista", none: "Ningún juego coincide.", tools: "Herramientas", roms: "Tus ROM", seeAll: "Ver todo", romsTitle: "Mis ROM",
           noRoms: "Aún no hay ROM: usa una herramienta de arriba.", settings: "Ajustes", help: "Ayuda", play: "Jugar", shiny: "Prob. shiny",
           dRando: "Una versión aleatoria de tu juego, en pocos clics.", dShiny: "Más Pokémon variocolor, hasta el 100 %.", dSave: "Dinero, mochila, Pokédex, equipo y PC.", back: "Volver a los juegos",
-          tRando: ["Gen 3 · 4 · 5", "Modo simple o detallado", "Pokémon, entrenadores, objetos, tiendas", "La ROM original no se toca"],
-          tShiny: ["Gen 3 · 4 · 5", "De 1/8192 hasta 1/1", "Conserva tu partida", "Nada más cambia"],
+          tRando: ["Gen 2 · 3 · 4 · 5", "Modo simple o detallado", "Pokémon, entrenadores, objetos, tiendas", "La ROM original no se toca"],
+          tShiny: ["Gen 2 · 3 · 4 · 5", "De 1/8192 hasta 1/1", "Conserva tu partida", "Nada más cambia"],
           tSave: ["Dinero · Mochila · Pokédex", "Equipo y PC: nivel, naturaleza, movimientos, IV / EV", "Copia .bak automática"] },
 })[PKLAB_LANG] || null;
 

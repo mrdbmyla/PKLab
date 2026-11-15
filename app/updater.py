@@ -10,7 +10,7 @@ import paths
 
 ZIP_NAME = "PKLab-maj.zip"
 MAX_ZIP = 150 * 1024 * 1024
-ALLOWED_FILES = ("pklab.html", "mgba_gen3_bridge.lua", "favicon.png")
+ALLOWED_FILES = ("pklab.html", "mgba_gen3_bridge.lua", "mgba_gen2_bridge.lua", "favicon.png")
 ALLOWED_DIRS = ("data/", "boxart/")
 
 

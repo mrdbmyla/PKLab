@@ -72,7 +72,7 @@ Rubis / Saphir	Ruby / Sapphire
 
 # ---- randomizer panel
 Randomizer	Randomizer
-Crée une version aléatoire de ton jeu (3G, 4G et 5G) en quelques clics. Mode simple pour jouer tout de suite, mode détaillé pour tout régler. La ROM d'origine n'est jamais modifiée.	Creates a randomized version of your game (Gen 3, 4 and 5) in a few clicks. Simple mode to play right away, detailed mode to tune everything. The original ROM is never modified.
+Crée une version aléatoire de ton jeu (2G, 3G, 4G et 5G) en quelques clics. Mode simple pour jouer tout de suite, mode détaillé pour tout régler. La ROM d'origine n'est jamais modifiée.	Creates a randomized version of your game (Gen 2, 3, 4 and 5) in a few clicks. Simple mode to play right away, detailed mode to tune everything. The original ROM is never modified.
 Ton jeu	Your game
 Choisir une ROM...	Choose a ROM...
 Nom	Name
@@ -282,7 +282,7 @@ Aucune ROM 3G/4G/5G dans Téléchargements ou Bureau	No Gen 3/4/5 ROM in Downloa
 
 # ---- shiny tool
 Chance de shiny	Shiny odds
-Crée une copie de ton jeu (3G, 4G et 5G, d'origine ou déjà aléatoire) où les Pokémon chromatiques sont plus fréquents, jusqu'à 100 %. Rien d'autre ne change et la ROM d'origine n'est jamais modifiée. (phase expérimentale)	Creates a copy of your game (Gen 3, 4 and 5, original or already randomized) where shiny Pokémon are more common, up to 100%. Nothing else changes and the original ROM is never modified. (experimental)
+Crée une copie de ton jeu (2G, 3G, 4G et 5G, d'origine ou déjà aléatoire) où les Pokémon chromatiques sont plus fréquents, jusqu'à 100 %. Rien d'autre ne change et la ROM d'origine n'est jamais modifiée. (phase expérimentale)	Creates a copy of your game (Gen 2, 3, 4 and 5, original or already randomized) where shiny Pokémon are more common, up to 100%. Nothing else changes and the original ROM is never modified. (experimental)
 Chance	Odds
 1 / 4096 (2 fois plus)	1 / 4096 (2 times more)
 1 / 1024 (8 fois plus)	1 / 1024 (8 times more)
@@ -508,8 +508,8 @@ Pierre Éclat	Shiny Stone
 # ---- app messages (Python)
 Le script mGBA ne répond pas (vérifie qu'il est bien chargé)	The mGBA script isn't answering (check that it is loaded)
 Sauvegarder en Save State 1 avant de quitter ?	Save to Save State 1 before quitting?
-Cette ROM n'est pas prise en charge (Pokémon 3G, 4G ou 5G d'origine)	This ROM isn't supported (original Gen 3, 4 or 5 Pokémon game)
-Cette ROM n'est pas prise en charge (Pokémon 3G, 4G ou 5G)	This ROM isn't supported (Gen 3, 4 or 5 Pokémon game)
+Cette ROM n'est pas prise en charge (Pokémon 2G, 3G, 4G ou 5G d'origine)	This ROM isn't supported (original Gen 2, 3, 4 or 5 Pokémon game)
+Cette ROM n'est pas prise en charge (Pokémon 2G, 3G, 4G ou 5G)	This ROM isn't supported (Gen 2, 3, 4 or 5 Pokémon game)
 Nom trop long (100 caractères maximum)	Name too long (100 characters maximum)
 Ce nom est celui de la ROM d'origine : choisis-en un autre	This is the original ROM's name: choose another one
 Une ROM porte déjà ce nom dans ce dossier : choisis-en un autre	A ROM already has this name in this folder: choose another one
@@ -527,7 +527,7 @@ Aucun jeu détecté	No game detected
 Recherche d'un émulateur connu...	Looking for a known emulator...
 La graine et les pourcentages doivent être des nombres	The seed and the percentages must be numbers
 place vide	empty slot
-choisis un fichier .pk3, .pk4 ou .pk5	choose a .pk3, .pk4 or .pk5 file
+choisis un fichier .pk2, .pk3, .pk4 ou .pk5	choose a .pk2, .pk3, .pk4 or .pk5 file
 Adresse argent non configurée pour ce jeu	Money address not configured for this game
 Objet non configuré	Item not configured
 Sac plein (aucun emplacement libre trouvé)	Bag full (no free slot found)
@@ -881,7 +881,7 @@ noms des dresseurs	trainer names
 Bienvenue !	Welcome!
 PKLab lance ton jeu Pokémon dans un émulateur et t'aide pendant tes combats : faiblesses et résistances de l'adversaire, ton équipe, la carte et les Pokémon de chaque zone.	PKLab runs your Pokémon game in an emulator and helps you during battles: the opponent's weaknesses and resistances, your team, the map and the Pokémon of each area.
 Les ROM ne sont pas fournies	ROMs are not included
-Tu dois télécharger toi-même les ROM de tes jeux : des fichiers .gba (Game Boy Advance) ou .nds (Nintendo DS). L'appli n'en contient aucune.	You have to download your games' ROMs yourself: .gba (Game Boy Advance) or .nds (Nintendo DS) files. The app doesn't contain any.
+Tu dois télécharger toi-même les ROM de tes jeux : des fichiers .gbc (Game Boy Color), .gba (Game Boy Advance) ou .nds (Nintendo DS). L'appli n'en contient aucune.	You have to download your games' ROMs yourself: .gbc (Game Boy Color), .gba (Game Boy Advance) or .nds (Nintendo DS) files. The app doesn't contain any.
 Range-les dans Téléchargements ou sur le Bureau	Put them in Downloads or on the Desktop
 L'appli les y trouve toute seule : clique sur un jeu de la bibliothèque et il se lance. Sinon, elle te demande où se trouve le fichier.	The app finds them there by itself: click a game in the library and it starts. Otherwise, it asks you where the file is.
 Une ROM modifiée ?	A modified ROM?
@@ -957,3 +957,84 @@ Remplacement de PKLab.exe impossible	Could not replace PKLab.exe
 PKLab est déjà ouvert.	PKLab is already open.
 recherche dans tout le PC...	searching the whole PC...
 PC saturé : x1	PC overloaded: x1
+Fait pour le Nuzlocke : chaque zone a ses propres Pokémon, le plus d'espèces différentes possible, captures plus faciles. Dresseurs aléatoires, force équilibrée.	Made for Nuzlocke runs: each area has its own Pokémon, as many different species as possible, easier catches. Random trainers, balanced strength.
+Règles Nuzlocke	Nuzlocke rules
+PKLab prépare la ROM, mais ne vérifie pas les règles : c'est à toi de les suivre.	PKLab prepares the ROM but does not check the rules: following them is up to you.
+Un seul Pokémon par zone : le premier que tu rencontres. Si tu le rates, tant pis.	Only one Pokémon per area: the first one you meet. If you miss it, too bad.
+Un Pokémon K.O. est mort : relâche-le ou range-le pour de bon dans une boîte du PC.	A fainted Pokémon is dead: release it or put it away for good in a PC box.
+Donne un surnom à chaque Pokémon capturé.	Give a nickname to every Pokémon you catch.
+Si toute ton équipe est K.O., la partie est perdue.	If your whole party faints, the run is over.
+Restaurer l'original	Restore the original
+Revenir	Go back
+place	slot
+niveau	level
+nature	nature
+objet	item
+attaques	moves
+bonheur	friendship
+Pokédex	Pokédex
+vus	seen
+capturés	caught
+Ta sauvegarde va revenir à son état d'avant le premier changement fait avec PKLab.	Your save will go back to how it was before the first change made with PKLab.
+Version d'origine	Original copy
+Tout ce que tu as fait depuis, en jeu comme dans l'éditeur, sera perdu.	Everything you have done since, in the game or in the editor, will be lost.
+Ta sauvegarde actuelle est gardée à côté, dans	Your current save is kept next to it, in
+Ferme le jeu avant, sinon l'émulateur peut réécrire la sauvegarde en quittant.	Close the game first, otherwise the emulator may overwrite the save when it quits.
+Restaurer	Restore
+Restauration...	Restoring...
+Sauvegarde d'origine restaurée. Ta version d'avant est gardée dans	Original save restored. Your previous version is kept in
+Pas de copie d'origine pour cette sauvegarde	No original copy for this save
+Vérifie avant d'enregistrer	Check before saving
+Ton équipe après l'enregistrement	Your party after saving
+Changements	Changes
+Aucun changement réel.	No actual change.
+Une copie de la sauvegarde d'origine est gardée (.sav.bak). Relance le jeu pour voir les changements.	A copy of the original save is kept (.sav.bak). Restart the game to see the changes.
+À savoir	Good to know
+# ---- Gen 2 (Or / Argent / Cristal)
+Pokémon Or	Pokémon Gold
+Pokémon Argent	Pokémon Silver
+Pokémon Cristal	Pokémon Crystal
+DV (0 à 15)	DVs (0 to 15)
+DV : 0 à 15. Le DV de PV se déduit des quatre autres.	DVs: 0 to 15. The HP DV comes from the other four.
+Calculé à partir des autres DV	Calculated from the other DVs
+Expérience de stat : 0 à 65535 par stat	Stat experience: 0 to 65535 per stat
+DV max	Max DVs
+Exp. de stat à zéro	Stat exp. to zero
+Exp. de stat max	Max stat exp.
+Exp. de stat	Stat exp.
+Spé	Spc
+ (labo du Prof. Orme : image, cri, nom et Pokémon donné)	 (Prof. Elm's lab: picture, cry, name and given Pokémon)
+ emplacements (herbes et surf)	 slots (grass and surfing)
+, Eau en surf	, Water when surfing
+ ; pêche, arbres et rochers inchangés	; fishing, trees and rocks unchanged
+, lignée des starters suivie par le rival (	, starters' line followed by the rival (
+Pas encore disponible en 2G (ignoré) :	Not available yet in Gen 2 (ignored):
+types des Pokémon	Pokémon types
+talents (n'existent pas en 2G)	abilities (not in Gen 2)
+statistiques de base	base stats
+courbes d'expérience	experience curves
+attaques apprises	learned moves
+CT et CS	TMs and HMs
+tuteurs d'attaques	move tutors
+évolutions des Pokémon	Pokémon evolutions
+données des attaques	move data
+échanges en jeu	in-game trades
+fossiles et œufs	fossils and eggs
+objets des magasins	shop items
+objets des Pokémon sauvages	wild Pokémon items
+réglages du jeu	game tweaks
+Starters choisis : il faut 3 Pokémon de la 2G (n° 1 à 251)	Chosen starters: 3 Gen 2 Pokémon are needed (No. 1 to 251)
+ pour les Pokémon sauvages (au lieu de 1 / 8192)	 for wild Pokémon (instead of 1 / 8192)
+Chance de shiny : NON changée (code des DV introuvable :	Shiny odds: NOT changed (DV code not found:
+Chance de shiny : NON changée (pas de place libre dans la ROM)	Shiny odds: NOT changed (no free space in the ROM)
+ au lieu de 1)	 instead of 1)
+ROM 2G non reconnue	Gen 2 ROM not recognized
+2G : table des évolutions introuvable	Gen 2: evolution table not found
+2G : pointeurs des évolutions introuvables	Gen 2: evolution pointers not found
+2G : pointeur d'évolution invalide	Gen 2: invalid evolution pointer
+2G : table des dresseurs introuvable	Gen 2: trainer table not found
+Objets	Items
+Baies	Berries
+Lettres	Mail
+Soins	Medicine
+CT / CS	TM / HM

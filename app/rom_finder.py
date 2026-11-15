@@ -10,8 +10,9 @@ NDS_CODES = {"ADA": "POKEMON D", "APA": "POKEMON P", "CPU": "POKEMON PL", "IPK":
              "IRB": "POKEMON B", "IRA": "POKEMON W", "IRE": "POKEMON B2", "IRD": "POKEMON W2"}
 GBA_TITLES = {"POKEMON EMER": "EMERALD", "POKEMON FIRE": "FIRERED", "POKEMON LEAF": "LEAFGREEN",
               "POKEMON RUBY": "RUBY", "POKEMON SAPP": "SAPPHIRE"}
+GBC_TITLES = {"PM_CRYSTAL": "CRYSTAL", "POKEMON_GLD": "GOLD", "POKEMON_SLV": "SILVER"}
 GBA_CODES = {"BPE": "EMERALD", "BPR": "FIRERED", "BPG": "LEAFGREEN", "AXV": "RUBY", "AXP": "SAPPHIRE"}
-ROM_EXTS = {".nds", ".gba", ".srl", ".dsi", ".agb", ".bin", ".rom"}
+ROM_EXTS = {".nds", ".gba", ".gbc", ".gb", ".srl", ".dsi", ".agb", ".bin", ".rom"}
 SKIP_DIRS = {"windows", "windows.old", "program files", "program files (x86)", "programdata", "$recycle.bin",
              "system volume information", "$winreagent", "$windows.~bt", "$windows.~ws", "recovery", "perflogs",
              "config.msi", "msocache", "appdata", "node_modules", ".git", "__pycache__", "site-packages"}
@@ -32,6 +33,10 @@ def identify(path):
         return None
     if len(h) >= 0xC0 and h[0xB2] == 0x96:
         g = GBA_TITLES.get(_text(h[0xA0:0xAC])) or GBA_CODES.get(_text(h[0xAC:0xAF]))
+        if g:
+            return "mgba", g
+    if len(h) >= 0x150 and h[0x104:0x108] == bytes([0xCE, 0xED, 0x66, 0x66]):
+        g = GBC_TITLES.get(_text(h[0x134:0x13F]))
         if g:
             return "mgba", g
     if len(h) >= 0x160 and h[0x15C:0x15E] == b"\x56\xCF":
@@ -93,7 +98,7 @@ class RomIndex:
         try:
             with open(self.cache_path, encoding="utf-8") as f:
                 data = json.load(f)
-            self.scanned_at = float(data.get("scannedAt", 0))
+            self.scanned_at = float(data.get("scannedAt", 0)) if data.get("exts") == sorted(ROM_EXTS) else 0
             for e in data.get("roms", []):
                 self.items[os.path.normcase(e["path"])] = (e["path"], e["engine"], e["game"])
         except Exception:
@@ -105,7 +110,7 @@ class RomIndex:
         try:
             tmp = self.cache_path + ".tmp"
             with open(tmp, "w", encoding="utf-8") as f:
-                json.dump({"scannedAt": self.scanned_at, "roms": roms}, f, ensure_ascii=False)
+                json.dump({"scannedAt": self.scanned_at, "exts": sorted(ROM_EXTS), "roms": roms}, f, ensure_ascii=False)
             os.replace(tmp, self.cache_path)
         except OSError:
             pass

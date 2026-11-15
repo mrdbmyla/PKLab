@@ -1649,6 +1649,9 @@ GEN3_UNSUPPORTED = dict({k: v for k, v in GEN4_UNSUPPORTED.items()
 
 def randomize(src_path, options, out_path=None, fiche_base=None, sprite_dir=None):
     global MAX_SPECIES, MAX_MOVE, MAX_ABILITY
+    if src_path.lower().endswith((".gbc", ".gb")):
+        import randomizer_gen2
+        return randomizer_gen2.randomize(src_path, options, out_path, fiche_base)
     saved = (MAX_SPECIES, MAX_MOVE, MAX_ABILITY)
     if gen4_maps._rom_title(src_path) in R4.PATHS4:
         MAX_SPECIES, MAX_MOVE, MAX_ABILITY = R4.MAX_SPECIES, R4.MAX_MOVE, R4.MAX_ABILITY
@@ -1812,10 +1815,3 @@ def _finish(src_path, out_path, rom, g, game_key, seed, opts, log, names, fiche_
     return out_path, report_path, {"seed": seed, "game": game_key, "changes": log,
                                    "starters": [names(s) for s in starters.values()] if starters else None}
 
-
-def randomize_wild(src_path, seed=None, mode="zone", similar=True, no_legendaries=True, out_path=None, species_names=None):
-    base = {"species": {str(k): {"name": v} for k, v in (species_names or {}).items()}} if species_names else None
-    out, report, summary = randomize(src_path, {"seed": seed, "wild": mode, "wildSimilar": similar,
-                                                "noLegendaries": no_legendaries, "wildWater": False},
-                                     out_path=out_path, fiche_base=None)
-    return out, report, summary

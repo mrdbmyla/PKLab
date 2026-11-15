@@ -28,6 +28,7 @@ import engine
 import gen3_engine
 from nds_reader import NdsReader
 import gen3_maps
+import gen2_maps
 import gen4_maps
 import gen5_maps
 import randomizer
@@ -83,11 +84,27 @@ def read_gen3_raw():
 def gen3_game_key_from_code(code):
     if not code:
         return None
+    if code.startswith("GEN2:"):
+        return code[5:] or None
     code = code.replace("AGB-", "")
     return GEN3_CODE_PREFIX_TO_KEY.get(code[:3])
 
 
+GBC_EXTS = (".gbc", ".gb")
 MGBA_SCRIPT_PATH = res("mgba_gen3_bridge.lua")
+MGBA_GEN2_SCRIPT_PATH = res("mgba_gen2_bridge.lua")
+GEN2_ROM_PATH = None
+
+
+def gbc_game_key(path):
+    found = rom_finder.identify(path) if path and path.lower().endswith(GBC_EXTS) else None
+    return found[1] if found else None
+
+
+def gen2_rom_for(game_key):
+    if GEN2_ROM_PATH and os.path.isfile(GEN2_ROM_PATH) and gbc_game_key(GEN2_ROM_PATH) == game_key:
+        return GEN2_ROM_PATH
+    return next((r["path"] for r in ROM_INDEX.roms("mgba") if r["game"] == game_key and os.path.isfile(r["path"])), None)
 ROM_SCAN_DIRS = [os.path.join(os.path.expanduser("~"), d) for d in ("Downloads", "Desktop", "Documents")]
 ROM_INDEX = rom_finder.RomIndex(os.path.join(BASE_DIR, "rom_index.json"), ROM_SCAN_DIRS)
 
@@ -110,6 +127,7 @@ EMULATOR_BUNDLES = {
         "exe_name": "mGBA.exe",
         "extra_files": [],
         "rom_ext": ".gba",
+        "rom_exts": [".gba", ".gbc", ".gb"],
         "needs_script": True,
     },
 }
@@ -165,18 +183,19 @@ def _prepare_mgba_config():
     _ini_set(os.path.join(base, "config.ini"), "[ports.qt]", {"mute": "0"})
 
 
-def _bridge_script():
+def _bridge_script(rom_path=""):
+    script = MGBA_GEN2_SCRIPT_PATH if (rom_path or "").lower().endswith(GBC_EXTS) else MGBA_SCRIPT_PATH
     if BASE_DIR.rstrip("/").lower() == "c:/pkmn":
-        return MGBA_SCRIPT_PATH
+        return script
     try:
-        with open(MGBA_SCRIPT_PATH, encoding="utf-8") as f:
+        with open(script, encoding="utf-8") as f:
             src = f.read()
-        out = os.path.join(BASE_DIR, "mgba_gen3_bridge_run.lua")
+        out = os.path.join(BASE_DIR, os.path.splitext(os.path.basename(script))[0] + "_run.lua")
         with open(out, "w", encoding="utf-8") as f:
             f.write(src.replace("C:/pkmn/", BASE_DIR.rstrip("/") + "/"))
         return out
     except OSError:
-        return MGBA_SCRIPT_PATH
+        return script
 
 
 def _resource_path(relative_path):
@@ -224,6 +243,11 @@ def rando_rom_entry(path):
         if key in GBA_RANDO_KEYS and not re.search(r"\((Aleatoire|Aleatorio|Random) \d", os.path.basename(path)) \
                 and not os.path.isfile(shiny_patch.side_path(os.path.splitext(path)[0])):
             return {"path": path, "game": GBA_RANDO_KEYS[key], "name": os.path.basename(path), "engine": "mgba"}
+    elif low.endswith(GBC_EXTS):
+        key = gbc_game_key(path)
+        if key and not re.search(r"\((Aleatoire|Aleatorio|Random) \d", os.path.basename(path)) \
+                and not os.path.isfile(shiny_patch.side_path(os.path.splitext(path)[0])):
+            return {"path": path, "game": key, "name": os.path.basename(path), "engine": "mgba"}
     return None
 
 
@@ -246,7 +270,7 @@ def rando_pick_rom():
         return {"ok": False, "cancelled": True}
     e = rando_rom_entry(path)
     if not e:
-        return {"ok": False, "error": "Cette ROM n'est pas prise en charge (Pokémon 3G, 4G ou 5G d'origine)"}
+        return {"ok": False, "error": "Cette ROM n'est pas prise en charge (Pokémon 2G, 3G, 4G ou 5G d'origine)"}
     if path not in RANDO_PICKED:
         RANDO_PICKED.append(path)
     return {"ok": True, "rom": e}
@@ -284,7 +308,7 @@ def run_randomizer(data):
         return {"ok": False, "error": "La graine et les pourcentages doivent être des nombres"}
     vg = {"POKEMON B2": 14, "POKEMON W2": 14, "POKEMON D": 8, "POKEMON P": 8, "POKEMON PL": 9,
           "POKEMON HG": 10, "POKEMON SS": 10, "RUBY": 5, "SAPPHIRE": 5, "EMERALD": 6, "FIRERED": 7,
-          "LEAFGREEN": 7}.get(roms[path]["game"], 11)
+          "LEAFGREEN": 7, "GOLD": 3, "SILVER": 3, "CRYSTAL": 4}.get(roms[path]["game"], 11)
     base = None
     try:
         with open(res("data", "fiche", f"vg_{vg}.json"), encoding="utf-8") as f:
@@ -329,6 +353,10 @@ def shiny_rom_entry(path):
         if key not in GBA_RANDO_KEYS:
             return None
         game, eng = GBA_RANDO_KEYS[key], "mgba"
+    elif low.endswith(GBC_EXTS):
+        game, eng = gbc_game_key(path), "mgba"
+        if not game:
+            return None
     else:
         return None
     t = shiny_patch.side_threshold(path)
@@ -352,7 +380,7 @@ def shiny_pick_rom():
         return {"ok": False, "cancelled": True}
     e = shiny_rom_entry(path)
     if not e:
-        return {"ok": False, "error": "Cette ROM n'est pas prise en charge (Pokémon 3G, 4G ou 5G)"}
+        return {"ok": False, "error": "Cette ROM n'est pas prise en charge (Pokémon 2G, 3G, 4G ou 5G)"}
     if path not in SHINY_PICKED:
         SHINY_PICKED.append(path)
     return {"ok": True, "rom": e}
@@ -443,7 +471,7 @@ def created_roms():
     cands = scan_roms("melonds") + scan_roms("mgba") + RANDO_PICKED + SHINY_PICKED
     for d in _created_dirs():
         try:
-            cands += [os.path.join(d, n) for n in os.listdir(d) if n.lower().endswith((".nds", ".gba"))]
+            cands += [os.path.join(d, n) for n in os.listdir(d) if n.lower().endswith((".nds", ".gba") + GBC_EXTS)]
         except Exception:
             continue
     out, seen = [], set()
@@ -612,6 +640,10 @@ def _save_rom(sav):
         return stem + ".nds", key, key
     if os.path.isfile(stem + ".gba"):
         return stem + ".gba", GBA_RANDO_KEYS.get(randomizer.R3.gba_title(stem + ".gba")), None
+    for ext in GBC_EXTS:
+        if os.path.isfile(stem + ext):
+            key = gbc_game_key(stem + ext)
+            return stem + ext, key, key
     return None, None, None
 
 
@@ -634,7 +666,7 @@ def _mon_json(m, warn=None):
     if not m:
         return None
     keys = ("species", "nickname", "level", "item", "moves", "pp", "ivs", "evs", "friendship", "nature", "shiny", "egg",
-            "bad", "ot", "tid", "exp", "hp", "hp_max", "ability", "ability_slot")
+            "bad", "ot", "tid", "exp", "hp", "hp_max", "ability", "ability_slot", "dv", "hp_dv", "pp_ups", "stats")
     out = {k: m[k] for k in keys if k in m}
     if warn:
         out["warnings"] = warn(m)
@@ -699,7 +731,30 @@ def save_load(data):
                 "bag": bag, "dex": save_editor.dex(sv), "ext": save_editor.MON_EXT[sv.gen],
                 "baseStats": {k: v[:6] for k, v in table.items()},
                 "trainer": sv.trainer(), "party": [_mon_json(m, warn) for m in sv.party()],
-                "boxes": [[_mon_json(m, warn) for m in b] for b in boxes], "boxNames": names}
+                "boxes": [[_mon_json(m, warn) for m in b] for b in boxes], "boxNames": names,
+                "backup": _save_backup_info(path)}
+    except Exception as e:
+        return {"ok": False, "error": str(e)}
+
+
+def _save_backup_info(path):
+    bak = path + ".bak"
+    if not os.path.isfile(bak):
+        return {"exists": False}
+    return {"exists": True, "date": int(os.path.getmtime(bak) * 1000)}
+
+
+def save_restore(data):
+    path = data.get("path") or ""
+    if not _allowed_save(path):
+        return {"ok": False, "error": "Sauvegarde introuvable"}
+    bak = path + ".bak"
+    if not os.path.isfile(bak):
+        return {"ok": False, "error": "Pas de copie d'origine pour cette sauvegarde"}
+    try:
+        shutil.copyfile(path, path + ".avant_restauration")
+        shutil.copyfile(bak, path)
+        return {"ok": True, "kept": os.path.basename(path) + ".avant_restauration"}
     except Exception as e:
         return {"ok": False, "error": str(e)}
 
@@ -806,8 +861,8 @@ def save_import_mon(data):
         src = data.get("file") or _file_dialog("open", ext)
         if not src:
             return {"ok": False, "error": "annulé"}
-        if not src.lower().endswith((".pk3", ".pk4", ".pk5")):
-            return {"ok": False, "error": "choisis un fichier .pk3, .pk4 ou .pk5"}
+        if not src.lower().endswith((".pk2", ".pk3", ".pk4", ".pk5")):
+            return {"ok": False, "error": "choisis un fichier .pk2, .pk3, .pk4 ou .pk5"}
         if not src.lower().endswith(ext):
             return {"ok": False, "error": f"cette sauvegarde prend les fichiers {ext} (Pokémon de la même génération)"}
         with open(src, "rb") as f:
@@ -845,6 +900,9 @@ def rom_has_save(rom_path):
             raw = f.read()
         if not raw or raw.count(raw[0]) == len(raw):
             return False
+        if rom_path.lower().endswith(GBC_EXTS):
+            sv = save_editor.open_save(sav, gbc_game_key(rom_path))
+            return any(m and not m.get("bad") for m in sv.party())
         title = None if rom_path.lower().endswith(".gba") else gen4_maps._rom_title(rom_path)
         sv = save_editor.open_save(sav, title)
         buf, o = save_editor._party_count_at(sv)
@@ -900,7 +958,7 @@ def pick_rom_dialog():
         import webview
         if not webview.windows:
             return None
-        exts = sorted({cfg["rom_ext"] for cfg in EMULATOR_BUNDLES.values()})
+        exts = sorted({e for cfg in EMULATOR_BUNDLES.values() for e in cfg.get("rom_exts", [cfg["rom_ext"]])})
         pattern = ";".join(f"*{ext}" for ext in exts)
         result = webview.windows[0].create_file_dialog(
             webview.FileDialog.OPEN,
@@ -1755,12 +1813,15 @@ def launch_emulator(engine_key, rom_path, load_state=False):
             gen4_maps.set_rom_path(key, rom_path)
         for key in gen5_maps.GAMES:
             gen5_maps.set_rom_path(key, rom_path)
+    elif rom_path.lower().endswith(GBC_EXTS):
+        global GEN2_ROM_PATH
+        GEN2_ROM_PATH = rom_path
     else:
         gen3_maps.set_rom_path(rom_path)
     load_rom_side_data(rom_path)
     args = [exe, rom_path]
     if cfg["needs_script"]:
-        args += ["--script", _bridge_script()]
+        args += ["--script", _bridge_script(rom_path)]
     if state and engine_key == "mgba":
         args += ["-t", state]
     _kill_stale_emulator()
@@ -2090,6 +2151,37 @@ class State:
         self._write_output(active_key, entries, player_entries, battle_type)
         self._update_minimap(active_key, raw.get("pos"))
 
+    def tick_once_gen2(self, raw):
+        hm_override = read_hackmode_override()
+        if hm_override is not None:
+            self.hack_mode = hm_override
+        player_entries = []
+        for i, r in enumerate(raw.get("player") or []):
+            mon = finalize_gen2_mon(r)
+            data = engine.get_species_data(mon["species"], self.hack_mode)
+            if data:
+                name, t1, t2 = data
+                player_entries.append({"label": str(i + 1), "mon": mon, "name": name, "t1": t1, "t2": t2})
+        enemy = [finalize_gen2_mon(r) for r in raw.get("enemy") or []]
+        kind = raw.get("battle") if enemy else None
+        if kind == "trainer":
+            entries = [(str(i + 1), m) for i, m in enumerate(enemy)]
+        elif kind:
+            entries, kind = [("Wild", enemy[0])], "wild"
+        else:
+            entries = []
+        key = gen3_game_key_from_code(raw.get("game")) or "CRYSTAL"
+        self._write_output(key, entries, player_entries, kind)
+        tod = raw.get("tod")
+        tod = {0: 0, 1: 1, 2: 2}.get(tod, 1)
+        if tod != getattr(self, "gen2_tod", None):
+            self.gen2_tod = tod
+            if self.minimap_game_key == key:
+                self.minimap_map_key = None
+        names = lambda sp: (engine.get_species_data(sp, False) or (f"#{sp}",))[0]
+        self._update_minimap(key, raw.get("pos"), fetch_bundle=lambda k, pos: gen2_maps.get_map_bundle(
+            gen2_rom_for(k), pos["mapGroup"], pos["mapNum"], tod, names))
+
     def _update_minimap(self, game_key, pos, fetch_bundle=None):
         if pos is None:
             self.minimap_pos = None
@@ -2161,6 +2253,19 @@ class State:
         self.last_signature = signature
 
 
+SHINY_ATK_DV = {2, 3, 6, 7, 10, 11, 14, 15}
+
+
+def finalize_gen2_mon(r):
+    dv = r.get("dv") or {}
+    atk, df, spe, spc = (int(dv.get(k, 0)) for k in ("atk", "def", "spe", "spc"))
+    hp = (atk & 1) << 3 | (df & 1) << 2 | (spe & 1) << 1 | (spc & 1)
+    return {"species": r["species"], "hpCur": r["hpCur"], "hpMax": r["hpMax"], "level": r["level"],
+            "ability": None, "nature": None, "pid": None,
+            "ivs": {"hp": hp, "atk": atk, "def": df, "spa": spc, "spd": spc, "spe": spe, "dv": True},
+            "shiny": df == 10 and spe == 10 and spc == 10 and atk in SHINY_ATK_DV}
+
+
 def poll_loop(state):
     while True:
         delay = POLL_INTERVAL
@@ -2168,7 +2273,9 @@ def poll_loop(state):
         try:
             keep_emulator_speed()
             gen3_raw = read_gen3_raw()
-            if gen3_raw is not None:
+            if gen3_raw is not None and gen3_raw.get("gen") == 2:
+                state.tick_once_gen2(gen3_raw)
+            elif gen3_raw is not None:
                 state.tick_once_gen3_lua(gen3_raw)
             elif (state.mem is not None and state.mem.process_alive()) or state.attach_emulator():
                 if not state.tick_once_nds():
@@ -2243,7 +2350,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return
         if self.path == "/api/emulators":
             self._send_json({
-                "engines": [{"key": k, "label": v["label"], "romExt": v["rom_ext"]} for k, v in EMULATOR_BUNDLES.items()],
+                "engines": [{"key": k, "label": v["label"], "romExt": v["rom_ext"], "romExts": v.get("rom_exts", [v["rom_ext"]])} for k, v in EMULATOR_BUNDLES.items()],
             })
             return
         if self.path.startswith("/api/roms"):
@@ -2470,6 +2577,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return
         if self.path == "/api/save-remove-mon":
             self._send_json(save_remove_mon(self._read_json_body()))
+            return
+        if self.path == "/api/save-restore":
+            self._send_json(save_restore(self._read_json_body()))
             return
         if self.path == "/api/save-pick":
             path = pick_save_dialog()

@@ -70,7 +70,7 @@ Rubis / Saphir	Rubí / Zafiro
 
 # ---- randomizer panel
 Randomizer	Randomizer
-Crée une version aléatoire de ton jeu (3G, 4G et 5G) en quelques clics. Mode simple pour jouer tout de suite, mode détaillé pour tout régler. La ROM d'origine n'est jamais modifiée.	Crea una versión aleatoria de tu juego (3.ª, 4.ª y 5.ª gen.) en pocos clics. Modo simple para jugar enseguida, modo detallado para ajustarlo todo. La ROM original nunca se modifica.
+Crée une version aléatoire de ton jeu (2G, 3G, 4G et 5G) en quelques clics. Mode simple pour jouer tout de suite, mode détaillé pour tout régler. La ROM d'origine n'est jamais modifiée.	Crea una versión aleatoria de tu juego (2.ª, 3.ª, 4.ª y 5.ª gen.) en pocos clics. Modo simple para jugar enseguida, modo detallado para ajustarlo todo. La ROM original nunca se modifica.
 Ton jeu	Tu juego
 Choisir une ROM...	Elegir una ROM...
 Nom	Nombre
@@ -280,7 +280,7 @@ Aucune ROM 3G/4G/5G dans Téléchargements ou Bureau	Ninguna ROM de 3.ª/4.ª/5.
 
 # ---- shiny tool
 Chance de shiny	Probabilidad de shiny
-Crée une copie de ton jeu (3G, 4G et 5G, d'origine ou déjà aléatoire) où les Pokémon chromatiques sont plus fréquents, jusqu'à 100 %. Rien d'autre ne change et la ROM d'origine n'est jamais modifiée. (phase expérimentale)	Crea una copia de tu juego (3.ª, 4.ª y 5.ª gen., original o ya aleatorio) en la que los Pokémon variocolor son más frecuentes, hasta el 100 %. Nada más cambia y la ROM original nunca se modifica. (experimental)
+Crée une copie de ton jeu (2G, 3G, 4G et 5G, d'origine ou déjà aléatoire) où les Pokémon chromatiques sont plus fréquents, jusqu'à 100 %. Rien d'autre ne change et la ROM d'origine n'est jamais modifiée. (phase expérimentale)	Crea una copia de tu juego (2.ª, 3.ª, 4.ª y 5.ª gen., original o ya aleatorio) en la que los Pokémon variocolor son más frecuentes, hasta el 100 %. Nada más cambia y la ROM original nunca se modifica. (experimental)
 Chance	Probabilidad
 1 / 4096 (2 fois plus)	1 / 4096 (2 veces más)
 1 / 1024 (8 fois plus)	1 / 1024 (8 veces más)
@@ -506,8 +506,8 @@ Pierre Éclat	Piedra Día
 # ---- app messages (Python)
 Le script mGBA ne répond pas (vérifie qu'il est bien chargé)	El script de mGBA no responde (comprueba que está cargado)
 Sauvegarder en Save State 1 avant de quitter ?	¿Guardar en el Save State 1 antes de salir?
-Cette ROM n'est pas prise en charge (Pokémon 3G, 4G ou 5G d'origine)	Esta ROM no es compatible (juego Pokémon original de 3.ª, 4.ª o 5.ª gen.)
-Cette ROM n'est pas prise en charge (Pokémon 3G, 4G ou 5G)	Esta ROM no es compatible (juego Pokémon de 3.ª, 4.ª o 5.ª gen.)
+Cette ROM n'est pas prise en charge (Pokémon 2G, 3G, 4G ou 5G d'origine)	Esta ROM no es compatible (juego Pokémon original de 2.ª, 3.ª, 4.ª o 5.ª gen.)
+Cette ROM n'est pas prise en charge (Pokémon 2G, 3G, 4G ou 5G)	Esta ROM no es compatible (juego Pokémon de 2.ª, 3.ª, 4.ª o 5.ª gen.)
 Nom trop long (100 caractères maximum)	Nombre demasiado largo (100 caracteres como máximo)
 Ce nom est celui de la ROM d'origine : choisis-en un autre	Ese es el nombre de la ROM original: elige otro
 Une ROM porte déjà ce nom dans ce dossier : choisis-en un autre	Ya hay una ROM con ese nombre en esta carpeta: elige otro
@@ -525,7 +525,7 @@ Aucun jeu détecté	Ningún juego detectado
 Recherche d'un émulateur connu...	Buscando un emulador conocido...
 La graine et les pourcentages doivent être des nombres	La semilla y los porcentajes deben ser números
 place vide	hueco vacío
-choisis un fichier .pk3, .pk4 ou .pk5	elige un archivo .pk3, .pk4 o .pk5
+choisis un fichier .pk2, .pk3, .pk4 ou .pk5	elige un archivo .pk2, .pk3, .pk4 o .pk5
 Adresse argent non configurée pour ce jeu	Dirección del dinero no configurada para este juego
 Objet non configuré	Objeto no configurado
 Sac plein (aucun emplacement libre trouvé)	Mochila llena (ningún hueco libre)
@@ -1090,7 +1090,7 @@ noms des dresseurs	nombres de entrenadores
 Bienvenue !	¡Bienvenido!
 PKLab lance ton jeu Pokémon dans un émulateur et t'aide pendant tes combats : faiblesses et résistances de l'adversaire, ton équipe, la carte et les Pokémon de chaque zone.	PKLab abre tu juego Pokémon en un emulador y te ayuda en los combates: debilidades y resistencias del rival, tu equipo, el mapa y los Pokémon de cada zona.
 Les ROM ne sont pas fournies	Las ROM no están incluidas
-Tu dois télécharger toi-même les ROM de tes jeux : des fichiers .gba (Game Boy Advance) ou .nds (Nintendo DS). L'appli n'en contient aucune.	Tienes que descargar tú mismo las ROM de tus juegos: archivos .gba (Game Boy Advance) o .nds (Nintendo DS). La aplicación no incluye ninguna.
+Tu dois télécharger toi-même les ROM de tes jeux : des fichiers .gbc (Game Boy Color), .gba (Game Boy Advance) ou .nds (Nintendo DS). L'appli n'en contient aucune.	Tienes que descargar tú mismo las ROM de tus juegos: archivos .gbc (Game Boy Color), .gba (Game Boy Advance) o .nds (Nintendo DS). La aplicación no incluye ninguna.
 Range-les dans Téléchargements ou sur le Bureau	Guárdalas en Descargas o en el Escritorio
 L'appli les y trouve toute seule : clique sur un jeu de la bibliothèque et il se lance. Sinon, elle te demande où se trouve le fichier.	La aplicación las encuentra sola: haz clic en un juego de la biblioteca y se inicia. Si no, te pregunta dónde está el archivo.
 Une ROM modifiée ?	¿Una ROM modificada?
@@ -1166,3 +1166,84 @@ Remplacement de PKLab.exe impossible	No se pudo reemplazar PKLab.exe
 PKLab est déjà ouvert.	PKLab ya está abierto.
 recherche dans tout le PC...	buscando en todo el PC...
 PC saturé : x1	PC saturado: x1
+Fait pour le Nuzlocke : chaque zone a ses propres Pokémon, le plus d'espèces différentes possible, captures plus faciles. Dresseurs aléatoires, force équilibrée.	Pensado para el Nuzlocke: cada zona tiene sus propios Pokémon, el mayor número de especies distintas posible, capturas más fáciles. Entrenadores aleatorios, fuerza equilibrada.
+Règles Nuzlocke	Reglas Nuzlocke
+PKLab prépare la ROM, mais ne vérifie pas les règles : c'est à toi de les suivre.	PKLab prepara la ROM, pero no comprueba las reglas: te toca a ti seguirlas.
+Un seul Pokémon par zone : le premier que tu rencontres. Si tu le rates, tant pis.	Un solo Pokémon por zona: el primero que encuentres. Si lo fallas, mala suerte.
+Un Pokémon K.O. est mort : relâche-le ou range-le pour de bon dans une boîte du PC.	Un Pokémon debilitado está muerto: libéralo o guárdalo para siempre en una caja del PC.
+Donne un surnom à chaque Pokémon capturé.	Ponle un mote a cada Pokémon que captures.
+Si toute ton équipe est K.O., la partie est perdue.	Si todo tu equipo se debilita, la partida está perdida.
+Restaurer l'original	Restaurar el original
+Revenir	Volver
+place	hueco
+niveau	nivel
+nature	naturaleza
+objet	objeto
+attaques	movimientos
+bonheur	amistad
+Pokédex	Pokédex
+vus	vistos
+capturés	capturados
+Ta sauvegarde va revenir à son état d'avant le premier changement fait avec PKLab.	Tu partida volverá a estar como antes del primer cambio hecho con PKLab.
+Version d'origine	Copia original
+Tout ce que tu as fait depuis, en jeu comme dans l'éditeur, sera perdu.	Todo lo que hayas hecho desde entonces, en el juego o en el editor, se perderá.
+Ta sauvegarde actuelle est gardée à côté, dans	Tu partida actual se guarda al lado, en
+Ferme le jeu avant, sinon l'émulateur peut réécrire la sauvegarde en quittant.	Cierra el juego antes; si no, el emulador puede sobrescribir la partida al salir.
+Restaurer	Restaurar
+Restauration...	Restaurando...
+Sauvegarde d'origine restaurée. Ta version d'avant est gardée dans	Partida original restaurada. Tu versión anterior se guarda en
+Pas de copie d'origine pour cette sauvegarde	No hay copia original de esta partida
+Vérifie avant d'enregistrer	Revisa antes de guardar
+Ton équipe après l'enregistrement	Tu equipo después de guardar
+Changements	Cambios
+Aucun changement réel.	Ningún cambio real.
+Une copie de la sauvegarde d'origine est gardée (.sav.bak). Relance le jeu pour voir les changements.	Se guarda una copia de la partida original (.sav.bak). Vuelve a iniciar el juego para ver los cambios.
+À savoir	A tener en cuenta
+# ---- Gen 2 (Or / Argent / Cristal)
+Pokémon Or	Pokémon Oro
+Pokémon Argent	Pokémon Plata
+DV (0 à 15)	DV (0 a 15)
+DV : 0 à 15. Le DV de PV se déduit des quatre autres.	DV: 0 a 15. El DV de PS se deduce de los otros cuatro.
+Calculé à partir des autres DV	Calculado a partir de los otros DV
+Expérience de stat : 0 à 65535 par stat	Experiencia de estadística: 0 a 65535 por estadística
+DV max	DV máx.
+Exp. de stat à zéro	Exp. de estadística a cero
+Exp. de stat max	Exp. de estadística máx.
+Exp. de stat	Exp. de estadística
+Spé	Esp
+ (labo du Prof. Orme : image, cri, nom et Pokémon donné)	 (laboratorio del Prof. Elm: imagen, grito, nombre y Pokémon entregado)
+ emplacements (herbes et surf)	 huecos (hierba y surf)
+, Eau en surf	, Agua al surfear
+ ; pêche, arbres et rochers inchangés	; pesca, árboles y rocas sin cambios
+, lignée des starters suivie par le rival (	, línea de los iniciales seguida por el rival (
+Pas encore disponible en 2G (ignoré) :	Aún no disponible en 2.ª gen. (ignorado):
+types des Pokémon	tipos de los Pokémon
+talents (n'existent pas en 2G)	habilidades (no existen en 2.ª gen.)
+statistiques de base	estadísticas base
+courbes d'expérience	curvas de experiencia
+attaques apprises	movimientos aprendidos
+CT et CS	MT y MO
+tuteurs d'attaques	tutores de movimientos
+évolutions des Pokémon	evoluciones de los Pokémon
+données des attaques	datos de los movimientos
+échanges en jeu	intercambios del juego
+fossiles et œufs	fósiles y huevos
+objets des magasins	objetos de las tiendas
+objets des Pokémon sauvages	objetos de los Pokémon salvajes
+réglages du jeu	ajustes del juego
+Starters choisis : il faut 3 Pokémon de la 2G (n° 1 à 251)	Iniciales elegidos: hacen falta 3 Pokémon de 2.ª gen. (n.º 1 a 251)
+ pour les Pokémon sauvages (au lieu de 1 / 8192)	 para los Pokémon salvajes (en lugar de 1 / 8192)
+Chance de shiny : NON changée (code des DV introuvable :	Probabilidad de shiny: NO cambiada (código de los DV no encontrado:
+Chance de shiny : NON changée (pas de place libre dans la ROM)	Probabilidad de shiny: NO cambiada (no hay espacio libre en la ROM)
+ au lieu de 1)	 en lugar de 1)
+ROM 2G non reconnue	ROM de 2.ª gen. no reconocida
+2G : table des évolutions introuvable	2.ª gen.: tabla de evoluciones no encontrada
+2G : pointeurs des évolutions introuvables	2.ª gen.: punteros de evoluciones no encontrados
+2G : pointeur d'évolution invalide	2.ª gen.: puntero de evolución no válido
+2G : table des dresseurs introuvable	2.ª gen.: tabla de entrenadores no encontrada
+Objets	Objetos
+Baies	Bayas
+Lettres	Cartas
+Soins	Medicinas
+CT / CS	MT / MO
+Balls	Poké Balls

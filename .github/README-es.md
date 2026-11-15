@@ -4,7 +4,7 @@
 
 [English](../README.md) / [Français](README-fr.md) / Español
 
-PKLab es un compañero para los juegos de Pokémon (Gen 3, 4 y 5) jugados en emulador. Lee tu equipo y el del rival en directo desde la memoria del emulador y muestra las debilidades, las estadísticas y los movimientos. También incluye un randomizer, un editor de partidas guardadas y un control deslizante de velocidad del juego.
+PKLab es un compañero para los juegos de Pokémon (Gen 2, 3, 4 y 5) jugados en emulador. Lee tu equipo y el del rival en directo desde la memoria del emulador y muestra las debilidades, las estadísticas y los movimientos. También incluye un randomizer, un editor de partidas guardadas y un control deslizante de velocidad del juego.
 
 Descarga: [Releases](https://github.com/mrdbmyla/PKLab/releases) → `PKLab.exe` (no necesita instalación). Las ROM no están incluidas.
 
@@ -29,6 +29,7 @@ Lo que hace el programa, en resumen:
 |---|---|
 | `app/app.py` | bucle de lectura, servidor HTTP local, ventana (pywebview) |
 | `app/nds_reader.py`, `app/games.py` | lectura de los juegos de DS (Gen 4/5) en melonDS |
+| `mgba_gen2_bridge.lua` | script que se ejecuta en mGBA para los juegos de GBC (Gen 2: Oro, Plata, Cristal) |
 | `mgba_gen3_bridge.lua` | script que se ejecuta en mGBA para los juegos de GBA (Gen 3) |
 | `app/engine.py` | decodificación de los Pokémon y cálculo de debilidades |
 | `app/randomizer*.py`, `app/save_editor.py`, `app/shiny_patch.py` | herramientas |

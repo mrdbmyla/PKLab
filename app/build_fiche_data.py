@@ -7,7 +7,7 @@ from collections import defaultdict
 SRC = sys.argv[1]
 OUT = "C:/pkmn/data/fiche"
 FR = "5"
-VGS = {5: 3, 6: 3, 7: 3, 8: 4, 9: 4, 10: 4, 11: 5, 14: 5}
+VGS = {3: 2, 4: 2, 5: 3, 6: 3, 7: 3, 8: 4, 9: 4, 10: 4, 11: 5, 14: 5}
 TYPE_KEYS = {13: "Electrik", 17: "Tenebres", 18: "Fee"}
 
 
@@ -103,6 +103,8 @@ def abilities_at(pid, gen):
                     slots[slot] = (int(r["ability_id"]), r["is_hidden"] == "1")
                 else:
                     slots.pop(slot, None)
+    if gen < 3:
+        return []
     if gen < 5:
         slots = {s: a for s, a in slots.items() if not a[1]}
     return [[abil_fr.get(a, "?"), hidden] for s, (a, hidden) in sorted(slots.items())]
@@ -118,7 +120,7 @@ for r in rows("pokemon_species"):
     species_gen[sid] = int(r["generation_id"])
     if r["evolves_from_species_id"]:
         species_from[sid] = int(r["evolves_from_species_id"])
-VG_REGIONS = {5: {3}, 6: {3}, 7: {1}, 8: {4}, 9: {4}, 10: {2, 1}, 11: {5}, 14: {5}}
+VG_REGIONS = {3: {2, 1}, 4: {2, 1}, 5: {3}, 6: {3}, 7: {1}, 8: {4}, 9: {4}, 10: {2, 1}, 11: {5}, 14: {5}}
 evo_rows = defaultdict(list)
 for r in rows("pokemon_evolution"):
     sid = int(r["evolved_species_id"])
@@ -195,7 +197,7 @@ os.makedirs(OUT, exist_ok=True)
 for vg, gen in VGS.items():
     used = set()
     species = {}
-    for pid in range(1, 650):
+    for pid in range(1, {2: 252}.get(gen, 650)):
         L = learn[vg].get(pid, {"lv": [], "tm": set()})
         lv = sorted(set(L["lv"]))
         tm = sorted(((machines[vg][m], m) for m in L["tm"] if m in machines[vg]), key=lambda x: (x[0][:2] == "CS", x[0]))
@@ -213,10 +215,10 @@ for vg, gen in VGS.items():
             evs.append([sid, " ou ".join(m) if m else "Méthode inconnue"])
         if evs:
             species[pid]["ev"] = evs
-    max_move = {3: 354, 4: 467, 5: 559}[gen]
+    max_move = {2: 251, 3: 354, 4: 467, 5: 559}[gen]
     all_moves = sorted(used | set(range(1, max_move + 1)))
     data = {"vg": vg, "gen": gen, "moves": {m: move_at(m, vg) for m in all_moves if m in moves}, "species": species,
-            "abilities": {a: n for a, n in abil_fr.items() if a <= {3: 76, 4: 123, 5: 164}[gen]},
+            "abilities": {a: n for a, n in abil_fr.items() if a <= {2: 0, 3: 76, 4: 123, 5: 164}[gen]},
             "typeNames": [type_fr[t] for t in range(1, 18)],
             "items": {int(r["game_index"]): item_fr[int(r["item_id"])] for r in rows("item_game_indices")
                       if r["generation_id"] == str(gen) and int(r["item_id"]) in item_fr}}

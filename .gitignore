@@ -19,3 +19,5 @@ created_roms_dirs.json
 *.exe
 app/build_version_info.txt
 rom_index.json
+*.gbc
+*.gb
