@@ -1,4 +1,5 @@
 import struct
+import time
 
 import engine
 from games import GAMES, DETECT_ORDER, NUM_SLOTS
@@ -36,6 +37,8 @@ class NdsReader:
         self.gen = self.game["gen"]
         self.ptr_addr = None
         self.delta = None
+        self.empty_found = False
+        self.last_recheck = 0.0
         self._view = _NdsView(self)
 
     def host(self, nds_addr):
@@ -78,23 +81,48 @@ class NdsReader:
         r.delta = hit - doc
         return r
 
-    def _search(self, center, party_of):
+    def _search(self, center, party_of, allow_empty=True):
         lo = center - SEARCH
         try:
             words = struct.unpack(f"<{2 * SEARCH // 4}I", self.pm.read_bytes(self.host(lo), 2 * SEARCH))
         except Exception:
             return None
-        for i in sorted(range(len(words)), key=lambda i: abs(lo + 4 * i - center)):
-            party = party_of(words[i], lo + 4 * i)
-            if self._party_at(party) and self._save_data_plausible(party):
-                return lo + 4 * i
+        order = sorted(range(len(words)), key=lambda i: abs(lo + 4 * i - center))
+        for empty in (False, True) if allow_empty and self.gen == 4 else (False,):
+            for i in order:
+                party = party_of(words[i], lo + 4 * i)
+                if self._party_at(party, empty) and self._save_data_plausible(party, empty):
+                    self.empty_found = empty
+                    return lo + 4 * i
         return None
 
-    def _party_at(self, party):
+    def _recheck_full(self, ptr):
+        now = time.time()
+        if now - self.last_recheck < 3:
+            return False
+        self.last_recheck = now
+        if self.gen == 4:
+            hit = self._search(self.game["pointer_addr"], lambda value, a: value + self.game["player_offset"], False)
+            if hit is None or hit == self.ptr_addr:
+                return False
+            self.ptr_addr = hit
+        else:
+            doc = self.game["addrs"]["player"]
+            hit = self._search(doc, lambda value, a: a, False)
+            if hit is None or hit - doc == self.delta:
+                return False
+            self.delta = hit - doc
+        self.empty_found = False
+        return True
+
+    def _party_at(self, party, empty=False):
         if not self.in_ram(party):
             return False
         try:
             count = self.u32(party - 4)
+            if empty:
+                empty_slot = not any(self.pm.read_bytes(self.host(party), self.game["slot_size"]))
+                return count == 0 and empty_slot and self.read_location(party) is not None
         except Exception:
             return False
         if not 1 <= count <= NUM_SLOTS:
@@ -110,10 +138,10 @@ class NdsReader:
             off = addrs[field] - addrs["player"] if field in addrs else None
         return None if off is None else party + off
 
-    def _save_data_plausible(self, party):
+    def _save_data_plausible(self, party, empty=False):
         try:
             money = self.save_addr(party, "money")
-            if money is not None and self.u32(money) > 999999:
+            if money is not None and not (1 if empty else 0) <= self.u32(money) <= 999999:
                 return False
             for pocket in ("bag_items", "bag_balls", "bag_medicine"):
                 a = self.save_addr(party, pocket)
@@ -136,7 +164,7 @@ class NdsReader:
             y = self.pm.read_ushort(self.host(party + offs["y"]))
         except Exception:
             return None
-        if not 2 <= zone < self.game.get("zone_count", 0xFFFF):
+        if not 2 <= zone < self.game.get("zone_count", 0xFFFF) or x >= 0x2000 or y >= 0x2000:
             return None
         return {"zone": zone, "x": x, "y": y}
 
@@ -178,7 +206,9 @@ class NdsReader:
             ptr = None
             party_addr = self.game["addrs"]["player"] + self.delta
         party = self.read_party(party_addr)
-        if not party:
+        if party == [] and self.empty_found and self._recheck_full(ptr):
+            return self.snapshot()
+        if party is None or (not party and (self.gen == 5 or self.read_location(party_addr) is None)):
             return None
         in_battle, enemy = self._battle_state(ptr)
         opponents = []

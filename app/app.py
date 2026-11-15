@@ -1458,21 +1458,35 @@ def _write_speed(t, speed):
         t["pm"].write_bytes(t["addr"], want, len(want))
 
 
+def _speed_log(msg):
+    if STATE:
+        STATE.log("[Vitesse] " + msg)
+
+
 def set_emulator_speed(speed):
     global CURRENT_SPEED
     if speed not in SPEED_STEPS or not _speed_available():
         return False
-    with _SPEED_LOCK:
+    t0 = time.time()
+    if not _SPEED_LOCK.acquire(timeout=3):
+        _speed_log(f"x{speed} refusé : réglage précédent toujours en cours")
+        return False
+    try:
         t = _speed_target()
         if not t:
+            _speed_log(f"x{speed} impossible : cible introuvable dans {CURRENT_ENGINE_KEY} ({time.time() - t0:.2f} s)")
             return False
         try:
             _write_speed(t, speed)
-        except Exception:
+        except Exception as e:
+            _speed_log(f"x{speed} : écriture impossible ({e!r})")
             _forget_speed_target()
             return False
         CURRENT_SPEED = speed
+    finally:
+        _SPEED_LOCK.release()
     _set_emulator_priority(speed > 1)
+    _speed_log(f"x{speed} appliqué ({CURRENT_ENGINE_KEY}, cible 0x{t['addr']:X}, {time.time() - t0:.2f} s)")
     return True
 
 
@@ -1500,24 +1514,31 @@ def _speed_watchdog_loop():
                                       ctypes.c_uint, ctypes.c_uint, ctypes.POINTER(ctypes.c_size_t)]
     u.SendMessageTimeoutW.restype = ctypes.c_ssize_t
     res = ctypes.c_size_t()
-    misses = 0
+    misses = {"émulateur": 0, "fenêtre PKLab": 0}
     while True:
         time.sleep(0.5)
         h = CURRENT_CANVAS_HWND
         if CURRENT_SPEED == 1 or not h:
-            misses = 0
+            misses = dict.fromkeys(misses, 0)
             continue
-        try:
-            ok = u.SendMessageTimeoutW(h, 0, 0, 0, 0x0002, 400, ctypes.byref(res))
-        except Exception:
-            ok = 1
-        misses = 0 if ok else misses + 1
-        if misses >= 3:
-            misses = 0
+        for name, w in (("émulateur", h), ("fenêtre PKLab", OWN_HWND)):
+            if not w:
+                continue
+            try:
+                ok = u.SendMessageTimeoutW(w, 0, 0, 0, 0x0002, 400, ctypes.byref(res))
+            except Exception:
+                ok = 1
+            if ok:
+                misses[name] = 0
+                continue
+            misses[name] += 1
+            _speed_log(f"{name} ne répond pas ({misses[name]}/3) à x{CURRENT_SPEED}")
+        bad = [n for n, m in misses.items() if m >= 3]
+        if bad:
+            misses = dict.fromkeys(misses, 0)
             if set_emulator_speed(1):
                 SPEED_AUTO_RESET["pending"] = True
-                if STATE:
-                    STATE.log("Vitesse remise à x1 : l'émulateur ne répondait plus")
+                _speed_log("remise à x1 : " + ", ".join(bad) + " ne répondait plus")
 
 
 _FPS_TITLE = (re.compile(r"\((\d+(?:[.,]\d+)?)\s*(?:ips|fps)\)", re.I), re.compile(r"\[(\d+)/\d+\]"))
@@ -1653,6 +1674,21 @@ def _toml_line_key(line):
     return line.split("=", 1)[0].strip() if "=" in line and not line.lstrip().startswith("#") else None
 
 
+def _toml_force(lines, section, key, value):
+    sec = next((i for i, l in enumerate(lines) if l.strip() == section), None)
+    if sec is None:
+        if lines and not lines[-1].endswith("\n"):
+            lines[-1] += "\n"
+        lines += ["\n", section + "\n", f"{key} = {value}\n"]
+        return
+    end = next((i for i in range(sec + 1, len(lines)) if lines[i].strip().startswith("[")), len(lines))
+    pos = next((i for i in range(sec + 1, end) if _toml_line_key(lines[i]) == key), None)
+    if pos is None:
+        lines.insert(sec + 1, f"{key} = {value}\n")
+    else:
+        lines[pos] = f"{key} = {value}\n"
+
+
 def _ensure_melonds_keyboard_defaults(melonds_dir):
     toml_path = os.path.join(melonds_dir, "melonDS.toml")
     top = {"TargetFPS": f"{MELONDS_FPS[0]:.1f}", "LimitFPS": "true", "FastForwardFPS": f"{MELONDS_FPS[1]:.1f}",
@@ -1690,18 +1726,8 @@ def _ensure_melonds_keyboard_defaults(melonds_dir):
                 if val == "-1":
                     lines[i] = f"{k} = {MELONDS_KEYBOARD_DEFAULTS[k]}\n"
         lines[end:end] = [f"{k} = {v}\n" for k, v in MELONDS_KEYBOARD_DEFAULTS.items() if k not in found]
-        jit = next((i for i, l in enumerate(lines) if l.strip() == "[JIT]"), None)
-        if jit is None:
-            if lines and not lines[-1].endswith("\n"):
-                lines[-1] += "\n"
-            lines += ["\n", "[JIT]\n", "Enable = true\n"]
-        else:
-            jend = next((i for i in range(jit + 1, len(lines)) if lines[i].strip().startswith("[")), len(lines))
-            pos = next((i for i in range(jit + 1, jend) if _toml_line_key(lines[i]) == "Enable"), None)
-            if pos is None:
-                lines.insert(jit + 1, "Enable = true\n")
-            else:
-                lines[pos] = "Enable = true\n"
+        _toml_force(lines, "[JIT]", "Enable", "true")
+        _toml_force(lines, "[Screen]", "UseGL", "true")
         with open(toml_path, "w", encoding="utf-8") as f:
             f.writelines(lines)
     except Exception:
@@ -1746,6 +1772,10 @@ def launch_emulator(engine_key, rom_path, load_state=False):
         global CURRENT_EMULATOR_PROC
         CURRENT_EMULATOR_PROC = proc
         _write_emulator_pid_file(proc.pid, cfg["exe_name"])
+        try:
+            _speed_log(f"lancement {cfg['label']} ({os.path.getsize(exe)} octets, PKLab {paths.APP_VERSION}, {os.cpu_count()} cœurs)")
+        except OSError:
+            pass
         if cfg["needs_script"]:
             threading.Thread(target=_hide_window_by_title, args=(proc.pid, "Script"), daemon=True).start()
         threading.Thread(target=embed_emulator_window, args=(engine_key, proc.pid), daemon=True).start()
@@ -1923,7 +1953,7 @@ class State:
             print(f"[{time.strftime('%H:%M:%S')}] {msg}", flush=True)
         except Exception:
             pass
-        if msg.startswith(("[NDS", "Erreur")):
+        if msg.startswith(("[NDS", "Erreur", "[Vitesse", "Boucle")):
             try:
                 with open(DETECTION_LOG_PATH, "a", encoding="utf-8") as f:
                     f.write(f"[{time.strftime('%H:%M:%S')}] {msg}\n")
@@ -1931,6 +1961,20 @@ class State:
                 pass
 
     def request_redetect(self):
+        global _GEN3_LAST_RAW
+        _GEN3_LAST_RAW = None
+        try:
+            os.remove(GEN3_RAW_PATH)
+        except OSError:
+            pass
+        self.last_output_json = None
+        self.last_signature = ""
+        self.last_player_entries = []
+        self.minimap_game_key = None
+        self.minimap_map_key = None
+        self.minimap_bundle = None
+        self.minimap_pos = None
+        self.minimap_pending = None
         self.mem = None
         self.nds = None
         self.nds_game_key = None
@@ -2120,6 +2164,7 @@ class State:
 def poll_loop(state):
     while True:
         delay = POLL_INTERVAL
+        t_iter = time.time()
         try:
             keep_emulator_speed()
             gen3_raw = read_gen3_raw()
@@ -2141,6 +2186,9 @@ def poll_loop(state):
             if not alive:
                 state.mem = None
             delay = POLL_INTERVAL if alive else 2
+        took = time.time() - t_iter
+        if took > 3:
+            state.log(f"Boucle principale lente : {took:.1f} s (vitesse x{CURRENT_SPEED})")
         time.sleep(delay)
 
 
