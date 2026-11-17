@@ -1,6 +1,8 @@
 import struct
 
-from pokedata import SPECIES, ABILITIES, NATURES, HACK_SPECIES_OVERRIDE, EFF
+from pokedata import SPECIES, ABILITIES, NATURES, HACK_SPECIES_OVERRIDE, EFF, GEN6_TYPES, FORM_TYPES
+
+GEN6 = "gen6"
 
 TYPE_NAMES = [
     "Normal", "Combat", "Vol", "Poison", "Sol", "Roche", "Insecte", "Spectre",
@@ -19,13 +21,16 @@ TYPE_OVERRIDE = {}
 SHINY_THRESHOLD = 8
 
 
-def get_species_data(dex, hack_mode):
+def get_species_data(dex, hack_mode, form=0):
     base = SPECIES.get(dex)
     if not base:
         return None
     name, t1, t2 = base
     if dex in TYPE_OVERRIDE:
         o1, o2 = TYPE_OVERRIDE[dex]
+        return name, o1, o2
+    if hack_mode == GEN6:
+        o1, o2 = FORM_TYPES.get((dex, form)) or GEN6_TYPES.get(dex, (t1, t2))
         return name, o1, o2
     if hack_mode and dex in HACK_SPECIES_OVERRIDE:
         o1, o2 = HACK_SPECIES_OVERRIDE[dex]
@@ -155,7 +160,7 @@ def decode_pokemon(mem, nds_addr, gen=5):
 
 
 def serialize_mon(label, mon, hack_mode, opponent_player_entries=None):
-    data = get_species_data(mon["species"], hack_mode)
+    data = get_species_data(mon["species"], hack_mode, mon.get("form") or 0)
     if not data:
         return None
     name, t1, t2 = data

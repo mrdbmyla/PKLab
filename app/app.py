@@ -37,6 +37,9 @@ import shiny_patch
 import updater
 import i18n
 import rom_finder
+import azahar_reader
+import azahar_setup
+import ctr_maps
 
 from paths import BASE_DIR, res
 HACKMODE_OVERRIDE_PATH = os.path.join(BASE_DIR, "hackmode_override.txt")
@@ -130,7 +133,45 @@ EMULATOR_BUNDLES = {
         "rom_exts": [".gba", ".gbc", ".gb"],
         "needs_script": True,
     },
+    "azahar": {
+        "label": "Azahar",
+        "bundle_dir": None,
+        "exe_name": "azahar.exe",
+        "extra_files": [],
+        "rom_ext": ".3ds",
+        "rom_exts": [".3ds", ".cci", ".cxi"],
+        "needs_script": False,
+    },
 }
+AZAHAR_DIR = os.path.join(BASE_DIR, "azahar")
+AZAHAR_SAVE_DIR = ("user", "sdmc", "Nintendo 3DS", "0" * 32, "0" * 32, "title", "00040000")
+
+
+def _prepare_azahar_config():
+    os.makedirs(os.path.join(AZAHAR_DIR, "user", "config"), exist_ok=True)
+    ini = os.path.join(AZAHAR_DIR, "user", "config", "qt-config.ini")
+    _ini_set(ini, "[Debugging]", {"enable_rpc_server\\default": "false", "enable_rpc_server": "true"})
+    _ini_set(ini, "[Renderer]", {"frame_limit\\default": "true", "frame_limit": "100"})
+    sc = "Shortcuts\\Main%20Window\\Quick%20"
+    _ini_set(ini, "[UI]", {"confirmClose\\default": "false", "confirmClose": "false",
+                           sc + "Save\\KeySeq\\default": "false", sc + "Save\\KeySeq": "Shift+F1",
+                           sc + "Load\\KeySeq\\default": "false", sc + "Load\\KeySeq": "F1"})
+
+
+def _ctr_title_id(rom_path):
+    try:
+        with open(rom_path, "rb") as f:
+            h = f.read(0x120)
+    except OSError:
+        return None
+    return int.from_bytes(h[0x108:0x110] if h[0x100:0x104] == b"NCSD" else h[0x118:0x120], "little")
+
+
+def azahar_has_save(rom_path):
+    tid = _ctr_title_id(rom_path)
+    if not tid:
+        return False
+    return os.path.isfile(os.path.join(AZAHAR_DIR, *AZAHAR_SAVE_DIR, f"{tid & 0xFFFFFFFF:08x}", "data", "00000001", "main"))
 
 
 def _ini_set(path, section, values):
@@ -536,6 +577,8 @@ ABOUT_LINKS = {
     "mgba": "https://mgba.io",
     "melonds": "https://melonds.kuribo64.net",
     "melonds-src": "https://github.com/melonDS-emu/melonDS",
+    "azahar": "https://azahar-emu.org",
+    "azahar-src": "https://github.com/azahar-emu/azahar",
     "pokeapi": "https://pokeapi.co",
     "font": "https://fonts.google.com/specimen/Barlow+Condensed",
 }
@@ -892,6 +935,8 @@ def _save_names(path):
 
 
 def rom_has_save(rom_path):
+    if rom_path.lower().endswith(tuple(rom_finder.CTR_EXTS)):
+        return azahar_has_save(rom_path)
     sav = os.path.splitext(rom_path)[0] + ".sav"
     if not os.path.isfile(sav):
         return False
@@ -1036,7 +1081,7 @@ def _find_window_containing(pid, title_contains, timeout=8.0, poll_interval=0.2,
     return None
 
 
-EMBED_TITLE_HINTS = {"melonds": "melonDS", "mgba": "mGBA -"}
+EMBED_TITLE_HINTS = {"melonds": "melonDS", "mgba": "mGBA -", "azahar": "Azahar "}
 GWL_STYLE = -16
 WS_CHILD = 0x40000000
 WS_POPUP = 0x80000000
@@ -1238,6 +1283,7 @@ def send_save_state_hotkey(load=False):
 
     if not OWN_HWND:
         return False
+    azahar_before = _azahar_quicksaves() if CURRENT_ENGINE_KEY == "azahar" and not load else None
     kernel32 = ctypes.windll.kernel32
     current_thread_id = kernel32.GetCurrentThreadId()
     foreground_hwnd = user32.GetForegroundWindow()
@@ -1267,13 +1313,32 @@ def send_save_state_hotkey(load=False):
     if not load:
         user32.keybd_event(VK_SHIFT, 0, KEYEVENTF_KEYUP, 0)
     _pump_sleep(0.3)
+    if azahar_before is not None:
+        end = time.time() + 10
+        while time.time() < end:
+            now = _azahar_quicksaves()
+            if any(azahar_before.get(f) != t for f, t in now.items()):
+                _pump_sleep(0.5)
+                break
+            _pump_sleep(0.2)
     return True
 
 
 STATE1_EXT = {"melonds": ".ml1", "mgba": ".ss1"}
 
 
+def _azahar_quicksaves():
+    d = os.path.join(AZAHAR_DIR, "user", "states")
+    try:
+        return {f: os.path.getmtime(os.path.join(d, f)) for f in os.listdir(d) if f.endswith(".00.cst")}
+    except OSError:
+        return {}
+
+
 def state1_path(engine_key, rom_path):
+    if engine_key == "azahar":
+        tid = _ctr_title_id(rom_path) if rom_path else None
+        return os.path.join(AZAHAR_DIR, "user", "states", f"{tid:016X}.00.cst") if tid else None
     ext = STATE1_EXT.get(engine_key)
     return os.path.splitext(rom_path)[0] + ext if ext and rom_path else None
 
@@ -1439,7 +1504,7 @@ SPEED_AUTO_RESET = {"pending": False}
 
 
 def _speed_available():
-    return (CURRENT_ENGINE_KEY in ("melonds", "mgba") and CURRENT_CANVAS_HWND is not None
+    return (CURRENT_ENGINE_KEY in ("melonds", "mgba", "azahar") and CURRENT_CANVAS_HWND is not None
             and CURRENT_EMULATOR_PROC is not None and CURRENT_EMULATOR_PROC.poll() is None)
 
 
@@ -1483,6 +1548,44 @@ def _find_speed_target(pm, engine_key):
     return hits[0] if len(hits) == 1 else None
 
 
+_AZAHAR_LIMIT_LABEL = b"\x16frame_limit\x00"
+
+
+def _find_azahar_speed_target(pm):
+    import pymem.memory
+    handle = pm.process_handle
+    addr = 0
+    while addr < 0x7FFFFFFF0000:
+        try:
+            mbi = pymem.memory.virtual_query(handle, addr)
+        except Exception:
+            break
+        base, size = mbi.BaseAddress or 0, mbi.RegionSize
+        if not size:
+            break
+        if mbi.State == 0x1000 and mbi.Type == 0x1000000 and mbi.Protect in (0x04, 0x08) and size < 0x10000000:
+            off = 0
+            while off < size:
+                try:
+                    data = pm.read_bytes(base + off, min(_SPEED_SCAN_CHUNK + 32, size - off))
+                except Exception:
+                    break
+                i = data.find(_AZAHAR_LIMIT_LABEL)
+                while 0 <= i < _SPEED_SCAN_CHUNK:
+                    v = base + off + i - 0x20
+                    try:
+                        obj = pm.read_bytes(v - 0x18, 0x30)
+                    except Exception:
+                        obj = b""
+                    if len(obj) == 0x30 and struct.unpack_from("<dd", obj, 0x20) == (100.0, 1000.0):
+                        return (v if obj[0] else v - 0x10), "<d", 100.0
+                    i = data.find(_AZAHAR_LIMIT_LABEL, i + 1)
+                off += _SPEED_SCAN_CHUNK
+                time.sleep(0)
+        addr = base + size
+    return None
+
+
 def _speed_target():
     proc = CURRENT_EMULATOR_PROC
     t = _SPEED_TARGET
@@ -1496,7 +1599,8 @@ def _speed_target():
         return None
     found = None
     for _ in range(8):
-        found = _find_speed_target(pm, CURRENT_ENGINE_KEY)
+        found = (_find_azahar_speed_target(pm) if CURRENT_ENGINE_KEY == "azahar"
+                 else _find_speed_target(pm, CURRENT_ENGINE_KEY))
         if found:
             break
         time.sleep(0.2)
@@ -1801,7 +1905,12 @@ def launch_emulator(engine_key, rom_path, load_state=False):
     state = state1_path(engine_key, rom_path) if load_state else None
     if load_state and not (state and os.path.isfile(state)):
         return False, "Aucune sauvegarde dans le state 1 pour ce jeu"
-    exe = _ensure_bundled_extracted(engine_key)
+    if engine_key == "azahar":
+        exe = os.path.join(AZAHAR_DIR, cfg["exe_name"])
+        if not os.path.isfile(exe):
+            return False, "AZAHAR_MISSING"
+    else:
+        exe = _ensure_bundled_extracted(engine_key)
     if not exe:
         return False, "Exécutable introuvable dans l'appli"
     global EMBED_DESIRED_VISIBLE, CURRENT_ENGINE_KEY
@@ -1813,6 +1922,10 @@ def launch_emulator(engine_key, rom_path, load_state=False):
             gen4_maps.set_rom_path(key, rom_path)
         for key in gen5_maps.GAMES:
             gen5_maps.set_rom_path(key, rom_path)
+    elif engine_key == "azahar":
+        hit = rom_finder.identify(rom_path)
+        if hit:
+            ctr_maps.set_rom_path(hit[1], rom_path)
     elif rom_path.lower().endswith(GBC_EXTS):
         global GEN2_ROM_PATH
         GEN2_ROM_PATH = rom_path
@@ -1828,8 +1941,11 @@ def launch_emulator(engine_key, rom_path, load_state=False):
     stop_emulator()
     if engine_key == "mgba":
         _prepare_mgba_config()
+    if engine_key == "azahar":
+        _prepare_azahar_config()
     try:
-        proc = subprocess.Popen(args, creationflags=subprocess.CREATE_NO_WINDOW)
+        proc = subprocess.Popen(args, creationflags=subprocess.CREATE_NO_WINDOW,
+                                cwd=os.path.dirname(exe) if engine_key == "azahar" else None)
         global CURRENT_EMULATOR_PROC
         CURRENT_EMULATOR_PROC = proc
         _write_emulator_pid_file(proc.pid, cfg["exe_name"])
@@ -1840,7 +1956,7 @@ def launch_emulator(engine_key, rom_path, load_state=False):
         if cfg["needs_script"]:
             threading.Thread(target=_hide_window_by_title, args=(proc.pid, "Script"), daemon=True).start()
         threading.Thread(target=embed_emulator_window, args=(engine_key, proc.pid), daemon=True).start()
-        if state and engine_key == "melonds":
+        if state and engine_key in ("melonds", "azahar"):
             threading.Thread(target=_load_state1_when_ready, args=(proc,), daemon=True).start()
         return True, None
     except Exception as e:
@@ -1976,7 +2092,27 @@ def give_cheat_item_nds(cheat):
     return True, None
 
 
+def give_cheat_item_3ds(cheat_key):
+    reader = STATE.ctr if STATE else None
+    if reader is None or not STATE.ctr_game_key:
+        return False, "Aucun jeu 3DS détecté"
+    if cheat_key not in reader.cheats():
+        return False, "Triche non disponible pour ce jeu"
+    if not STATE.last_player_entries:
+        return False, "Partie du joueur non localisée (es-tu bien en jeu ?)"
+    cheat = GEN5_CHEATS[cheat_key]
+    if cheat.get("money"):
+        return reader.set_max_money()
+    for item_id, qty in cheat["items"]:
+        ok, err = reader.give_item(item_id, qty)
+        if not ok:
+            return False, err
+    return True, None
+
+
 def give_cheat_item(cheat_key):
+    if CURRENT_ENGINE_KEY == "azahar":
+        return give_cheat_item_3ds(cheat_key)
     if read_gen3_raw() is not None:
         return give_cheat_item_gen3(cheat_key)
     if STATE is None or STATE.mem is None or STATE.nds is None:
@@ -2008,6 +2144,9 @@ class State:
         self.nds_last_locate = 0.0
         self.nds_lost_since = None
         self.nds_in_battle = False
+        self.ctr = None
+        self.ctr_game_key = None
+        self.ctr_last_detect = 0.0
 
     def log(self, msg):
         try:
@@ -2043,6 +2182,47 @@ class State:
         self.nds_last_locate = 0.0
         self.nds_lost_since = None
         self.nds_in_battle = False
+        if self.ctr is not None:
+            self.ctr.close()
+        self.ctr = None
+        self.ctr_game_key = None
+        self.ctr_last_detect = 0.0
+
+    def tick_once_azahar(self):
+        if self.ctr is None:
+            self.ctr = azahar_reader.AzaharReader(pid=CURRENT_EMULATOR_PROC.pid if CURRENT_EMULATOR_PROC else None)
+        now = time.time()
+        if self.ctr_game_key is None:
+            if now - self.ctr_last_detect < 1.0:
+                return
+            self.ctr_last_detect = now
+            self.ctr_game_key = self.ctr.detect()
+            if self.ctr_game_key is None:
+                return
+            self.log(f"[3DS] {self.ctr_game_key} détecté")
+        party = self.ctr.party()
+        if party is None:
+            self.ctr_game_key = None
+            return
+        player_entries = []
+        for slot, mon in enumerate(party):
+            data = engine.get_species_data(mon["species"], engine.GEN6, mon.get("form") or 0)
+            if data:
+                name, t1, t2 = data
+                player_entries.append({"label": str(slot + 1), "mon": mon, "name": name, "t1": t1, "t2": t2})
+        opp = self.ctr.opponents(party, now)
+        if len(opp) == 1:
+            entries, battle_type = [("Wild", opp[0])], "wild"
+        elif opp:
+            entries, battle_type = [(str(i + 1), m) for i, m in enumerate(opp)], "trainer"
+        else:
+            entries, battle_type = [], None
+        self._write_output(self.ctr_game_key, entries, player_entries, battle_type, hack_mode=engine.GEN6)
+        pos = self.ctr.position()
+        if pos is not None:
+            pos = {"x": 0, "y": 0, "mapGroup": 0, "mapNum": pos["zone"]}
+        self._update_minimap(self.ctr_game_key, pos,
+                             fetch_bundle=lambda key, p: ctr_maps.get_zone_bundle(key, p["mapNum"]))
 
     def attach_emulator(self):
         mem = NdsMemory("melonDS.exe")
@@ -2218,7 +2398,8 @@ class State:
             self.log(f"Erreur rendu minimap: {e}")
             self.minimap_bundle = None
 
-    def _write_output(self, active_key, entries, player_entries, battle_type):
+    def _write_output(self, active_key, entries, player_entries, battle_type, hack_mode=None):
+        hack_mode = self.hack_mode if hack_mode is None else hack_mode
         player_entries = [pe for pe in player_entries if (pe["mon"]["hpMax"] or 0) > 1]
 
         if player_entries:
@@ -2237,8 +2418,8 @@ class State:
         if signature != self.last_signature or (now - self.last_write_time) >= HEARTBEAT_INTERVAL:
             self.last_write_time = now
             self.tick += 1
-            mons_json = [engine.serialize_mon(label, mon, self.hack_mode, player_entries) for label, mon in entries]
-            player_json = [engine.serialize_mon(pe["label"], pe["mon"], self.hack_mode, None) for pe in player_entries]
+            mons_json = [engine.serialize_mon(label, mon, hack_mode, player_entries) for label, mon in entries]
+            player_json = [engine.serialize_mon(pe["label"], pe["mon"], hack_mode, None) for pe in player_entries]
             data = {
                 "game": active_key,
                 "romFiche": os.path.basename(ROM_SIDE_PATH) if ROM_SIDE_PATH else None,
@@ -2277,6 +2458,8 @@ def poll_loop(state):
                 state.tick_once_gen2(gen3_raw)
             elif gen3_raw is not None:
                 state.tick_once_gen3_lua(gen3_raw)
+            elif CURRENT_ENGINE_KEY == "azahar" and CURRENT_EMULATOR_PROC is not None and CURRENT_EMULATOR_PROC.poll() is None:
+                state.tick_once_azahar()
             elif (state.mem is not None and state.mem.process_alive()) or state.attach_emulator():
                 if not state.tick_once_nds():
                     delay = NDS_LOCATE_INTERVAL
@@ -2404,7 +2587,10 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if self.path == "/api/cheats":
             available = []
             gen3_raw = read_gen3_raw()
-            if gen3_raw is not None:
+            if CURRENT_ENGINE_KEY == "azahar":
+                if STATE and STATE.ctr and STATE.ctr_game_key:
+                    available = [{"key": k, "label": GEN5_CHEATS[k]["label"]} for k in STATE.ctr.cheats()]
+            elif gen3_raw is not None:
                 if gen3_game_key_from_code(gen3_raw.get("game")):
                     available = [{"key": k, "label": v} for k, v in GEN3_CHEATS.items()]
             elif STATE and STATE.mem and STATE.nds_game_key in GAMES:
@@ -2420,8 +2606,16 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 key = gen3_game_key_from_code(gen3_raw.get("game"))
                 self._send_json({"detected": key is not None and bool(gen3_raw.get("player")), "game": key})
                 return
+            if STATE and STATE.ctr_game_key and CURRENT_ENGINE_KEY == "azahar":
+                self._send_json({"detected": bool(STATE.last_player_entries), "game": STATE.ctr_game_key})
+                return
             nds = STATE.nds if STATE and STATE.mem else None
             self._send_json({"detected": nds is not None, "game": nds.key if nds else None})
+            return
+        if self.path == "/api/azahar-install":
+            st = azahar_setup.status()
+            st["installed"] = azahar_setup.installed(AZAHAR_DIR)
+            self._send_json(st)
             return
         if self.path == "/api/volume":
             vol = _emulator_audio_session()
@@ -2450,6 +2644,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 if "originX" in bundle:
                     bundle["playerX"] -= bundle.pop("originX")
                     bundle["playerY"] -= bundle.pop("originY")
+                if "dotX" in bundle:
+                    bundle["playerX"] = bundle.pop("dotX")
+                    bundle["playerY"] = bundle.pop("dotY")
                 if "gen4Game" in bundle:
                     hour = time.localtime().tm_hour
                     bundle["encounters"] = gen4_maps.build_encounters(bundle.pop("gen4Game"), bundle.pop("gen4Raw"), hour)
@@ -2632,6 +2829,11 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 self._send_json({"ok": True})
             else:
                 self._send_json({"ok": False})
+            return
+        if self.path == "/api/azahar-install":
+            if not azahar_setup.installed(AZAHAR_DIR):
+                azahar_setup.start(AZAHAR_DIR)
+            self._send_json(azahar_setup.status())
             return
         if self.path == "/api/stop":
             stop_emulator()

@@ -556,7 +556,6 @@ def randomize_starters(g, rng, opts, pool, pre, log, names):
             basics = [s for s in basics if any(evolves[t] for t in evolves[s])] or basics
         if opts["starters"] == "randomAny":
             basics = [s for s in pool if s not in old]
-        import randomizer as R
         chosen = R._three_starters(rng, basics, g.types, opts["starterTypes"])
     mapping = dict(zip(old, chosen))
     for where, at in places:

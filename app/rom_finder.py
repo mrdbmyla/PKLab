@@ -12,12 +12,16 @@ GBA_TITLES = {"POKEMON EMER": "EMERALD", "POKEMON FIRE": "FIRERED", "POKEMON LEA
               "POKEMON RUBY": "RUBY", "POKEMON SAPP": "SAPPHIRE"}
 GBC_TITLES = {"PM_CRYSTAL": "CRYSTAL", "POKEMON_GLD": "GOLD", "POKEMON_SLV": "SILVER"}
 GBA_CODES = {"BPE": "EMERALD", "BPR": "FIRERED", "BPG": "LEAFGREEN", "AXV": "RUBY", "AXP": "SAPPHIRE"}
-ROM_EXTS = {".nds", ".gba", ".gbc", ".gb", ".srl", ".dsi", ".agb", ".bin", ".rom"}
+CTR_TITLES = {0x0004000000055E00: "POKEMON Y", 0x000400000011C400: "POKEMON OR", 0x00040000001B5000: "POKEMON US", 0x0004000000164800: "POKEMON S", 0x0004000000175E00: "POKEMON M",
+              0x0004000000055D00: "POKEMON X", 0x000400000011C500: "POKEMON AS", 0x00040000001B5100: "POKEMON UM"}
+CTR_EXTS = {".3ds", ".cci", ".cxi"}
+ROM_EXTS = {".nds", ".gba", ".gbc", ".gb", ".srl", ".dsi", ".agb", ".bin", ".rom"} | CTR_EXTS
 SKIP_DIRS = {"windows", "windows.old", "program files", "program files (x86)", "programdata", "$recycle.bin",
              "system volume information", "$winreagent", "$windows.~bt", "$windows.~ws", "recovery", "perflogs",
              "config.msi", "msocache", "appdata", "node_modules", ".git", "__pycache__", "site-packages"}
 MIN_SIZE = 0x40000
 MAX_SIZE = 1 << 30
+MAX_SIZE_CTR = 1 << 33
 FULL_SCAN_MAX_AGE = 6 * 3600
 
 
@@ -44,11 +48,17 @@ def identify(path):
         g = t if t in NDS_TITLES else NDS_CODES.get(_text(h[0x0C:0x0F]))
         if g:
             return "melonds", g
+    if len(h) >= 0x120 and h[0x100:0x104] in (b"NCSD", b"NCCH"):
+        tid = int.from_bytes(h[0x108:0x110] if h[0x100:0x104] == b"NCSD" else h[0x118:0x120], "little")
+        g = CTR_TITLES.get(tid)
+        if g:
+            return "azahar", g
     return None
 
 
 def _candidate(entry):
-    if os.path.splitext(entry.name)[1].lower() not in ROM_EXTS:
+    ext = os.path.splitext(entry.name)[1].lower()
+    if ext not in ROM_EXTS:
         return False
     try:
         st = entry.stat()
@@ -56,7 +66,7 @@ def _candidate(entry):
         return False
     if getattr(st, "st_file_attributes", 0) & 0x441000:
         return False
-    return MIN_SIZE <= st.st_size <= MAX_SIZE
+    return MIN_SIZE <= st.st_size <= (MAX_SIZE_CTR if ext in CTR_EXTS else MAX_SIZE)
 
 
 def _drives():
@@ -98,7 +108,7 @@ class RomIndex:
         try:
             with open(self.cache_path, encoding="utf-8") as f:
                 data = json.load(f)
-            self.scanned_at = float(data.get("scannedAt", 0)) if data.get("exts") == sorted(ROM_EXTS) else 0
+            self.scanned_at = float(data.get("scannedAt", 0)) if data.get("exts") == sorted(ROM_EXTS) and data.get("ctr") == sorted(CTR_TITLES.values()) else 0
             for e in data.get("roms", []):
                 self.items[os.path.normcase(e["path"])] = (e["path"], e["engine"], e["game"])
         except Exception:
@@ -110,7 +120,7 @@ class RomIndex:
         try:
             tmp = self.cache_path + ".tmp"
             with open(tmp, "w", encoding="utf-8") as f:
-                json.dump({"scannedAt": self.scanned_at, "exts": sorted(ROM_EXTS), "roms": roms}, f, ensure_ascii=False)
+                json.dump({"scannedAt": self.scanned_at, "exts": sorted(ROM_EXTS), "ctr": sorted(CTR_TITLES.values()), "roms": roms}, f, ensure_ascii=False)
             os.replace(tmp, self.cache_path)
         except OSError:
             pass
