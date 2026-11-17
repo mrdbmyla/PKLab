@@ -4,7 +4,7 @@
 
 [English](../README.md) / Français / [Español](README-es.md)
 
-PKLab est un compagnon pour les jeux Pokémon (Gen 2, 3, 4 et 5) joués sur émulateur. Il lit ton équipe et l'adversaire en direct dans la mémoire de l'émulateur et affiche les faiblesses, les stats et les attaques. Il inclut aussi un randomizer, un éditeur de sauvegarde et un curseur de vitesse du jeu.
+PKLab est un compagnon pour les jeux Pokémon (Gen 2 à 7 : Game Boy Color, GBA, DS et 3DS) joués sur émulateur. Il lit ton équipe et l'adversaire en direct dans la mémoire de l'émulateur et affiche les faiblesses, les stats et les attaques. Il inclut aussi un randomizer, un éditeur de sauvegarde et un curseur de vitesse du jeu.
 
 Téléchargement : [Releases](https://github.com/mrdbmyla/PKLab/releases) → `PKLab.exe` (aucune installation). Les ROM ne sont pas fournies.
 
@@ -16,10 +16,12 @@ Ce n'est **pas** un projet open source : tous droits réservés (voir [LICENSE](
 Ce que fait le programme, en bref :
 - serveur local sur `127.0.0.1:8731` uniquement (inaccessible depuis le réseau) ;
 - lecture de la mémoire de mGBA / melonDS (`pymem`) pour afficher ton équipe ;
+- 3DS : dialogue avec l'émulateur Azahar par son interface RPC locale (port UDP 45987 sur ce PC, `app/azahar_reader.py`) ; pour les triches de Soleil / Lune / Ultra-Soleil / Ultra-Lune, écriture aussi dans la mémoire du processus Azahar (`WriteProcessMemory` de Windows). Azahar écoute sur toutes les interfaces réseau, Windows peut donc demander l'accès réseau la première fois : tu peux refuser, PKLab n'a besoin que de la connexion locale ;
 - connexions Internet (téléchargements seulement, rien n'est envoyé) :
   - l'API GitHub de ce dépôt, pour les mises à jour (`app/updater.py`) ; les fichiers téléchargés sont vérifiés par leur sha256 ;
   - `raw.githubusercontent.com/pret/…` : données publiques des cartes (`app/gen3_maps.py`, `app/gen4_maps.py`), gardées en cache ;
   - `raw.githubusercontent.com/PokeAPI/sprites` : images de secours des Pokémon ;
+  - `github.com/azahar-emu/azahar/releases` : Azahar 2126.2 officiel pour Windows, téléchargé seulement la première fois que tu lances un jeu 3DS, et vérifié par son sha256 (`app/azahar_setup.py`) ;
   - Google Fonts : la police de l'interface ;
 - aucune télémétrie, aucun compte.
 
@@ -31,8 +33,10 @@ Ce que fait le programme, en bref :
 | `app/nds_reader.py`, `app/games.py` | lecture des jeux DS (Gen 4/5) dans melonDS |
 | `mgba_gen2_bridge.lua` | script lancé dans mGBA pour les jeux GBC (Gen 2 : Or, Argent, Cristal) |
 | `mgba_gen3_bridge.lua` | script lancé dans mGBA pour les jeux GBA (Gen 3) |
+| `app/azahar_reader.py`, `app/azahar_setup.py` | lecture des jeux 3DS (Gen 6/7) dans Azahar, et téléchargement d'Azahar |
+| `app/ctr_rom.py`, `app/ctr_maps.py` | lecture des fichiers ROM 3DS (zones, rencontres, cartes de région) |
 | `app/engine.py` | décodage des Pokémon et calcul des faiblesses |
-| `app/randomizer*.py`, `app/save_editor.py`, `app/shiny_patch.py` | outils |
+| `app/randomizer*.py`, `app/save_editor.py`, `app/save_gen2.py`, `app/save_gen6.py`, `app/shiny_patch.py` | outils |
 | `app/updater.py` | mises à jour |
 | `app/rom_finder.py` | recherche des ROM sur le PC (lit seulement l'en-tête des fichiers) |
 | `pklab.html`, `data/` | interface et données |
@@ -49,6 +53,7 @@ pip install -r app/requirements.txt pyinstaller
 Les éléments suivants ne sont **pas** dans ce dépôt et doivent être ajoutés à la main avant la construction :
 - `app/mgba_bundle/mGBA.exe` : [mGBA 0.11](https://mgba.io/downloads.html) officiel pour Windows (licence MPL-2.0, [code source](https://github.com/mgba-emu/mgba)) ;
 - `app/melonds_bundle/melonDS.exe` : [melonDS 1.1](https://melonds.kuribo64.net/downloads.php) officiel pour Windows (licence GPL-3.0, [code source](https://github.com/melonDS-emu/melonDS)) ;
+- Azahar (3DS) n'est **pas** dans `PKLab.exe` : PKLab le télécharge lui-même (voir plus haut), [version officielle](https://github.com/azahar-emu/azahar/releases) (licence GPL-2.0, [code source](https://github.com/azahar-emu/azahar)) ;
 - `boxart/` et `data/sprites/` : images des jeux et des Pokémon (propriété de Nintendo / The Pokémon Company, non redistribuées ici).
 
 Puis :
