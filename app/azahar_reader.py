@@ -227,8 +227,9 @@ class AzaharReader:
 
     def detect(self):
         for tid in self.rpc.title_ids():
-            if tid in GAMES:
-                self.title, self.game = tid, GAMES[tid]
+            base = tid & 0xFFFFFFFF00FFFFFF if tid & 0x80000000 else tid
+            if base in GAMES:
+                self.title, self.game = tid, GAMES[base]
                 return self.game["key"]
         self.title, self.game = None, None
         return None

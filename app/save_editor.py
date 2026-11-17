@@ -2,6 +2,7 @@ import os
 import struct
 
 import save_gen2 as G2
+import save_gen6 as G6
 from games_gen3 import SUBSTRUCT_ORDERS, gen3_species_to_national
 
 GEN3_SIG = 0x08012025
@@ -292,6 +293,8 @@ GEN4_FAMILY = {"POKEMON D": "DP", "POKEMON P": "DP", "POKEMON PL": "PT", "POKEMO
 
 def open_save(path, game_key=None):
     raw = open(path, "rb").read()
+    if len(raw) in G6.FAMILIES:
+        return G6.open_save(raw, game_key)
     if G2.SAVE_SIZE <= len(raw) <= G2.SAVE_SIZE + 0x40:
         return G2.open_save(raw, game_key)
     if len(raw) in (0x20000, 0x20010):
@@ -459,6 +462,8 @@ def species_table(rom_path):
     import randomizer_gen3 as R3
     import randomizer_gen4 as R4
     import gen4_maps
+    if rom_path.lower().endswith((".3ds", ".cci", ".cxi")):
+        return G6.personal_rom(rom_path)
     with open(rom_path, "rb") as f:
         rom = bytearray(f.read())
     if rom_path.lower().endswith((".gbc", ".gb")):
@@ -564,6 +569,8 @@ def edit_mon(sv, where, changes, table=None):
     table = table or base_table(sv.gen)
     if sv.gen == 2:
         return G2.edit_mon(sv, where, changes, table, exp_for_level, level_for_exp, _move_pp)
+    if sv.gen == 6:
+        return G6.edit_mon(sv, where, changes, table, exp_for_level, level_for_exp, calc_stats, _move_pp)
     raw = read_mon(sv, where)
     gen3 = isinstance(sv, Gen3Save)
     if gen3:
@@ -688,6 +695,8 @@ def _gen3_internal(nat):
 
 
 def set_money(sv, value):
+    if sv.gen == 6:
+        return G6.set_money(sv, value)
     value = max(0, min(999999, int(value)))
     if sv.gen == 2:
         return G2.set_money(sv, value)
@@ -719,7 +728,7 @@ BAG5_BLOCK = {"BW": (0x18400, 0x9C0, 0x32), "B2W2": (0x18400, 0x9EC, 0x32)}
 
 
 def save_family(sv):
-    if sv.gen == 2:
+    if sv.gen in (2, 6):
         return sv.family
     if isinstance(sv, Gen3Save):
         return "FRLG" if sv.family == "FRLG" else ("RS" if sv.key == 0 else "E")
@@ -750,6 +759,8 @@ def _bag_buf(sv):
 def bag(sv):
     if sv.gen == 2:
         return G2.bag(sv)
+    if sv.gen == 6:
+        return G6.bag(sv)
     buf, base = _bag_buf(sv)
     xor = sv.key & 0xFFFF if isinstance(sv, Gen3Save) else 0
     out = []
@@ -766,6 +777,8 @@ def bag(sv):
 def set_bag(sv, pockets):
     if sv.gen == 2:
         return G2.set_bag(sv, pockets)
+    if sv.gen == 6:
+        return G6.set_bag(sv, pockets)
     buf, base = _bag_buf(sv)
     xor = sv.key & 0xFFFF if isinstance(sv, Gen3Save) else 0
     top = 99 if isinstance(sv, Gen3Save) else 999
@@ -792,6 +805,8 @@ def item_pockets(rom_path):
     import randomizer_gen4 as R4
     import gen4_maps
     import nds_rebuild
+    if rom_path.lower().endswith((".3ds", ".cci", ".cxi")):
+        return item_pockets_default(G6.rom_family(rom_path))
     with open(rom_path, "rb") as f:
         rom = f.read()
     if rom_path.lower().endswith((".gbc", ".gb")):
@@ -844,7 +859,7 @@ def item_pockets_default(family):
 DEX3_SEEN = {"E": (0x988, 0x3B24), "RS": (0x938, 0x3A8C), "FRLG": (0x5F8, 0x3A18)}
 DEX4 = {"DP": 0x12DC, "PT": 0x1328, "HGSS": 0x12B8}
 DEX5 = {"BW": (0x21600, 0x4D4, 0x6E), "B2W2": (0x21400, 0x4DC, 0x6C)}
-DEX_MAX = {2: 251, 3: 386, 4: 493, 5: 649}
+DEX_MAX = {2: 251, 3: 386, 4: 493, 5: 649, 6: 721}
 
 
 def _sb1_at(sv, off):
@@ -880,6 +895,8 @@ def _dex_where(sv):
 def dex(sv):
     if sv.gen == 2:
         return G2.dex(sv)
+    if sv.gen == 6:
+        return G6.dex(sv)
     n = DEX_MAX[sv.gen]
     if isinstance(sv, Gen3Save):
         s0 = sv.sections[0][1]
@@ -897,6 +914,8 @@ def dex(sv):
 def set_dex(sv, seen, caught, table=None):
     if sv.gen == 2:
         return G2.set_dex(sv, seen, caught)
+    if sv.gen == 6:
+        return G6.set_dex(sv, seen, caught, table or base_table(6))
     n = DEX_MAX[sv.gen]
     caught = {int(x) for x in caught if 1 <= int(x) <= n}
     seen = {int(x) for x in seen if 1 <= int(x) <= n} | caught
@@ -939,7 +958,7 @@ def set_dex(sv, seen, caught, table=None):
     _gen5_fix(sv, start, length, tab)
 
 
-MON_EXT = {2: ".pk2", 3: ".pk3", 4: ".pk4", 5: ".pk5"}
+MON_EXT = {2: ".pk2", 3: ".pk3", 4: ".pk4", 5: ".pk5", 6: ".pk6"}
 BOX_SIZE = {3: 80, 4: 136, 5: 136}
 PARTY_SIZE = {3: 100, 4: 236, 5: 220}
 
@@ -947,6 +966,8 @@ PARTY_SIZE = {3: 100, 4: 236, 5: 220}
 def export_mon(sv, where):
     if sv.gen == 2:
         return G2.export_mon(sv, where)
+    if sv.gen == 6:
+        return G6.export_mon(sv, where)
     raw = read_mon(sv, where)
     if isinstance(sv, Gen3Save):
         if decode_pk3(raw) is None:
@@ -998,6 +1019,9 @@ def import_mon(sv, where, data, table=None):
         raw, ot, nick, egg = G2.from_file(data)
         _place2(sv, where, raw, ot, nick, egg, table)
         return
+    if sv.gen == 6:
+        place_mon(sv, where, G6.from_file(data), table)
+        return
     place_mon(sv, where, _box_raw_from_file(sv, data), table)
 
 
@@ -1011,6 +1035,8 @@ def _place2(sv, where, raw, ot, nick, egg, table):
 def remove_mon(sv, where):
     if sv.gen == 2:
         return G2.remove_mon(sv, where)
+    if sv.gen == 6:
+        return G6.remove_mon(sv, where)
     if where[0] != "party":
         write_mon(sv, where, bytes(BOX_SIZE[sv.gen]))
         return
@@ -1033,6 +1059,8 @@ MOVE_MAX = {3: 354, 4: 467, 5: 559}
 def check_mon(gen, m, table=None, pockets=None):
     if gen == 2:
         return G2.check_mon(m, table, pockets, exp_for_level, level_for_exp)
+    if gen == 6:
+        return G6.check_mon(m, table, pockets, exp_for_level, level_for_exp)
     if not m:
         return []
     if m.get("bad"):
@@ -1099,6 +1127,8 @@ def species_names_raw(rom_path):
     import randomizer_gen4 as R4
     import gen4_maps
     import nds_rebuild
+    if rom_path.lower().endswith((".3ds", ".cci", ".cxi")):
+        return None
     with open(rom_path, "rb") as f:
         rom = f.read()
     if rom_path.lower().endswith((".gbc", ".gb")):
@@ -1162,6 +1192,11 @@ def create_mon(sv, where, species, level, nature, shiny=False, moves=None, table
         raw, ot, nick = G2.create_mon(sv, where, species, level, shiny, moves, table, exp_for_level, _move_pp, name,
                                       [int(v) for v in ivs][:4] if ivs else None)
         _place2(sv, where, raw, ot, nick, False, table)
+        return
+    if gen == 6:
+        pk = G6.create_mon(sv, species, level, nature, shiny, moves, table, ivs, _species_name(sv, int(species)),
+                           exp_for_level, _move_pp)
+        place_mon(sv, where, pk, table)
         return
     species, level, nature = int(species), max(1, min(100, int(level))), int(nature) % 25
     if species not in table or not 1 <= species <= DEX_MAX[gen]:
@@ -1249,12 +1284,15 @@ def create_mon(sv, where, species, level, nature, shiny=False, moves=None, table
 
 def _species_name(sv, species):
     import json
-    vg = {2: 4, 3: 6, 4: 9, 5: 14}[sv.gen]
+    vg = {2: 4, 3: 6, 4: 9, 5: 14, 6: 15 if sv.family == "XY" else 16}[sv.gen]
     with open(os.path.join(_data_dir(), "fiche", f"vg_{vg}.json"), encoding="utf-8") as f:
         return json.load(f)["species"][str(species)]["name"]
 
 
 def place_mon(sv, where, raw, table=None):
+    if sv.gen == 6:
+        G6.place_mon(sv, where, raw, lambda: edit_mon(sv, where, {"recalc": True}, table))
+        return
     if where[0] != "party":
         write_mon(sv, where, raw)
         return
@@ -1275,7 +1313,7 @@ def place_mon(sv, where, raw, table=None):
 
 
 def write_save(sv, path):
-    if sv.gen == 2:
+    if sv.gen in (2, 6):
         raw = sv.finish()
         old = open(path, "rb").read()
         if not os.path.exists(path + ".bak"):

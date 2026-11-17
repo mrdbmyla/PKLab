@@ -375,3 +375,166 @@ def garc_file(rom, name, index):
         return None
     start, end, _ = struct.unpack_from("<III", rom._read(e + 4, 12))
     return rom._read(base + data_off + start, end - start)
+
+
+def _lz11_match(data, pos, heads, n):
+    best_len, best_disp = 0, 0
+    if pos + 3 > n:
+        return 0, 0
+    cands = heads.get(data[pos:pos + 3])
+    if not cands:
+        return 0, 0
+    limit = min(0x10110, n - pos)
+    for c in reversed(cands):
+        d = pos - c
+        if d > 0x1000:
+            break
+        ln = 3
+        while ln < limit and data[c + ln] == data[pos + ln]:
+            ln += 1
+        if ln > best_len:
+            best_len, best_disp = ln, d
+            if ln == limit:
+                break
+    return best_len, best_disp
+
+
+def lz11_pack(data):
+    data = bytes(data)
+    n = len(data)
+    out = bytearray(b"\x11" + n.to_bytes(3, "little") if n < 0x1000000 else b"\x11\x00\x00\x00" + n.to_bytes(4, "little"))
+    heads = {}
+    added = 0
+
+    def index_to(limit):
+        nonlocal added
+        while added < min(limit, n - 2):
+            lst = heads.setdefault(data[added:added + 3], [])
+            lst.append(added)
+            if lst[0] < added - 0x1000:
+                k = 0
+                while lst[k] < added - 0x1000:
+                    k += 1
+                del lst[:k]
+            added += 1
+
+    pos = 0
+    while pos < n:
+        flag_at = len(out)
+        out.append(0)
+        flags = 0
+        for bit in range(8):
+            if pos >= n:
+                break
+            index_to(pos)
+            ln, disp = _lz11_match(data, pos, heads, n)
+            if ln >= 3:
+                index_to(pos + 1)
+                ln2, _ = _lz11_match(data, pos + 1, heads, n)
+                if ln2 > ln + 1:
+                    ln = 0
+            if ln >= 3:
+                flags |= 0x80 >> bit
+                d = disp - 1
+                if ln <= 0x10:
+                    out += bytes(((ln - 1) << 4 | d >> 8, d & 0xFF))
+                elif ln <= 0x110:
+                    v = ln - 0x11
+                    out += bytes((v >> 4, (v & 0xF) << 4 | d >> 8, d & 0xFF))
+                else:
+                    v = ln - 0x111
+                    out += bytes((0x10 | v >> 12, (v >> 4) & 0xFF, (v & 0xF) << 4 | d >> 8, d & 0xFF))
+                pos += ln
+            else:
+                out.append(data[pos])
+                pos += 1
+        out[flag_at] = flags
+    while len(out) % 4:
+        out.append(0)
+    return bytes(out)
+
+
+def garc_build(original, files):
+    if original[:4] != b"CRAG":
+        raise ValueError("GARC invalide")
+    hsize, _, version = struct.unpack_from("<IHH", original, 4)
+    if version != 0x0400:
+        raise ValueError("version de GARC non prise en charge")
+    data_off = struct.unpack_from("<I", original, 0x10)[0]
+    fato_size, count = struct.unpack_from("<IH", original, hsize + 4)
+    if count != len(files):
+        raise ValueError("nombre de fichiers différent")
+    offs = struct.unpack_from(f"<{count}I", original, hsize + 0xC)
+    fatb = hsize + fato_size
+    head = bytearray(original[:data_off])
+    body = bytearray()
+    largest = 0
+    for i, blob in enumerate(files):
+        e = fatb + 0xC + offs[i]
+        if struct.unpack_from("<I", original, e)[0] != 1:
+            raise ValueError("GARC à sous-fichiers multiples non pris en charge")
+        o_start, o_end, o_len = struct.unpack_from("<III", original, e + 4)
+        size = o_len if bytes(blob) == original[data_off + o_start:data_off + o_end] else len(blob)
+        start = len(body)
+        body += blob[:size]
+        while len(body) % 4:
+            body.append(0xFF)
+        struct.pack_into("<III", head, e + 4, start, len(body), size)
+        largest = max(largest, size)
+    fimb = fatb + struct.unpack_from("<I", original, fatb + 4)[0]
+    struct.pack_into("<I", head, fimb + 8, len(body))
+    struct.pack_into("<I", head, 0x14, data_off + len(body))
+    struct.pack_into("<I", head, 0x18, largest)
+    return bytes(head + body)
+
+
+def blz(data):
+    data = bytearray(data)
+    info, extra = struct.unpack_from("<II", data, len(data) - 8)
+    top = info & 0xFFFFFF
+    bottom = info >> 24
+    out = data + bytearray(extra)
+    src = len(data) - bottom
+    dst = len(out)
+    end = len(data) - top
+    while src > end:
+        src -= 1
+        flags = out[src]
+        for _ in range(8):
+            if src <= end:
+                break
+            if flags & 0x80:
+                src -= 2
+                v = out[src] | out[src + 1] << 8
+                disp = (v & 0xFFF) + 3
+                for _ in range((v >> 12) + 3):
+                    dst -= 1
+                    out[dst] = out[dst + disp]
+            else:
+                src -= 1
+                dst -= 1
+                out[dst] = out[src]
+            flags = (flags << 1) & 0xFF
+    return bytes(out)
+
+
+def exefs_code(path):
+    with open(path, "rb") as f:
+        h = f.read(0x200)
+        part = struct.unpack_from("<I", h, 0x120)[0] * MEDIA if h[0x100:0x104] == b"NCSD" else 0
+        f.seek(part)
+        n = f.read(0x200)
+        ex = f.read(0x400)
+        if n[0x100:0x104] != b"NCCH" or not n[0x18F] & 4:
+            raise ValueError("ROM 3DS non prise en charge (chiffrée ?)")
+        exefs = part + struct.unpack_from("<I", n, 0x1A0)[0] * MEDIA
+        f.seek(exefs)
+        eh = f.read(0x200)
+        for i in range(10):
+            if eh[i * 16:i * 16 + 8].rstrip(b"\0") == b".code":
+                off, size = struct.unpack_from("<II", eh, i * 16 + 8)
+                f.seek(exefs + 0x200 + off)
+                raw = f.read(size)
+                return blz(raw) if ex[0xD] & 1 else raw
+    raise ValueError("code du jeu introuvable")
+

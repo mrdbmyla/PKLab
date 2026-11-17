@@ -32,6 +32,7 @@ import gen2_maps
 import gen4_maps
 import gen5_maps
 import randomizer
+import randomizer_gen6
 import save_editor
 import shiny_patch
 import updater
@@ -156,6 +157,40 @@ def _prepare_azahar_config():
     _ini_set(ini, "[UI]", {"confirmClose\\default": "false", "confirmClose": "false",
                            sc + "Save\\KeySeq\\default": "false", sc + "Save\\KeySeq": "Shift+F1",
                            sc + "Load\\KeySeq\\default": "false", sc + "Load\\KeySeq": "F1"})
+    _azahar_any_controller(ini)
+
+
+def _azahar_any_controller(ini):
+    try:
+        with open(ini, encoding="utf-8") as f:
+            lines = f.read().split("\n")
+    except OSError:
+        return
+    cur, changed = "", False
+    for i, line in enumerate(lines):
+        t = line.strip()
+        if t.startswith("[") and t.endswith("]"):
+            cur = t
+            continue
+        if cur != "[Controls]" or "=" not in t:
+            continue
+        k, v = t.split("=", 1)
+        if k.endswith("input_maptype\\default"):
+            nv = "false"
+        elif k.endswith("input_maptype"):
+            nv = "0"
+        elif "engine:sdl" in v or "engine$0sdl" in v:
+            nv = re.sub(r"maptype(:|\$0)guid(\+port)?", r"maptype\1all", v)
+        else:
+            continue
+        if nv != v:
+            lines[i] = f"{k}={nv}"
+            changed = True
+    if changed:
+        tmp = ini + ".tmp"
+        with open(tmp, "w", encoding="utf-8", newline="") as f:
+            f.write("\n".join(lines))
+        os.replace(tmp, ini)
 
 
 def _ctr_title_id(rom_path):
@@ -289,6 +324,11 @@ def rando_rom_entry(path):
         if key and not re.search(r"\((Aleatoire|Aleatorio|Random) \d", os.path.basename(path)) \
                 and not os.path.isfile(shiny_patch.side_path(os.path.splitext(path)[0])):
             return {"path": path, "game": key, "name": os.path.basename(path), "engine": "mgba"}
+    elif low.endswith(tuple(rom_finder.CTR_EXTS)):
+        hit = rom_finder.identify(path)
+        tid = _ctr_title_id(path)
+        if hit and hit[1] in randomizer_gen6.FAMILY and tid and rom_finder.base_tid(tid) == tid:
+            return {"path": path, "game": hit[1], "name": os.path.basename(path), "engine": "azahar"}
     return None
 
 
@@ -297,7 +337,7 @@ RANDO_PICKED = []
 
 def rando_roms():
     out, seen = [], set()
-    for path in scan_roms("melonds") + scan_roms("mgba") + RANDO_PICKED:
+    for path in scan_roms("melonds") + scan_roms("mgba") + scan_roms("azahar") + RANDO_PICKED:
         e = rando_rom_entry(path)
         if e and os.path.normcase(path) not in seen:
             seen.add(os.path.normcase(path))
@@ -311,7 +351,7 @@ def rando_pick_rom():
         return {"ok": False, "cancelled": True}
     e = rando_rom_entry(path)
     if not e:
-        return {"ok": False, "error": "Cette ROM n'est pas prise en charge (Pokémon 2G, 3G, 4G ou 5G d'origine)"}
+        return {"ok": False, "error": "Cette ROM n'est pas prise en charge (Pokémon 2G, 3G, 4G, 5G, X, Y, Rubis Oméga ou Saphir Alpha d'origine)"}
     if path not in RANDO_PICKED:
         RANDO_PICKED.append(path)
     return {"ok": True, "rom": e}
@@ -349,7 +389,8 @@ def run_randomizer(data):
         return {"ok": False, "error": "La graine et les pourcentages doivent être des nombres"}
     vg = {"POKEMON B2": 14, "POKEMON W2": 14, "POKEMON D": 8, "POKEMON P": 8, "POKEMON PL": 9,
           "POKEMON HG": 10, "POKEMON SS": 10, "RUBY": 5, "SAPPHIRE": 5, "EMERALD": 6, "FIRERED": 7,
-          "LEAFGREEN": 7, "GOLD": 3, "SILVER": 3, "CRYSTAL": 4}.get(roms[path]["game"], 11)
+          "LEAFGREEN": 7, "GOLD": 3, "SILVER": 3, "CRYSTAL": 4, "POKEMON X": 15, "POKEMON Y": 15, "POKEMON OR": 16,
+          "POKEMON AS": 16}.get(roms[path]["game"], 11)
     base = None
     try:
         with open(res("data", "fiche", f"vg_{vg}.json"), encoding="utf-8") as f:
@@ -359,6 +400,8 @@ def run_randomizer(data):
     out_path, err = rando_out_path(path, data.get("name"))
     if err:
         return {"ok": False, "error": err}
+    if roms[path]["engine"] == "azahar":
+        return _run_randomizer_ctr(path, roms[path], options, out_path, base, data.get("copySave"))
     try:
         out, report, summary = randomizer.randomize(path, options, out_path=out_path, fiche_base=base,
                                                     sprite_dir=res("data", "sprites"))
@@ -374,6 +417,33 @@ def run_randomizer(data):
     summary = dict(summary, game=roms[path]["game"])
     remember_created(out)
     return {"ok": True, "out": out, "report": report, "saveCopied": save_copied, "engine": roms[path]["engine"], **summary}
+
+
+def _copy_ctr_save(src_rom, out_rom):
+    src = os.path.join(randomizer_gen6.save_dir(AZAHAR_DIR, _ctr_title_id(src_rom)), "data")
+    dst = os.path.join(randomizer_gen6.save_dir(AZAHAR_DIR, _ctr_title_id(out_rom)), "data")
+    if os.path.isfile(os.path.join(src, "00000001", "main")) and not os.path.exists(dst):
+        shutil.copytree(src, dst)
+        return True
+    return False
+
+
+def _run_randomizer_ctr(path, rom, options, out_path, base, copy_save):
+    used = set()
+    for r in scan_roms("azahar"):
+        try:
+            used.add(_ctr_title_id(r))
+        except Exception:
+            pass
+    try:
+        out, report, summary = randomizer_gen6.randomize(path, options, out_path, base, AZAHAR_DIR, used)
+    except Exception as e:
+        return {"ok": False, "error": str(e)}
+    save_copied = _copy_ctr_save(path, out) if copy_save else False
+    summary = dict(summary, game=rom["game"])
+    summary.pop("tid", None)
+    remember_created(out)
+    return {"ok": True, "out": out, "report": report, "saveCopied": save_copied, "engine": "azahar", **summary}
 
 
 SHINY_PICKED = []
@@ -398,6 +468,14 @@ def shiny_rom_entry(path):
         game, eng = gbc_game_key(path), "mgba"
         if not game:
             return None
+    elif low.endswith(tuple(rom_finder.CTR_EXTS)):
+        hit = rom_finder.identify(path)
+        if not hit or hit[1] not in randomizer_gen6.FAMILY:
+            return None
+        game, eng = hit[1], "azahar"
+        t = shiny_patch.side_threshold(path)
+        return {"path": path, "game": game, "name": os.path.basename(path), "engine": eng,
+                "odds": "1 / 4096" if t == 8 else ("100 %" if t >= 0x10000 else f"1 / {round(65536 / t)}")}
     else:
         return None
     t = shiny_patch.side_threshold(path)
@@ -407,7 +485,7 @@ def shiny_rom_entry(path):
 
 def shiny_roms():
     out, seen = [], set()
-    for path in scan_roms("melonds") + scan_roms("mgba") + SHINY_PICKED:
+    for path in scan_roms("melonds") + scan_roms("mgba") + scan_roms("azahar") + SHINY_PICKED:
         e = shiny_rom_entry(path)
         if e and os.path.normcase(path) not in seen:
             seen.add(os.path.normcase(path))
@@ -421,7 +499,7 @@ def shiny_pick_rom():
         return {"ok": False, "cancelled": True}
     e = shiny_rom_entry(path)
     if not e:
-        return {"ok": False, "error": "Cette ROM n'est pas prise en charge (Pokémon 2G, 3G, 4G ou 5G)"}
+        return {"ok": False, "error": "Cette ROM n'est pas prise en charge (Pokémon 2G, 3G, 4G, 5G, X, Y, Rubis Oméga ou Saphir Alpha)"}
     if path not in SHINY_PICKED:
         SHINY_PICKED.append(path)
     return {"ok": True, "rom": e}
@@ -433,8 +511,9 @@ def run_shiny_tool(data):
     if path not in roms:
         return {"ok": False, "error": "ROM introuvable ou non prise en charge"}
     value = str(data.get("value") or "").strip()
+    ctr = roms[path]["engine"] == "azahar"
     try:
-        label = shiny_patch.resolve(value, ds=path.lower().endswith(".nds"))["label"]
+        label = (shiny_patch.ctr_resolve(value) if ctr else shiny_patch.resolve(value, ds=path.lower().endswith(".nds")))["label"]
     except ValueError as e:
         return {"ok": False, "error": str(e)}
     out, err = rando_out_path(path, data.get("name"))
@@ -445,12 +524,21 @@ def run_shiny_tool(data):
         out = f"{root} (Shiny {label.replace(' / ', '-').replace(' %', 'pc')}){ext}"
         if os.path.exists(out):
             return {"ok": False, "error": "Une ROM porte déjà ce nom dans ce dossier : donne-lui un nom"}
+    used = set()
+    if ctr:
+        for r in scan_roms("azahar"):
+            try:
+                used.add(_ctr_title_id(r))
+            except Exception:
+                pass
     try:
-        line = shiny_patch.make_shiny_rom(path, out, value)
+        line = shiny_patch.make_shiny_rom(path, out, value, AZAHAR_DIR, used)
     except Exception as e:
         return {"ok": False, "error": str(e)}
     save_copied = False
-    if data.get("copySave"):
+    if data.get("copySave") and ctr:
+        save_copied = _copy_ctr_save(path, out)
+    elif data.get("copySave"):
         src_sav, dst_sav = os.path.splitext(path)[0] + ".sav", os.path.splitext(out)[0] + ".sav"
         if os.path.isfile(src_sav) and not os.path.exists(dst_sav):
             shutil.copy2(src_sav, dst_sav)
@@ -509,10 +597,11 @@ def created_rom_entry(path):
 
 
 def created_roms():
-    cands = scan_roms("melonds") + scan_roms("mgba") + RANDO_PICKED + SHINY_PICKED
+    cands = scan_roms("melonds") + scan_roms("mgba") + scan_roms("azahar") + RANDO_PICKED + SHINY_PICKED
     for d in _created_dirs():
         try:
-            cands += [os.path.join(d, n) for n in os.listdir(d) if n.lower().endswith((".nds", ".gba") + GBC_EXTS)]
+            cands += [os.path.join(d, n) for n in os.listdir(d)
+                      if n.lower().endswith((".nds", ".gba") + GBC_EXTS + tuple(rom_finder.CTR_EXTS))]
         except Exception:
             continue
     out, seen = [], set()
@@ -553,6 +642,8 @@ def created_rom_delete(data):
         return {"ok": False, "error": "ROM introuvable"}
     stem = os.path.splitext(e["path"])[0]
     files = [e["path"]] + [f for f in (shiny_patch.side_path(stem), stem + ".shiny.json", stem + ".txt") if os.path.isfile(f)]
+    if os.path.isdir(e["path"] + ".exefsdir"):
+        files.append(e["path"] + ".exefsdir")
     if not _to_recycle_bin([os.path.abspath(f) for f in files]):
         return {"ok": False, "error": "Impossible de la mettre à la corbeille (ROM ouverte ?)"}
     return {"ok": True}
@@ -676,7 +767,27 @@ def load_rom_side_data(rom_path):
 SAVE_PICKED = []
 
 
+SAVE6_TITLES = {"POKEMON X", "POKEMON Y", "POKEMON OR", "POKEMON AS"}
+
+
+def _azahar_save_path(tid):
+    return os.path.join(AZAHAR_DIR, *AZAHAR_SAVE_DIR, f"{tid & 0xFFFFFFFF:08x}", "data", "00000001", "main")
+
+
+def _ctr_saves():
+    out = {}
+    for rom in scan_roms("azahar"):
+        tid = _ctr_title_id(rom)
+        key = rom_finder.CTR_TITLES.get(rom_finder.base_tid(tid)) if tid else None
+        if key in SAVE6_TITLES:
+            out.setdefault(os.path.normcase(_azahar_save_path(tid)), (rom, key))
+    return out
+
+
 def _save_rom(sav):
+    hit = _ctr_saves().get(os.path.normcase(sav)) if os.path.basename(sav) == "main" else None
+    if hit:
+        return hit[0], hit[1], hit[1]
     stem = os.path.splitext(sav)[0]
     if os.path.isfile(stem + ".nds"):
         key = gen4_maps._rom_title(stem + ".nds")
@@ -698,6 +809,11 @@ def save_files():
             seen.add(os.path.normcase(path))
             _, game, _ = _save_rom(path)
             out.append({"path": path, "name": os.path.basename(path), "game": game})
+    for path, (rom, key) in _ctr_saves().items():
+        if os.path.isfile(path) and path not in seen:
+            seen.add(path)
+            out.append({"path": os.path.normpath(_azahar_save_path(_ctr_title_id(rom))),
+                        "name": "Azahar", "game": key})
     return out
 
 
@@ -768,7 +884,8 @@ def save_load(data):
         pockets = _save_pockets(path, sv)
         bag = save_editor.bag(sv)
         for pk in bag:
-            pk["allowed"] = sorted(i for i, c in pockets.items() if pk["code"] is None or c == pk["code"])
+            pk["allowed"] = sorted({i for i, c in pockets.items() if pk["code"] is None or c == pk["code"]} |
+                                   {it for it, _ in pk["items"]})
         warn = lambda m: save_editor.check_mon(sv.gen, m, table, pockets)
         return {"ok": True, "gen": sv.gen, "game": game, "family": sv.family, "problems": sv.problems,
                 "bag": bag, "dex": save_editor.dex(sv), "ext": save_editor.MON_EXT[sv.gen],
@@ -816,8 +933,9 @@ def save_write(data):
         if data.get("bag"):
             pockets = _save_pockets(path, sv)
             for pk in save_editor.bag(sv):
+                had = {it for it, _ in pk["items"]}
                 for it, _ in data["bag"].get(pk["key"], []):
-                    if pk["code"] is not None and pockets.get(int(it)) != pk["code"]:
+                    if pk["code"] is not None and pockets.get(int(it)) != pk["code"] and int(it) not in had:
                         return {"ok": False, "error": f"objet {it} : pas dans la poche {pk['label']}"}
             save_editor.set_bag(sv, data["bag"])
         if data.get("dex"):
@@ -904,8 +1022,8 @@ def save_import_mon(data):
         src = data.get("file") or _file_dialog("open", ext)
         if not src:
             return {"ok": False, "error": "annulé"}
-        if not src.lower().endswith((".pk2", ".pk3", ".pk4", ".pk5")):
-            return {"ok": False, "error": "choisis un fichier .pk2, .pk3, .pk4 ou .pk5"}
+        if not src.lower().endswith((".pk2", ".pk3", ".pk4", ".pk5", ".pk6")):
+            return {"ok": False, "error": "choisis un fichier .pk2, .pk3, .pk4, .pk5 ou .pk6"}
         if not src.lower().endswith(ext):
             return {"ok": False, "error": f"cette sauvegarde prend les fichiers {ext} (Pokémon de la même génération)"}
         with open(src, "rb") as f:

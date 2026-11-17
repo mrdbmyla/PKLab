@@ -76,8 +76,8 @@ def build(lang):
         "item": pair("item_names", "item_id", lang),
         "place": pair("location_names", "location_id", lang, lambda i: 1 <= region.get(i, 0) <= 5),
         "ability": pair("ability_names", "ability_id", lang),
-        "move": pair("move_names", "move_id", lang, lambda i: move_gen.get(i, 99) <= 5),
-        "species": pair("pokemon_species_names", "pokemon_species_id", lang, lambda i: i <= 649),
+        "move": pair("move_names", "move_id", lang, lambda i: move_gen.get(i, 99) <= 7),
+        "species": pair("pokemon_species_names", "pokemon_species_id", lang, lambda i: i <= 807),
     }
     types = {TYPE_KEYS.get(i, fr): t for i, (fr, t) in pair("type_names", "type_id", lang, lambda i: i <= 18).items()}
 

@@ -70,7 +70,7 @@ Rubis / Saphir	Rubí / Zafiro
 
 # ---- randomizer panel
 Randomizer	Randomizer
-Crée une version aléatoire de ton jeu (2G, 3G, 4G et 5G) en quelques clics. Mode simple pour jouer tout de suite, mode détaillé pour tout régler. La ROM d'origine n'est jamais modifiée.	Crea una versión aleatoria de tu juego (2.ª, 3.ª, 4.ª y 5.ª gen.) en pocos clics. Modo simple para jugar enseguida, modo detallado para ajustarlo todo. La ROM original nunca se modifica.
+Crée une version aléatoire de ton jeu (2G, 3G, 4G, 5G et 6G) en quelques clics. Mode simple pour jouer tout de suite, mode détaillé pour tout régler. La ROM d'origine n'est jamais modifiée.	Crea una versión aleatoria de tu juego (2.ª, 3.ª, 4.ª, 5.ª y 6.ª gen.) en pocos clics. Modo simple para jugar enseguida, modo detallado para ajustarlo todo. La ROM original nunca se modifica.
 Ton jeu	Tu juego
 Choisir une ROM...	Elegir una ROM...
 Nom	Nombre
@@ -245,7 +245,7 @@ Mélangés	Mezclados
 Aléatoires (les CT restent des CT)	Aleatorios (las MT siguen siendo MT)
 Magasins	Tiendas
 Aléatoires (prix proches, CT et Poké Balls gardés)	Aleatorias (precios parecidos, MT y Poké Balls conservadas)
-Échanges, fixes, offerts, œufs, objets au sol, objets cachés, magasins : 3G, 4G et 5G. Les dialogues citent encore les anciens Pokémon / attaques, et les Pokémon fixes gardent leur apparence sur la carte.	Intercambios, estáticos, regalos, huevos, objetos del suelo, objetos ocultos, tiendas: 3.ª, 4.ª y 5.ª gen. Los diálogos siguen mencionando los Pokémon / movimientos antiguos, y los Pokémon estáticos conservan su aspecto en el mapa.
+Échanges, fixes, offerts, œufs, objets au sol, objets cachés, magasins : 3G, 4G et 5G (6G : offerts seulement). Les dialogues citent encore les anciens Pokémon / attaques, et les Pokémon fixes gardent leur apparence sur la carte.	Intercambios, estáticos, regalos, huevos, objetos del suelo, objetos ocultos, tiendas: 3.ª, 4.ª y 5.ª gen. (6.ª gen.: solo regalos). Los diálogos siguen mencionando los Pokémon / movimientos antiguos, y los Pokémon estáticos conservan su aspecto en el mapa.
 Général	General
 Sans légendaires	Sin legendarios
 Même stade d'évolution	Misma fase evolutiva
@@ -275,12 +275,12 @@ nouvelle partie	nueva partida
 voir le détail	ver el detalle
 Jouer maintenant	Jugar ahora
 (aléatoire)	(aleatorio)
-Aucune ROM 3G/4G/5G dans Téléchargements ou Bureau	Ninguna ROM de 3.ª/4.ª/5.ª gen. en Descargas o Escritorio
+Aucune ROM 2G à 6G dans Téléchargements ou Bureau	Ninguna ROM de 2.ª a 6.ª gen. en Descargas o Escritorio
 - shiny	- shiny
 
 # ---- shiny tool
 Chance de shiny	Probabilidad de shiny
-Crée une copie de ton jeu (2G, 3G, 4G et 5G, d'origine ou déjà aléatoire) où les Pokémon chromatiques sont plus fréquents, jusqu'à 100 %. Rien d'autre ne change et la ROM d'origine n'est jamais modifiée. (phase expérimentale)	Crea una copia de tu juego (2.ª, 3.ª, 4.ª y 5.ª gen., original o ya aleatorio) en la que los Pokémon variocolor son más frecuentes, hasta el 100 %. Nada más cambia y la ROM original nunca se modifica. (experimental)
+Crée une copie de ton jeu (2G, 3G, 4G, 5G et 6G, d'origine ou déjà aléatoire) où les Pokémon chromatiques sont plus fréquents, jusqu'à 100 %. Rien d'autre ne change et la ROM d'origine n'est jamais modifiée. (phase expérimentale)	Crea una copia de tu juego (2.ª, 3.ª, 4.ª, 5.ª y 6.ª gen., original o ya aleatorio) en la que los Pokémon variocolor son más frecuentes, hasta el 100 %. Nada más cambia y la ROM original nunca se modifica. (experimental)
 Chance	Probabilidad
 1 / 4096 (2 fois plus)	1 / 4096 (2 veces más)
 1 / 1024 (8 fois plus)	1 / 1024 (8 veces más)

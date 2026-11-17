@@ -246,13 +246,88 @@ def threshold(value, ds=False):
         return 8
 
 
-def make_shiny_rom(src, out, value):
+CTR_ROLL = bytes.fromhex("2300d4e50050a0e3000050e3")
+CTR_LOOP = bytes.fromhex("2300d4e5015085e2050050e1")
+CTR_TEST = bytes.fromhex("7030ffe6200823e07120ffe6210820e0020020e0100050e30100a033")
+CTR_BASE = 0x100000
+CTR_MAX_ROLLS = 0x10000
+
+
+def _arm_imm(v):
+    for r in range(16):
+        x = ((v << 2 * r) | (v >> (32 - 2 * r))) & 0xFFFFFFFF if r else v
+        if x < 256:
+            return r << 8 | x
+    return None
+
+
+def _ctr_odds(k):
+    return 1 - (1 - 1 / 4096) ** k
+
+
+def ctr_resolve(value):
+    import math
+    value = str(value or "").strip()
+    if value == "always":
+        return {"always": True, "t": 0x10000, "label": "100 %"}
+    try:
+        n = float(value.replace(",", "."))
+    except ValueError:
+        raise ValueError("Chance invalide : tape un nombre (1 sur N)")
+    if not MIN_N <= n <= 4096:
+        raise ValueError("Chance hors limites : 1 sur 2 à 1 sur 4096 (ou « Tous shiny »)")
+    want = math.log(1 - 1 / n) / math.log(1 - 1 / 4096) if n > 1 else CTR_MAX_ROLLS
+    best = None
+    for k in range(1, CTR_MAX_ROLLS + 1):
+        if _arm_imm(k) is None:
+            continue
+        if best is None or abs(math.log(k / want)) < abs(math.log(best / want)):
+            best = k
+    p = _ctr_odds(best)
+    t = max(1, min(0xFFFF, round(65536 * p)))
+    real = 1 / p
+    label = "1 / " + (f"{real:.0f}" if real >= 10 else f"{real:.1f}".replace(".", ","))
+    return {"always": False, "k": best, "t": t, "label": label}
+
+
+def ctr_patch(code, value):
+    p = ctr_resolve(value)
+    if code.count(CTR_TEST) != 1:
+        raise ValueError("Chance de shiny : test introuvable dans le code du jeu")
+    a = code.find(CTR_ROLL)
+    b = code.find(CTR_LOOP, a)
+    if a < 0 or code.find(CTR_ROLL, a + 1) >= 0 or not 0 < b - a < 0x100:
+        raise ValueError("Chance de shiny : boucle des PID introuvable")
+    beq = struct.unpack_from("<I", code, a - 0x18)[0]
+    if beq >> 24 != 0x0A:
+        raise ValueError("Chance de shiny : code inattendu")
+    off = beq & 0xFFFFFF
+    force = a - 0x18 + 8 + ((off - (1 << 24) if off & 0x800000 else off) << 2)
+    if p["always"]:
+        patches = [(a, struct.pack("<I", 0xEA000000 | ((force - a - 8) >> 2 & 0xFFFFFF)))]
+    else:
+        mov = struct.pack("<I", 0xE3A00000 | _arm_imm(p["k"]))
+        patches = [(a, mov), (b, mov)]
+    ips = bytearray(b"PATCH")
+    for o, data in patches:
+        ips += o.to_bytes(3, "big") + len(data).to_bytes(2, "big") + data
+    ips += b"EOF"
+    return bytes(ips), p
+
+
+def make_shiny_rom(src, out, value, azahar_dir=None, used_tids=()):
     import json
     import os
     ds = src.lower().endswith(".nds")
-    resolve(value, ds=ds)
+    ctr = src.lower().endswith((".3ds", ".cci", ".cxi"))
+    if ctr:
+        ctr_resolve(value)
+    else:
+        resolve(value, ds=ds)
     if side_threshold(src) != 8:
         raise ValueError("Cette ROM a déjà une chance de shiny modifiée : pars de la ROM d'avant")
+    if ctr:
+        return _make_shiny_ctr(src, out, value, azahar_dir, used_tids)
     with open(src, "rb") as f:
         rom = bytearray(f.read())
     log = []
@@ -276,3 +351,36 @@ def make_shiny_rom(src, out, value):
         with open(os.path.splitext(out)[0] + ".shiny.json", "w", encoding="utf-8") as f:
             json.dump({"shinyThreshold": t, "source": os.path.basename(src), "choice": value}, f)
     return log[-1]
+
+
+def _make_shiny_ctr(src, out, value, azahar_dir, used_tids):
+    import json
+    import shutil
+    import ctr_rom
+    import randomizer_gen6 as R6
+    import rom_finder
+    ips, p = ctr_patch(ctr_rom.exefs_code(src), value)
+    tid = R6.pick_tid(rom_finder.base_tid(R6.read_tid(src)), azahar_dir, set(used_tids))
+    R6.copy_with_tid(src, out, tid)
+    folder = out + ".exefsdir"
+    try:
+        os.makedirs(folder, exist_ok=True)
+        with open(os.path.join(folder, "code.ips"), "wb") as f:
+            f.write(ips)
+    except Exception:
+        os.remove(out)
+        shutil.rmtree(folder, ignore_errors=True)
+        raise
+    src_side = side_path(os.path.splitext(src)[0])
+    if os.path.isfile(src_side):
+        with open(src_side, encoding="utf-8") as f:
+            data = json.load(f)
+        data["shinyThreshold"] = p["t"]
+        with open(os.path.splitext(out)[0] + ".pklab.json", "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, separators=(",", ":"))
+    else:
+        with open(os.path.splitext(out)[0] + ".shiny.json", "w", encoding="utf-8") as f:
+            json.dump({"shinyThreshold": p["t"], "source": os.path.basename(src), "choice": value,
+                       "tid": f"{tid:016X}"}, f)
+    return f"Chance de shiny : {p['label']} (au lieu de 1 / 4096)"
+

@@ -72,7 +72,7 @@ Rubis / Saphir	Ruby / Sapphire
 
 # ---- randomizer panel
 Randomizer	Randomizer
-Crée une version aléatoire de ton jeu (2G, 3G, 4G et 5G) en quelques clics. Mode simple pour jouer tout de suite, mode détaillé pour tout régler. La ROM d'origine n'est jamais modifiée.	Creates a randomized version of your game (Gen 2, 3, 4 and 5) in a few clicks. Simple mode to play right away, detailed mode to tune everything. The original ROM is never modified.
+Crée une version aléatoire de ton jeu (2G, 3G, 4G, 5G et 6G) en quelques clics. Mode simple pour jouer tout de suite, mode détaillé pour tout régler. La ROM d'origine n'est jamais modifiée.	Creates a randomized version of your game (Gen 2, 3, 4, 5 and 6) in a few clicks. Simple mode to play right away, detailed mode to tune everything. The original ROM is never modified.
 Ton jeu	Your game
 Choisir une ROM...	Choose a ROM...
 Nom	Name
@@ -247,7 +247,7 @@ Mélangés	Shuffled
 Aléatoires (les CT restent des CT)	Random (TMs stay TMs)
 Magasins	Shops
 Aléatoires (prix proches, CT et Poké Balls gardés)	Random (similar prices, TMs and Poké Balls kept)
-Échanges, fixes, offerts, œufs, objets au sol, objets cachés, magasins : 3G, 4G et 5G. Les dialogues citent encore les anciens Pokémon / attaques, et les Pokémon fixes gardent leur apparence sur la carte.	Trades, static, gifts, eggs, field items, hidden items, shops: Gen 3, 4 and 5. Dialogues still mention the old Pokémon / moves, and static Pokémon keep their look on the map.
+Échanges, fixes, offerts, œufs, objets au sol, objets cachés, magasins : 3G, 4G et 5G (6G : offerts seulement). Les dialogues citent encore les anciens Pokémon / attaques, et les Pokémon fixes gardent leur apparence sur la carte.	Trades, static, gifts, eggs, field items, hidden items, shops: Gen 3, 4 and 5 (Gen 6: gifts only). Dialogues still mention the old Pokémon / moves, and static Pokémon keep their look on the map.
 Général	General
 Sans légendaires	No legendaries
 Même stade d'évolution	Same evolution stage
@@ -277,12 +277,12 @@ nouvelle partie	new game
 voir le détail	see the details
 Jouer maintenant	Play now
 (aléatoire)	(random)
-Aucune ROM 3G/4G/5G dans Téléchargements ou Bureau	No Gen 3/4/5 ROM in Downloads or Desktop
+Aucune ROM 2G à 6G dans Téléchargements ou Bureau	No Gen 2 to 6 ROM in Downloads or Desktop
 - shiny	- shiny
 
 # ---- shiny tool
 Chance de shiny	Shiny odds
-Crée une copie de ton jeu (2G, 3G, 4G et 5G, d'origine ou déjà aléatoire) où les Pokémon chromatiques sont plus fréquents, jusqu'à 100 %. Rien d'autre ne change et la ROM d'origine n'est jamais modifiée. (phase expérimentale)	Creates a copy of your game (Gen 2, 3, 4 and 5, original or already randomized) where shiny Pokémon are more common, up to 100%. Nothing else changes and the original ROM is never modified. (experimental)
+Crée une copie de ton jeu (2G, 3G, 4G, 5G et 6G, d'origine ou déjà aléatoire) où les Pokémon chromatiques sont plus fréquents, jusqu'à 100 %. Rien d'autre ne change et la ROM d'origine n'est jamais modifiée. (phase expérimentale)	Creates a copy of your game (Gen 2, 3, 4, 5 and 6, original or already randomized) where shiny Pokémon are more common, up to 100%. Nothing else changes and the original ROM is never modified. (experimental)
 Chance	Odds
 1 / 4096 (2 fois plus)	1 / 4096 (2 times more)
 1 / 1024 (8 fois plus)	1 / 1024 (8 times more)

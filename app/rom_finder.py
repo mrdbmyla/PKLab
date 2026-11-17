@@ -14,6 +14,10 @@ GBC_TITLES = {"PM_CRYSTAL": "CRYSTAL", "POKEMON_GLD": "GOLD", "POKEMON_SLV": "SI
 GBA_CODES = {"BPE": "EMERALD", "BPR": "FIRERED", "BPG": "LEAFGREEN", "AXV": "RUBY", "AXP": "SAPPHIRE"}
 CTR_TITLES = {0x0004000000055E00: "POKEMON Y", 0x000400000011C400: "POKEMON OR", 0x00040000001B5000: "POKEMON US", 0x0004000000164800: "POKEMON S", 0x0004000000175E00: "POKEMON M",
               0x0004000000055D00: "POKEMON X", 0x000400000011C500: "POKEMON AS", 0x00040000001B5100: "POKEMON UM"}
+def base_tid(tid):
+    return tid & 0xFFFFFFFF00FFFFFF if tid & 0x80000000 else tid
+
+
 CTR_EXTS = {".3ds", ".cci", ".cxi"}
 ROM_EXTS = {".nds", ".gba", ".gbc", ".gb", ".srl", ".dsi", ".agb", ".bin", ".rom"} | CTR_EXTS
 SKIP_DIRS = {"windows", "windows.old", "program files", "program files (x86)", "programdata", "$recycle.bin",
@@ -50,7 +54,7 @@ def identify(path):
             return "melonds", g
     if len(h) >= 0x120 and h[0x100:0x104] in (b"NCSD", b"NCCH"):
         tid = int.from_bytes(h[0x108:0x110] if h[0x100:0x104] == b"NCSD" else h[0x118:0x120], "little")
-        g = CTR_TITLES.get(tid)
+        g = CTR_TITLES.get(base_tid(tid))
         if g:
             return "azahar", g
     return None
