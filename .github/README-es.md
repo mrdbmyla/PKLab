@@ -8,10 +8,10 @@ PKLab es un compañero para los juegos de Pokémon (Gen 2 a 7: Game Boy Color, G
 
 Descarga: [Releases](https://github.com/mrdbmyla/PKLab/releases) → `PKLab.exe` (no necesita instalación). Las ROM no están incluidas.
 
-## Por qué este código es público
+## Licencia
 
-Este repositorio contiene el código fuente exacto con el que se compila `PKLab.exe`. Se publica **solo para que cualquiera pueda comprobar lo que hace el programa** (sin virus, sin recogida de datos, etc.).
-**No** es un proyecto de código abierto: todos los derechos reservados (ver [LICENSE](../LICENSE)).
+Este repositorio contiene el código fuente exacto con el que se compila `PKLab.exe`. Cualquiera puede comprobar lo que hace el programa (sin virus, sin recogida de datos, etc.).
+PKLab es software libre: © 2026 Mourad, publicado bajo la **Licencia Pública General de GNU v3.0** (GPL-3.0, ver [LICENSE](../LICENSE)). Puedes usarlo, estudiarlo, modificarlo y compartirlo; cualquier versión que distribuyas, modificada o no, debe seguir bajo GPL-3.0 con su código fuente. Las imágenes y nombres de los juegos y de los Pokémon pertenecen a Nintendo / The Pokémon Company y no están cubiertos por esta licencia.
 
 Lo que hace el programa, en resumen:
 - servidor local solo en `127.0.0.1:8731` (no accesible desde la red);
@@ -54,7 +54,7 @@ Los siguientes elementos **no** están en este repositorio y hay que añadirlos 
 - `app/mgba_bundle/mGBA.exe`: [mGBA 0.11](https://mgba.io/downloads.html) oficial para Windows (licencia MPL-2.0, [código fuente](https://github.com/mgba-emu/mgba));
 - `app/melonds_bundle/melonDS.exe`: [melonDS 1.1](https://melonds.kuribo64.net/downloads.php) oficial para Windows (licencia GPL-3.0, [código fuente](https://github.com/melonDS-emu/melonDS));
 - Azahar (3DS) **no** está dentro de `PKLab.exe`: lo descarga el propio PKLab (ver arriba), [versión oficial](https://github.com/azahar-emu/azahar/releases) (licencia GPL-2.0, [código fuente](https://github.com/azahar-emu/azahar));
-- `boxart/` y `data/sprites/`: imágenes de los juegos y de los Pokémon (propiedad de Nintendo / The Pokémon Company, no se redistribuyen aquí).
+- `boxart/` y `data/sprites/`: imágenes de los juegos y de los Pokémon (propiedad de Nintendo / The Pokémon Company, no se redistribuyen aquí y no están cubiertos por la GPL).
 
 Después:
 

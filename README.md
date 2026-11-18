@@ -8,10 +8,10 @@ PKLab is a companion app for Pokémon games (Gen 2 to 7: Game Boy Color, GBA, DS
 
 Download: [Releases](https://github.com/mrdbmyla/PKLab/releases) → `PKLab.exe` (no installation needed). ROMs are not included.
 
-## Why this code is public
+## License
 
-This repository contains the exact source code used to build `PKLab.exe`. It is published **only so that anyone can check what the program does** (no malware, no data collection, etc.).
-This is **not** an open source project: all rights are reserved (see [LICENSE](LICENSE)).
+This repository contains the exact source code used to build `PKLab.exe`. Anyone can check what the program does (no malware, no data collection, etc.).
+PKLab is free software: © 2026 Mourad, released under the **GNU General Public License v3.0** (see [LICENSE](LICENSE)). You may use, study, modify and share it; any version you distribute, modified or not, must also be under GPL-3.0 with its source code. Game and Pokémon images and names belong to Nintendo / The Pokémon Company and are not covered by this license.
 
 What the program does, in short:
 - local server on `127.0.0.1:8731` only (not reachable from the network);
@@ -54,7 +54,7 @@ The following are **not** in this repository and must be added by hand before bu
 - `app/mgba_bundle/mGBA.exe`: official [mGBA 0.11](https://mgba.io/downloads.html) for Windows (MPL-2.0 license, [source code](https://github.com/mgba-emu/mgba));
 - `app/melonds_bundle/melonDS.exe`: official [melonDS 1.1](https://melonds.kuribo64.net/downloads.php) for Windows (GPL-3.0 license, [source code](https://github.com/melonDS-emu/melonDS));
 - Azahar (3DS) is **not** inside `PKLab.exe`: it is downloaded by PKLab itself (see above), [official release](https://github.com/azahar-emu/azahar/releases) (GPL-2.0 license, [source code](https://github.com/azahar-emu/azahar));
-- `boxart/` and `data/sprites/`: game and Pokémon images (property of Nintendo / The Pokémon Company, not redistributed here).
+- `boxart/` and `data/sprites/`: game and Pokémon images (property of Nintendo / The Pokémon Company, not redistributed here and not covered by the GPL).
 
 Then:
 
