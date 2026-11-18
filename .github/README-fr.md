@@ -2,6 +2,8 @@
 
 # PKLab
 
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](../LICENSE)
+
 [English](../README.md) / Français / [Español](README-es.md)
 
 PKLab est un compagnon pour les jeux Pokémon (Gen 2 à 7 : Game Boy Color, GBA, DS et 3DS) joués sur émulateur. Il lit ton équipe et l'adversaire en direct dans la mémoire de l'émulateur et affiche les faiblesses, les stats et les attaques. Il inclut aussi un randomizer, un éditeur de sauvegarde et un outil de chance de shiny (Gen 2 à 7), ainsi qu'un curseur de vitesse du jeu.
