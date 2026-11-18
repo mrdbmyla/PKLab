@@ -16,6 +16,7 @@ Download: [Releases](https://github.com/mrdbmyla/PKLab/releases) → `PKLab.exe`
 
 | | |
 |---|---|
+| <img src=".github/screenshots/map.png" alt="Area map with the Pokémon found there" width="100%"><br>Area map with the Pokémon found there | <img src=".github/screenshots/info-sheet.png" alt="Pokémon info sheet" width="100%"><br>Pokémon info sheet |
 | <img src=".github/screenshots/library.png" alt="Game library" width="100%"><br>Game library | <img src=".github/screenshots/randomizer.png" alt="Randomizer" width="100%"><br>Randomizer |
 | <img src=".github/screenshots/shiny-odds.png" alt="Shiny odds" width="100%"><br>Shiny odds | <img src=".github/screenshots/save-editor.png" alt="Save editor" width="100%"><br>Save editor |
 

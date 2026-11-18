@@ -16,6 +16,7 @@ Téléchargement : [Releases](https://github.com/mrdbmyla/PKLab/releases) → `P
 
 | | |
 |---|---|
+| <img src="screenshots/map.png" alt="Carte de la zone et Pokémon qu'on y trouve" width="100%"><br>Carte de la zone et Pokémon qu'on y trouve | <img src="screenshots/info-sheet.png" alt="Fiche d'un Pokémon" width="100%"><br>Fiche d'un Pokémon |
 | <img src="screenshots/library.png" alt="Bibliothèque de jeux" width="100%"><br>Bibliothèque de jeux | <img src="screenshots/randomizer.png" alt="Randomizer" width="100%"><br>Randomizer |
 | <img src="screenshots/shiny-odds.png" alt="Chance de shiny" width="100%"><br>Chance de shiny | <img src="screenshots/save-editor.png" alt="Éditeur de sauvegarde" width="100%"><br>Éditeur de sauvegarde |
 
