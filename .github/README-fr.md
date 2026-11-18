@@ -10,6 +10,15 @@ PKLab est un compagnon pour les jeux Pokémon (Gen 2 à 7 : Game Boy Color, GBA,
 
 Téléchargement : [Releases](https://github.com/mrdbmyla/PKLab/releases) → `PKLab.exe` (aucune installation). Les ROM ne sont pas fournies.
 
+## Captures d'écran
+
+<img src="screenshots/in-game.png" alt="Équipe en direct, faiblesses et l'émulateur dans la même fenêtre" width="100%"><br>Équipe en direct, faiblesses et l'émulateur dans la même fenêtre
+
+| | |
+|---|---|
+| <img src="screenshots/map.png" alt="Nom de la zone et carte de la région avec ta position" width="100%"><br>Nom de la zone et carte de la région avec ta position | <img src="screenshots/library.png" alt="Bibliothèque de jeux" width="100%"><br>Bibliothèque de jeux |
+| <img src="screenshots/randomizer.png" alt="Randomizer" width="100%"><br>Randomizer | <img src="screenshots/save-editor.png" alt="Éditeur de sauvegarde" width="100%"><br>Éditeur de sauvegarde |
+
 ## Licence
 
 Ce dépôt contient le code source exact qui sert à construire `PKLab.exe`. Chacun peut vérifier ce que fait le programme (pas de virus, pas de collecte de données, etc.).
