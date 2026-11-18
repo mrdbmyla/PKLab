@@ -16,8 +16,8 @@ Descarga: [Releases](https://github.com/mrdbmyla/PKLab/releases) → `PKLab.exe`
 
 | | |
 |---|---|
-| <img src="screenshots/map.png" alt="Nombre de la zona y mapa de la región con tu posición" width="100%"><br>Nombre de la zona y mapa de la región con tu posición | <img src="screenshots/library.png" alt="Biblioteca de juegos" width="100%"><br>Biblioteca de juegos |
-| <img src="screenshots/randomizer.png" alt="Randomizer" width="100%"><br>Randomizer | <img src="screenshots/save-editor.png" alt="Editor de partidas" width="100%"><br>Editor de partidas |
+| <img src="screenshots/library.png" alt="Biblioteca de juegos" width="100%"><br>Biblioteca de juegos | <img src="screenshots/randomizer.png" alt="Randomizer" width="100%"><br>Randomizer |
+| <img src="screenshots/shiny-odds.png" alt="Probabilidad de shiny" width="100%"><br>Probabilidad de shiny | <img src="screenshots/save-editor.png" alt="Editor de partidas" width="100%"><br>Editor de partidas |
 
 ## Licencia
 
