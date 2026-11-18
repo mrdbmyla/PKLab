@@ -4,7 +4,7 @@
 
 [English](../README.md) / Français / [Español](README-es.md)
 
-PKLab est un compagnon pour les jeux Pokémon (Gen 2 à 7 : Game Boy Color, GBA, DS et 3DS) joués sur émulateur. Il lit ton équipe et l'adversaire en direct dans la mémoire de l'émulateur et affiche les faiblesses, les stats et les attaques. Il inclut aussi un randomizer, un éditeur de sauvegarde et un curseur de vitesse du jeu.
+PKLab est un compagnon pour les jeux Pokémon (Gen 2 à 7 : Game Boy Color, GBA, DS et 3DS) joués sur émulateur. Il lit ton équipe et l'adversaire en direct dans la mémoire de l'émulateur et affiche les faiblesses, les stats et les attaques. Il inclut aussi un randomizer, un éditeur de sauvegarde et un outil de chance de shiny (Gen 2 à 7), ainsi qu'un curseur de vitesse du jeu.
 
 Téléchargement : [Releases](https://github.com/mrdbmyla/PKLab/releases) → `PKLab.exe` (aucune installation). Les ROM ne sont pas fournies.
 
@@ -36,7 +36,7 @@ Ce que fait le programme, en bref :
 | `app/azahar_reader.py`, `app/azahar_setup.py` | lecture des jeux 3DS (Gen 6/7) dans Azahar, et téléchargement d'Azahar |
 | `app/ctr_rom.py`, `app/ctr_maps.py` | lecture des fichiers ROM 3DS (zones, rencontres, cartes de région) |
 | `app/engine.py` | décodage des Pokémon et calcul des faiblesses |
-| `app/randomizer*.py`, `app/save_editor.py`, `app/save_gen2.py`, `app/save_gen6.py`, `app/shiny_patch.py` | outils |
+| `app/randomizer*.py`, `app/save_editor.py`, `app/save_gen2.py`, `app/save_gen6.py`, `app/save_gen7.py`, `app/memecrypto.py`, `app/shiny_patch.py` | outils |
 | `app/updater.py` | mises à jour |
 | `app/rom_finder.py` | recherche des ROM sur le PC (lit seulement l'en-tête des fichiers) |
 | `pklab.html`, `data/` | interface et données |

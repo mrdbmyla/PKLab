@@ -27,7 +27,7 @@ UNSUPPORTED = {"types": "types des Pokémon", "abilities": "talents (n'existent 
                "extraRegular": "Pokémon en plus (autres)", "itemsBoss": "objets des dresseurs", "itemsImportant": "objets des dresseurs",
                "itemsRegular": "objets des dresseurs", "doubleBattles": "combats doubles", "shuffleTrainerNames": "noms de dresseurs",
                "shuffleClassNames": "noms de classes", "runIndoors": "réglages du jeu", "startShoes": "réglages du jeu",
-               "fastText": "réglages du jeu"}
+               "fastText": "réglages du jeu", "minCatchRate": "taux de capture minimum"}
 
 
 def _ptr(rom, bank, o):

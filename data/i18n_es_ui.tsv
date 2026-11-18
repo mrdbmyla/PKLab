@@ -70,7 +70,7 @@ Rubis / Saphir	Rubí / Zafiro
 
 # ---- randomizer panel
 Randomizer	Randomizer
-Crée une version aléatoire de ton jeu (2G, 3G, 4G, 5G et 6G) en quelques clics. Mode simple pour jouer tout de suite, mode détaillé pour tout régler. La ROM d'origine n'est jamais modifiée.	Crea una versión aleatoria de tu juego (2.ª, 3.ª, 4.ª, 5.ª y 6.ª gen.) en pocos clics. Modo simple para jugar enseguida, modo detallado para ajustarlo todo. La ROM original nunca se modifica.
+Crée une version aléatoire de ton jeu (2G, 3G, 4G, 5G, 6G et 7G) en quelques clics. Mode simple pour jouer tout de suite, mode détaillé pour tout régler. La ROM d'origine n'est jamais modifiée.	Crea una versión aleatoria de tu juego (2.ª, 3.ª, 4.ª, 5.ª, 6.ª y 7.ª gen.) en pocos clics. Modo simple para jugar enseguida, modo detallado para ajustarlo todo. La ROM original nunca se modifica.
 Ton jeu	Tu juego
 Choisir une ROM...	Elegir una ROM...
 Nom	Nombre
@@ -245,7 +245,7 @@ Mélangés	Mezclados
 Aléatoires (les CT restent des CT)	Aleatorios (las MT siguen siendo MT)
 Magasins	Tiendas
 Aléatoires (prix proches, CT et Poké Balls gardés)	Aleatorias (precios parecidos, MT y Poké Balls conservadas)
-Échanges, fixes, offerts, œufs, objets au sol, objets cachés, magasins : 3G, 4G et 5G (6G : offerts seulement). Les dialogues citent encore les anciens Pokémon / attaques, et les Pokémon fixes gardent leur apparence sur la carte.	Intercambios, estáticos, regalos, huevos, objetos del suelo, objetos ocultos, tiendas: 3.ª, 4.ª y 5.ª gen. (6.ª gen.: solo regalos). Los diálogos siguen mencionando los Pokémon / movimientos antiguos, y los Pokémon estáticos conservan su aspecto en el mapa.
+Échanges, fixes, offerts, œufs, objets au sol, objets cachés, magasins : 3G, 4G et 5G (6G et 7G : offerts seulement). Les dialogues citent encore les anciens Pokémon / attaques, et les Pokémon fixes gardent leur apparence sur la carte.	Intercambios, estáticos, regalos, huevos, objetos del suelo, objetos ocultos, tiendas: 3.ª, 4.ª y 5.ª gen. (6.ª y 7.ª gen.: solo regalos). Los diálogos siguen mencionando los Pokémon / movimientos antiguos, y los Pokémon estáticos conservan su aspecto en el mapa.
 Général	General
 Sans légendaires	Sin legendarios
 Même stade d'évolution	Misma fase evolutiva
@@ -275,12 +275,12 @@ nouvelle partie	nueva partida
 voir le détail	ver el detalle
 Jouer maintenant	Jugar ahora
 (aléatoire)	(aleatorio)
-Aucune ROM 2G à 6G dans Téléchargements ou Bureau	Ninguna ROM de 2.ª a 6.ª gen. en Descargas o Escritorio
+Aucune ROM 2G à 7G dans Téléchargements ou Bureau	Ninguna ROM de 2.ª a 7.ª gen. en Descargas o Escritorio
 - shiny	- shiny
 
 # ---- shiny tool
 Chance de shiny	Probabilidad de shiny
-Crée une copie de ton jeu (2G, 3G, 4G, 5G et 6G, d'origine ou déjà aléatoire) où les Pokémon chromatiques sont plus fréquents, jusqu'à 100 %. Rien d'autre ne change et la ROM d'origine n'est jamais modifiée. (phase expérimentale)	Crea una copia de tu juego (2.ª, 3.ª, 4.ª, 5.ª y 6.ª gen., original o ya aleatorio) en la que los Pokémon variocolor son más frecuentes, hasta el 100 %. Nada más cambia y la ROM original nunca se modifica. (experimental)
+Crée une copie de ton jeu (2G, 3G, 4G, 5G, 6G et 7G, d'origine ou déjà aléatoire) où les Pokémon chromatiques sont plus fréquents, jusqu'à 100 %. Rien d'autre ne change et la ROM d'origine n'est jamais modifiée. (phase expérimentale)	Crea una copia de tu juego (2.ª, 3.ª, 4.ª, 5.ª, 6.ª y 7.ª gen., original o ya aleatorio) en la que los Pokémon variocolor son más frecuentes, hasta el 100 %. Nada más cambia y la ROM original nunca se modifica. (experimental)
 Chance	Probabilidad
 1 / 4096 (2 fois plus)	1 / 4096 (2 veces más)
 1 / 1024 (8 fois plus)	1 / 1024 (8 veces más)
@@ -506,8 +506,8 @@ Pierre Éclat	Piedra Día
 # ---- app messages (Python)
 Le script mGBA ne répond pas (vérifie qu'il est bien chargé)	El script de mGBA no responde (comprueba que está cargado)
 Sauvegarder en Save State 1 avant de quitter ?	¿Guardar en el Save State 1 antes de salir?
-Cette ROM n'est pas prise en charge (Pokémon 2G, 3G, 4G ou 5G d'origine)	Esta ROM no es compatible (juego Pokémon original de 2.ª, 3.ª, 4.ª o 5.ª gen.)
-Cette ROM n'est pas prise en charge (Pokémon 2G, 3G, 4G ou 5G)	Esta ROM no es compatible (juego Pokémon de 2.ª, 3.ª, 4.ª o 5.ª gen.)
+Cette ROM n'est pas prise en charge (Pokémon 2G à 7G d'origine)	Esta ROM no es compatible (juego Pokémon original de 2.ª a 7.ª gen.)
+Cette ROM n'est pas prise en charge (Pokémon 2G à 7G)	Esta ROM no es compatible (juego Pokémon de 2.ª a 7.ª gen.)
 Nom trop long (100 caractères maximum)	Nombre demasiado largo (100 caracteres como máximo)
 Ce nom est celui de la ROM d'origine : choisis-en un autre	Ese es el nombre de la ROM original: elige otro
 Une ROM porte déjà ce nom dans ce dossier : choisis-en un autre	Ya hay una ROM con ese nombre en esta carpeta: elige otro
@@ -1274,3 +1274,37 @@ Sable	Arena
 Pêche	Pesca
 Autres	Otros
 Pokémon Soleil	Pokémon Sol
+Pas encore disponible en 6G (ignoré) :	Aún no disponible en 6.ª gen. (ignorado):
+Pas encore disponible en 7G (ignoré) :	Aún no disponible en 7.ª gen. (ignorado):
+taux de capture minimum	ratio de captura mínimo
+Identifiant de la copie :	Identificador de la copia:
+(sauvegarde séparée)	(partida guardada aparte)
+(herbes, fleurs, grottes, sable, surf, pêche, renforts SOS)	(hierba, flores, cuevas, arena, surf, pesca, aliados SOS)
+(herbes, fleurs, surf, pêche, Éclate-Roc, hordes)	(hierba, flores, surf, pesca, Golpe Roca, hordas)
+Eau en surf et pêche	Agua al surfear y al pescar
+Capitaines / Doyens / Conseil 4 : un type chacun	Capitanes / Kahunas / Alto Mando: un tipo cada uno
+suivie par les rivaux	seguida por los rivales
+~changés	cambiados
+Écran de choix des starters	Pantalla de elección de iniciales
+noms et types changés	nombres y tipos cambiados
+langues sur	idiomas de
+modèles 3D d'origine	modelos 3D originales
+NON modifié (fiches introuvables)	NO modificada (fichas no encontradas)
+NON modifiés (table introuvable)	NO modificados (tabla no encontrada)
+au lieu de	en lugar de
+non testé en jeu	no probado en el juego
+NON changée	NO cambiada
+tests introuvables	pruebas no encontradas
+test introuvable	prueba no encontrada
+code d'un test inattendu	código de prueba inesperado
+code des DV introuvable	código de los DV no encontrado
+~trouvés	encontrados
+~décalages	desplazamientos
+~Capitaine	Capitán
+~Doyenne	Kahuna
+~Doyen	Kahuna
+~Présidente	Presidenta
+Professeur Pokémon	Profesor Pokémon
+, Eau en surf et pêche	, Agua al surfear y al pescar
+, lignée des starters suivie par les rivaux (	, línea de los iniciales seguida por los rivales (
+pour les Pokémon sauvages	para los Pokémon salvajes

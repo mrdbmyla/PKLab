@@ -68,8 +68,8 @@ def copy_with_tid(src, dst, tid):
     need = os.path.getsize(src) + (64 << 20)
     if shutil.disk_usage(os.path.dirname(os.path.abspath(dst))).free < need:
         raise ValueError(f"Pas assez d'espace disque ({need >> 30} Go nécessaires)")
-    shutil.copyfile(src, dst)
     try:
+        shutil.copyfile(src, dst)
         with open(dst, "r+b") as f:
             h = f.read(0x200)
             if h[0x100:0x104] == b"NCSD":
@@ -86,7 +86,8 @@ def copy_with_tid(src, dst, tid):
                 f.seek(part + off)
                 f.write(struct.pack("<Q", tid))
     except Exception:
-        os.remove(dst)
+        if os.path.exists(dst):
+            os.remove(dst)
         raise
 
 
@@ -519,7 +520,7 @@ def randomize(src_path, options, out_path, fiche_base, azahar_dir, used_tids=())
         fiche["shinyThreshold"] = t
     ips = src_path + ".exefsdir"
     if os.path.isdir(ips):
-        shutil.copytree(ips, out_path + ".exefsdir")
+        shutil.copytree(ips, out_path + ".exefsdir", dirs_exist_ok=True)
     with open(stem + ".pklab.json", "w", encoding="utf-8") as f:
         json.dump(fiche, f, ensure_ascii=False, separators=(",", ":"))
     report_path = stem + ".txt"

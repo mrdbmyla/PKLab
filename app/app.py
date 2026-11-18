@@ -33,6 +33,7 @@ import gen4_maps
 import gen5_maps
 import randomizer
 import randomizer_gen6
+import randomizer_gen7
 import save_editor
 import shiny_patch
 import updater
@@ -327,7 +328,7 @@ def rando_rom_entry(path):
     elif low.endswith(tuple(rom_finder.CTR_EXTS)):
         hit = rom_finder.identify(path)
         tid = _ctr_title_id(path)
-        if hit and hit[1] in randomizer_gen6.FAMILY and tid and rom_finder.base_tid(tid) == tid:
+        if hit and (hit[1] in randomizer_gen6.FAMILY or hit[1] in randomizer_gen7.FAMILY) and tid and rom_finder.base_tid(tid) == tid:
             return {"path": path, "game": hit[1], "name": os.path.basename(path), "engine": "azahar"}
     return None
 
@@ -351,7 +352,7 @@ def rando_pick_rom():
         return {"ok": False, "cancelled": True}
     e = rando_rom_entry(path)
     if not e:
-        return {"ok": False, "error": "Cette ROM n'est pas prise en charge (Pokémon 2G, 3G, 4G, 5G, X, Y, Rubis Oméga ou Saphir Alpha d'origine)"}
+        return {"ok": False, "error": "Cette ROM n'est pas prise en charge (Pokémon 2G à 7G d'origine)"}
     if path not in RANDO_PICKED:
         RANDO_PICKED.append(path)
     return {"ok": True, "rom": e}
@@ -390,7 +391,7 @@ def run_randomizer(data):
     vg = {"POKEMON B2": 14, "POKEMON W2": 14, "POKEMON D": 8, "POKEMON P": 8, "POKEMON PL": 9,
           "POKEMON HG": 10, "POKEMON SS": 10, "RUBY": 5, "SAPPHIRE": 5, "EMERALD": 6, "FIRERED": 7,
           "LEAFGREEN": 7, "GOLD": 3, "SILVER": 3, "CRYSTAL": 4, "POKEMON X": 15, "POKEMON Y": 15, "POKEMON OR": 16,
-          "POKEMON AS": 16}.get(roms[path]["game"], 11)
+          "POKEMON AS": 16, "POKEMON S": 17, "POKEMON M": 17, "POKEMON US": 18, "POKEMON UM": 18}.get(roms[path]["game"], 11)
     base = None
     try:
         with open(res("data", "fiche", f"vg_{vg}.json"), encoding="utf-8") as f:
@@ -428,15 +429,30 @@ def _copy_ctr_save(src_rom, out_rom):
     return False
 
 
-def _run_randomizer_ctr(path, rom, options, out_path, base, copy_save):
+def _ctr_used_tids(*paths):
+    files = set(scan_roms("azahar"))
+    dirs = set(_created_dirs()) | {os.path.dirname(os.path.abspath(p)) for p in paths if p}
+    for d in dirs:
+        try:
+            for n in os.listdir(d):
+                if os.path.splitext(n)[1].lower() in rom_finder.CTR_EXTS:
+                    files.add(os.path.join(d, n))
+        except OSError:
+            pass
     used = set()
-    for r in scan_roms("azahar"):
+    for r in files:
         try:
             used.add(_ctr_title_id(r))
         except Exception:
             pass
+    return used
+
+
+def _run_randomizer_ctr(path, rom, options, out_path, base, copy_save):
+    used = _ctr_used_tids(path, out_path)
     try:
-        out, report, summary = randomizer_gen6.randomize(path, options, out_path, base, AZAHAR_DIR, used)
+        mod = randomizer_gen7 if rom["game"] in randomizer_gen7.FAMILY else randomizer_gen6
+        out, report, summary = mod.randomize(path, options, out_path, base, AZAHAR_DIR, used)
     except Exception as e:
         return {"ok": False, "error": str(e)}
     save_copied = _copy_ctr_save(path, out) if copy_save else False
@@ -470,7 +486,7 @@ def shiny_rom_entry(path):
             return None
     elif low.endswith(tuple(rom_finder.CTR_EXTS)):
         hit = rom_finder.identify(path)
-        if not hit or hit[1] not in randomizer_gen6.FAMILY:
+        if not hit or hit[1] not in rom_finder.CTR_TITLES.values():
             return None
         game, eng = hit[1], "azahar"
         t = shiny_patch.side_threshold(path)
@@ -499,7 +515,7 @@ def shiny_pick_rom():
         return {"ok": False, "cancelled": True}
     e = shiny_rom_entry(path)
     if not e:
-        return {"ok": False, "error": "Cette ROM n'est pas prise en charge (Pokémon 2G, 3G, 4G, 5G, X, Y, Rubis Oméga ou Saphir Alpha)"}
+        return {"ok": False, "error": "Cette ROM n'est pas prise en charge (Pokémon 2G à 7G)"}
     if path not in SHINY_PICKED:
         SHINY_PICKED.append(path)
     return {"ok": True, "rom": e}
@@ -524,13 +540,7 @@ def run_shiny_tool(data):
         out = f"{root} (Shiny {label.replace(' / ', '-').replace(' %', 'pc')}){ext}"
         if os.path.exists(out):
             return {"ok": False, "error": "Une ROM porte déjà ce nom dans ce dossier : donne-lui un nom"}
-    used = set()
-    if ctr:
-        for r in scan_roms("azahar"):
-            try:
-                used.add(_ctr_title_id(r))
-            except Exception:
-                pass
+    used = _ctr_used_tids(path, out) if ctr else set()
     try:
         line = shiny_patch.make_shiny_rom(path, out, value, AZAHAR_DIR, used)
     except Exception as e:
@@ -767,7 +777,7 @@ def load_rom_side_data(rom_path):
 SAVE_PICKED = []
 
 
-SAVE6_TITLES = {"POKEMON X", "POKEMON Y", "POKEMON OR", "POKEMON AS"}
+SAVE6_TITLES = {"POKEMON X", "POKEMON Y", "POKEMON OR", "POKEMON AS", "POKEMON S", "POKEMON M", "POKEMON US", "POKEMON UM"}
 
 
 def _azahar_save_path(tid):
@@ -886,7 +896,7 @@ def save_load(data):
         for pk in bag:
             pk["allowed"] = sorted({i for i, c in pockets.items() if pk["code"] is None or c == pk["code"]} |
                                    {it for it, _ in pk["items"]})
-        warn = lambda m: save_editor.check_mon(sv.gen, m, table, pockets)
+        warn = lambda m: save_editor.check_mon(sv.gen, m, table, pockets, sv.family)
         return {"ok": True, "gen": sv.gen, "game": game, "family": sv.family, "problems": sv.problems,
                 "bag": bag, "dex": save_editor.dex(sv), "ext": save_editor.MON_EXT[sv.gen],
                 "baseStats": {k: v[:6] for k, v in table.items()},

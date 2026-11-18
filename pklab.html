@@ -2306,7 +2306,7 @@ if (I18N) {
                 <span class="cat-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.3" fill="currentColor"/><circle cx="16" cy="8" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/><circle cx="8" cy="16" r="1.3" fill="currentColor"/><circle cx="16" cy="16" r="1.3" fill="currentColor"/></svg></span>
                 <div class="tool-toggle-text">
                     <span class="tool-toggle-title">Randomizer</span>
-                    <span class="tool-toggle-desc">Crée une version aléatoire de ton jeu (2G, 3G, 4G, 5G et 6G) en quelques clics. Mode simple pour jouer tout de suite, mode détaillé pour tout régler. La ROM d'origine n'est jamais modifiée.</span>
+                    <span class="tool-toggle-desc">Crée une version aléatoire de ton jeu (2G, 3G, 4G, 5G, 6G et 7G) en quelques clics. Mode simple pour jouer tout de suite, mode détaillé pour tout régler. La ROM d'origine n'est jamais modifiée.</span>
                 </div>
                 <span class="tool-toggle-arrow">&rsaquo;</span>
             </button>
@@ -2462,7 +2462,7 @@ if (I18N) {
                     <label>Œufs offerts <select data-opt="eggs"><option value="off">Ne pas changer</option><option value="random">Aléatoires (Pokémon de base)</option></select></label>
                     <label>Objets au sol <select data-opt="fieldItems"><option value="off">Ne pas changer</option><option value="shuffle">Mélangés</option><option value="random">Aléatoires (les CT restent des CT)</option></select></label>
                     <label>Magasins <select data-opt="shops"><option value="off">Ne pas changer</option><option value="shuffle">Mélangés</option><option value="random">Aléatoires (prix proches, CT et Poké Balls gardés)</option></select></label>
-                    <small>Échanges, fixes, offerts, œufs, objets au sol, objets cachés, magasins : 3G, 4G et 5G (6G : offerts seulement). Les dialogues citent encore les anciens Pokémon / attaques, et les Pokémon fixes gardent leur apparence sur la carte.</small>
+                    <small>Échanges, fixes, offerts, œufs, objets au sol, objets cachés, magasins : 3G, 4G et 5G (6G et 7G : offerts seulement). Les dialogues citent encore les anciens Pokémon / attaques, et les Pokémon fixes gardent leur apparence sur la carte.</small>
                 </fieldset>
                 <fieldset class="rando-box"><legend>Général</legend>
                     <label><input type="checkbox" data-opt="noLegendaries" checked> Sans légendaires</label>
@@ -2483,7 +2483,7 @@ if (I18N) {
                 <span class="cat-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3l1.9 5.6L17.5 10.5l-5.6 1.9L10 18l-1.9-5.6L2.5 10.5l5.6-1.9z"/><path d="M18.5 14l.9 2.6 2.6.9-2.6.9-.9 2.6-.9-2.6-2.6-.9 2.6-.9z"/></svg></span>
                 <div class="tool-toggle-text">
                     <span class="tool-toggle-title">Chance de shiny</span>
-                    <span class="tool-toggle-desc">Crée une copie de ton jeu (2G, 3G, 4G, 5G et 6G, d'origine ou déjà aléatoire) où les Pokémon chromatiques sont plus fréquents, jusqu'à 100 %. Rien d'autre ne change et la ROM d'origine n'est jamais modifiée. (phase expérimentale)</span>
+                    <span class="tool-toggle-desc">Crée une copie de ton jeu (2G, 3G, 4G, 5G, 6G et 7G, d'origine ou déjà aléatoire) où les Pokémon chromatiques sont plus fréquents, jusqu'à 100 %. Rien d'autre ne change et la ROM d'origine n'est jamais modifiée. (phase expérimentale)</span>
                 </div>
                 <span class="tool-toggle-arrow">&rsaquo;</span>
             </button>
@@ -3863,7 +3863,7 @@ async function loadRandoRoms() {
         const keep = randoRom.value;
         randoRom.innerHTML = data.roms.length
             ? data.roms.map(r => `<option value="${escapeAttr(r.path)}">${r.name} (${gameLabel(r.game)})</option>`).join("")
-            : `<option value="">Aucune ROM 2G à 6G dans Téléchargements ou Bureau</option>`;
+            : `<option value="">Aucune ROM 2G à 7G dans Téléchargements ou Bureau</option>`;
         if (keep && data.roms.some(r => r.path === keep)) randoRom.value = keep;
     } catch (e) {  }
 }
@@ -4153,7 +4153,7 @@ async function loadShinyRoms() {
         const keep = shinyRom.value;
         shinyRom.innerHTML = data.roms.length
             ? data.roms.map(r => `<option value="${escapeAttr(r.path)}">${escapeAttr(r.name)} (${gameLabel(r.game)}${r.odds !== "1 / 8192" && r.odds !== "1 / 4096" ? " - shiny " + r.odds : ""})</option>`).join("")
-            : `<option value="">Aucune ROM 2G à 6G dans Téléchargements ou Bureau</option>`;
+            : `<option value="">Aucune ROM 2G à 7G dans Téléchargements ou Bureau</option>`;
         if (keep && data.roms.some(r => r.path === keep)) shinyRom.value = keep;
     } catch (e) {  }
 }
@@ -4629,17 +4629,17 @@ async function seOpen(path) {
             body: JSON.stringify({ path }) })).json();
         if (!d.ok) throw new Error(d.error || "erreur");
         seData = d;
-        const vg = GAME_VG[d.game] || { 2: 4, 3: 6, 4: 9, 5: 14, 6: d.family === "ORAS" ? 16 : 15 }[d.gen];
+        const vg = GAME_VG[d.game] || { 2: 4, 3: 6, 4: 9, 5: 14, 6: d.family === "ORAS" ? 16 : 15, 7: d.family === "SM" ? 17 : 18 }[d.gen];
         seFiche = await loadFicheData(vg);
         seNames = { sp: {}, mv: {}, it: {} };
-        const maxSp = { 2: 251, 3: 386, 4: 493, 5: 649, 6: 721 }[d.gen];
+        const maxSp = { 2: 251, 3: 386, 4: 493, 5: 649, 6: 721, 7: d.family === "SM" ? 802 : 807 }[d.gen];
         document.getElementById("seSpeciesList").innerHTML = Object.entries(seFiche.species).filter(([id]) => +id <= maxSp).map(([id, sp]) => {
             seNames.sp[sp.name.toLowerCase()] = +id; return `<option value="${escapeAttr(sp.name)}">`; }).join("");
         document.getElementById("seMoveList").innerHTML = Object.entries(seFiche.moves).map(([id, mv]) => {
             seNames.mv[mv[0].toLowerCase()] = +id; return `<option value="${escapeAttr(mv[0])}">`; }).join("");
         document.getElementById("seItemList").innerHTML = Object.entries(seFiche.items || {}).map(([id, nm]) => {
             seNames.it[nm.toLowerCase()] = +id; return `<option value="${escapeAttr(nm)}">`; }).join("");
-        document.getElementById("seMoney").max = d.gen === 6 ? 9999999 : 999999;
+        document.getElementById("seMoney").max = d.gen >= 6 ? 9999999 : 999999;
         document.getElementById("seMoney").value = d.trainer.money;
         seBag = d.bag.map(pk => Object.assign({}, pk, { items: pk.items.map(x => x.slice()) }));
         if (sePocket >= seBag.length) sePocket = 0;
@@ -5863,6 +5863,7 @@ try {
 (() => {
     const N = {
       fr: { h: "Dernières nouveautés", items: [
+        ["v1.1.2", "new", "Randomizer, éditeur et shiny 7G", "Soleil, Lune, Ultra-Soleil et Ultra-Lune : sauvages (renforts SOS compris), dresseurs, starters et cadeaux aléatoires dans une copie à sauvegarde séparée, éditeur de sauvegarde (.pk7, signature refaite) et chance de shiny jusqu'à 100 %."],
         ["v1.1.1", "new", "Randomizer, éditeur et shiny 3DS", "X, Y, Rubis Oméga et Saphir Alpha : sauvages, dresseurs, starters et cadeaux aléatoires dans une copie à sauvegarde séparée, éditeur de sauvegarde (.pk6) et chance de shiny jusqu'à 100 %."],
         ["v1.1.0", "new", "Nintendo 3DS", "Pokémon X, Y, Rubis Oméga, Saphir Alpha, Soleil, Lune, Ultra-Soleil et Ultra-Lune avec Azahar (téléchargé tout seul) : équipe, adversaire et faiblesses, rencontres de la zone, carte de la région, triches, vitesse et sauvegarde rapide."],
         ["v1.1.0", "new", "Pokémon Or, Argent et Cristal", "Les jeux Game Boy Color arrivent : aide au combat (DV, faiblesses), carte des rencontres selon l'heure, triches et sauvegarde rapide."],
@@ -5900,6 +5901,7 @@ try {
         ["12 nov. 2026", "new", "Chance de shiny", "Copie d'un jeu avec des chromatiques plus fréquents, de 1 / 4096 à 100 %."],
         ["12 nov. 2026", "new", "Randomizer", "Notre propre randomizer 3G, 4G et 5G : Pokémon, dresseurs, objets, magasins, CT..."]] },
       en: { h: "Latest changes", items: [
+        ["v1.1.2", "new", "Gen 7 randomizer, editor and shiny", "Sun, Moon, Ultra Sun and Ultra Moon: random wild Pokémon (SOS allies included), trainers, starters and gifts in a copy with its own save, save editor (.pk7, signature rebuilt) and shiny odds up to 100%."],
         ["v1.1.1", "new", "3DS randomizer, editor and shiny", "X, Y, Omega Ruby and Alpha Sapphire: random wild Pokémon, trainers, starters and gifts in a copy with its own save, save editor (.pk6) and shiny odds up to 100%."],
         ["v1.1.0", "new", "Nintendo 3DS", "Pokémon X, Y, Omega Ruby, Alpha Sapphire, Sun, Moon, Ultra Sun and Ultra Moon with Azahar (downloaded automatically): party, opponent and weaknesses, area encounters, region map, cheats, speed and quick save."],
         ["v1.1.0", "new", "Pokémon Gold, Silver and Crystal", "Game Boy Color games are here: battle helper (DVs, weaknesses), encounter map by time of day, cheats and quick save."],
@@ -5937,6 +5939,7 @@ try {
         ["Nov 12, 2026", "new", "Shiny odds", "A copy of a game with more frequent shinies, from 1 / 4096 to 100%."],
         ["Nov 12, 2026", "new", "Randomizer", "Our own Gen 3, 4 and 5 randomizer: Pokémon, trainers, items, shops, TMs..."]] },
       es: { h: "Últimas novedades", items: [
+        ["v1.1.2", "new", "Randomizer, editor y shiny 7.ª gen.", "Sol, Luna, Ultrasol y Ultraluna: Pokémon salvajes (refuerzos SOS incluidos), entrenadores, iniciales y regalos aleatorios en una copia con partida propia, editor de partidas (.pk7, firma rehecha) y probabilidad de shiny hasta el 100 %."],
         ["v1.1.1", "new", "Randomizer, editor y shiny 3DS", "X, Y, Rubí Omega y Zafiro Alfa: Pokémon salvajes, entrenadores, iniciales y regalos aleatorios en una copia con partida propia, editor de partidas (.pk6) y probabilidad de shiny hasta el 100 %."],
         ["v1.1.0", "new", "Nintendo 3DS", "Pokémon X, Y, Rubí Omega, Zafiro Alfa, Sol, Luna, Ultrasol y Ultraluna con Azahar (se descarga solo): equipo, rival y debilidades, encuentros de la zona, mapa de la región, trucos, velocidad y guardado rápido."],
         ["v1.1.0", "new", "Pokémon Oro, Plata y Cristal", "Llegan los juegos de Game Boy Color: ayuda en combate (DV, debilidades), mapa de encuentros según la hora, trucos y guardado rápido."],
@@ -6102,23 +6105,23 @@ const LIB_T = ({
           grid: "Grille", list: "Liste", none: "Aucun jeu ne correspond.", tools: "Outils", roms: "Tes ROMs", seeAll: "Tout voir", romsTitle: "Mes ROMs",
           noRoms: "Aucune ROM pour l’instant : utilise un outil au-dessus.", settings: "Paramètres", help: "Aide", play: "Jouer", shiny: "Chance de shiny",
           dRando: "Une version aléatoire de ton jeu, en quelques clics.", dShiny: "Plus de Pokémon chromatiques, jusqu’à 100 %.", dSave: "Argent, sac, Pokédex, équipe et PC.", back: "Retour aux jeux",
-          tRando: ["Gen 2 · 3 · 4 · 5 · 6", "Mode simple ou détaillé", "Pokémon, dresseurs, objets, magasins", "ROM d’origine jamais modifiée"],
-          tShiny: ["Gen 2 · 3 · 4 · 5 · 6", "De 1/8192 jusqu’à 1/1", "Garde ta sauvegarde", "Rien d’autre ne change"],
-          tSave: ["Gen 2 · 3 · 4 · 5 · 6", "Argent · Sac · Pokédex", "Équipe et PC : niveau, nature, attaques, IV / EV", "Copie .bak automatique"] },
+          tRando: ["Gen 2 · 3 · 4 · 5 · 6 · 7", "Mode simple ou détaillé", "Pokémon, dresseurs, objets, magasins", "ROM d’origine jamais modifiée"],
+          tShiny: ["Gen 2 · 3 · 4 · 5 · 6 · 7", "De 1/8192 jusqu’à 1/1", "Garde ta sauvegarde", "Rien d’autre ne change"],
+          tSave: ["Gen 2 · 3 · 4 · 5 · 6 · 7", "Argent · Sac · Pokédex", "Équipe et PC : niveau, nature, attaques, IV / EV", "Copie .bak automatique"] },
     en: { games: "Games", count: "games", search: "Search a game…", all: "All consoles", gen: "By generation", az: "Name (A → Z)", za: "Name (Z → A)",
           grid: "Grid", list: "List", none: "No game matches.", tools: "Tools", roms: "Your ROMs", seeAll: "See all", romsTitle: "My ROMs",
           noRoms: "No ROM yet: use a tool above.", settings: "Settings", help: "Help", play: "Play", shiny: "Shiny odds",
           dRando: "A random version of your game, in a few clicks.", dShiny: "More shiny Pokémon, up to 100%.", dSave: "Money, bag, Pokédex, party and PC.", back: "Back to games",
-          tRando: ["Gen 2 · 3 · 4 · 5 · 6", "Simple or detailed mode", "Pokémon, trainers, items, shops", "Original ROM never changed"],
-          tShiny: ["Gen 2 · 3 · 4 · 5 · 6", "From 1/8192 up to 1/1", "Keeps your save", "Nothing else changes"],
-          tSave: ["Gen 2 · 3 · 4 · 5 · 6", "Money · Bag · Pokédex", "Party and PC: level, nature, moves, IVs / EVs", "Automatic .bak copy"] },
+          tRando: ["Gen 2 · 3 · 4 · 5 · 6 · 7", "Simple or detailed mode", "Pokémon, trainers, items, shops", "Original ROM never changed"],
+          tShiny: ["Gen 2 · 3 · 4 · 5 · 6 · 7", "From 1/8192 up to 1/1", "Keeps your save", "Nothing else changes"],
+          tSave: ["Gen 2 · 3 · 4 · 5 · 6 · 7", "Money · Bag · Pokédex", "Party and PC: level, nature, moves, IVs / EVs", "Automatic .bak copy"] },
     es: { games: "Juegos", count: "juegos", search: "Buscar un juego…", all: "Todas las consolas", gen: "Por generación", az: "Nombre (A → Z)", za: "Nombre (Z → A)",
           grid: "Cuadrícula", list: "Lista", none: "Ningún juego coincide.", tools: "Herramientas", roms: "Tus ROM", seeAll: "Ver todo", romsTitle: "Mis ROM",
           noRoms: "Aún no hay ROM: usa una herramienta de arriba.", settings: "Ajustes", help: "Ayuda", play: "Jugar", shiny: "Prob. shiny",
           dRando: "Una versión aleatoria de tu juego, en pocos clics.", dShiny: "Más Pokémon variocolor, hasta el 100 %.", dSave: "Dinero, mochila, Pokédex, equipo y PC.", back: "Volver a los juegos",
-          tRando: ["Gen 2 · 3 · 4 · 5 · 6", "Modo simple o detallado", "Pokémon, entrenadores, objetos, tiendas", "La ROM original no se toca"],
-          tShiny: ["Gen 2 · 3 · 4 · 5 · 6", "De 1/8192 hasta 1/1", "Conserva tu partida", "Nada más cambia"],
-          tSave: ["Gen 2 · 3 · 4 · 5 · 6", "Dinero · Mochila · Pokédex", "Equipo y PC: nivel, naturaleza, movimientos, IV / EV", "Copia .bak automática"] },
+          tRando: ["Gen 2 · 3 · 4 · 5 · 6 · 7", "Modo simple o detallado", "Pokémon, entrenadores, objetos, tiendas", "La ROM original no se toca"],
+          tShiny: ["Gen 2 · 3 · 4 · 5 · 6 · 7", "De 1/8192 hasta 1/1", "Conserva tu partida", "Nada más cambia"],
+          tSave: ["Gen 2 · 3 · 4 · 5 · 6 · 7", "Dinero · Mochila · Pokédex", "Equipo y PC: nivel, naturaleza, movimientos, IV / EV", "Copia .bak automática"] },
 })[PKLAB_LANG] || null;
 
 function libT(k) { return (LIB_T || { })[k] || k; }

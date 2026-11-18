@@ -123,6 +123,41 @@ def text(data):
     return out
 
 
+def text_raw(data):
+    lines = struct.unpack_from("<H", data, 2)[0]
+    sec = struct.unpack_from("<I", data, 0x0C)[0]
+    key = 0x7C89
+    out = []
+    for i in range(lines):
+        off, ln, flags = struct.unpack_from("<IHH", data, sec + 4 + 8 * i)
+        k = key
+        chars = []
+        for j in range(ln):
+            chars.append(struct.unpack_from("<H", data, sec + off + 2 * j)[0] ^ k)
+            k = ((k << 3) | (k >> 13)) & 0xFFFF
+        key = (key + 0x2983) & 0xFFFF
+        out.append((chars, flags))
+    return out
+
+
+def text_pack(lines):
+    n = len(lines)
+    table = bytearray()
+    body = bytearray()
+    key = 0x7C89
+    for chars, flags in lines:
+        table += struct.pack("<IHH", 4 + 8 * n + len(body), len(chars), flags)
+        k = key
+        for c in chars:
+            body += struct.pack("<H", c ^ k)
+            k = ((k << 3) | (k >> 13)) & 0xFFFF
+        key = (key + 0x2983) & 0xFFFF
+        if len(body) % 4:
+            body += bytes(2)
+    size = 4 + len(table) + len(body)
+    return struct.pack("<HHIII", 1, n, size, 0, 0x10) + struct.pack("<I", size) + bytes(table) + bytes(body)
+
+
 def lz11(data):
     if not data or data[0] != 0x11:
         return data

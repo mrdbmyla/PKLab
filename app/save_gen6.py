@@ -97,6 +97,13 @@ def decode(raw):
 
 class Gen6Save:
     gen = 6
+    PARTY = PARTY
+    TRAINER = TRAINER
+    NAME = 0x48
+    MONEY = MONEY
+    BOXES = BOXES
+    DEX_MAX = DEX_MAX
+    MOVE_MAX = MOVE_MAX
 
     def __init__(self, raw, family):
         self.raw = bytearray(raw)
@@ -105,7 +112,7 @@ class Gen6Save:
         self.blocks = []
         mo = len(raw) - 0x1F0
         if struct.unpack_from("<I", raw, mo)[0] != 0x42454546:
-            raise ValueError("sauvegarde 6G : table des blocs introuvable")
+            raise ValueError("sauvegarde 6G vide : sauvegarde d'abord une fois dans le jeu")
         off, p = 0, mo + 4
         while p + 8 <= len(raw):
             ln, bid, ck = struct.unpack_from("<IHH", raw, p)
@@ -129,21 +136,28 @@ class Gen6Save:
         return bytes(self.raw)
 
     def party_count(self):
-        return self.raw[PARTY + 6 * PARTY_SIZE]
+        return self.raw[self.PARTY + 6 * PARTY_SIZE]
 
     def set_party_count(self, n):
-        self.raw[PARTY + 6 * PARTY_SIZE] = n
+        self.raw[self.PARTY + 6 * PARTY_SIZE] = n
+
+    def box_start(self):
+        return BOX_START[self.family]
+
+    def version(self):
+        return VERSION[self.family]
 
     def trainer(self):
-        tid, sid = struct.unpack_from("<HH", self.raw, TRAINER)
-        return {"name": text(self.raw[TRAINER + 0x48:TRAINER + 0x62]), "tid": tid, "sid": sid,
-                "money": struct.unpack_from("<I", self.raw, MONEY)[0],
-                "gender": "fille" if self.raw[TRAINER + 5] else "garçon"}
+        t = self.TRAINER
+        tid, sid = struct.unpack_from("<HH", self.raw, t)
+        return {"name": text(self.raw[t + self.NAME:t + self.NAME + 0x1A]), "tid": tid, "sid": sid,
+                "money": struct.unpack_from("<I", self.raw, self.MONEY)[0],
+                "gender": "fille" if self.raw[t + 5] else "garçon"}
 
     def slot(self, where):
         if where[0] == "party":
-            return PARTY + PARTY_SIZE * where[1], PARTY_SIZE
-        return BOX_START[self.family] + SIZE * (where[1] * 30 + where[2]), SIZE
+            return self.PARTY + PARTY_SIZE * where[1], PARTY_SIZE
+        return self.box_start() + SIZE * (where[1] * 30 + where[2]), SIZE
 
     def read(self, where):
         o, n = self.slot(where)
@@ -159,8 +173,8 @@ class Gen6Save:
         return [decode(self.read(("party", i))) for i in range(min(self.party_count(), 6))]
 
     def pc(self):
-        return [[decode(self.read(("box", b, i))) for i in range(30)] for b in range(BOXES)], \
-            [f"Boîte {b + 1}" for b in range(BOXES)]
+        return [[decode(self.read(("box", b, i))) for i in range(30)] for b in range(self.BOXES)], \
+            [f"Boîte {b + 1}" for b in range(self.BOXES)]
 
 
 PERSONAL = {"XY": ("a/2/1/8", 0x40), "ORAS": ("a/1/9/5", 0x50)}
@@ -201,7 +215,7 @@ def open_save(raw, game_key=None):
 
 
 def set_money(sv, value):
-    struct.pack_into("<I", sv.raw, MONEY, max(0, min(A.MAX_MONEY, int(value))))
+    struct.pack_into("<I", sv.raw, sv.MONEY, max(0, min(A.MAX_MONEY, int(value))))
 
 
 def bag(sv):
@@ -302,7 +316,7 @@ def edit_mon(sv, where, changes, table, exp_for_level, level_for_exp, calc_stats
         struct.pack_into("<4H", pk, 0x5A, *new)
         for k, mv in enumerate(new):
             if mv != old[k]:
-                pk[0x62 + k] = move_pp(6, mv) if mv else 0
+                pk[0x62 + k] = move_pp(sv.gen, mv) if mv else 0
                 pk[0x66 + k] = 0
     if "ivs" in changes:
         w = struct.unpack_from("<I", pk, 0x74)[0] & 0xC0000000
@@ -338,17 +352,17 @@ def export_mon(sv, where):
     return decrypt(sv.read(where))
 
 
-def from_file(data):
+def from_file(data, dex_max=DEX_MAX, gen=6):
     if len(data) not in (SIZE, PARTY_SIZE):
-        raise ValueError(f"fichier de {len(data)} octets : pas un Pokémon 6G (.pk6)")
+        raise ValueError(f"fichier de {len(data)} octets : pas un Pokémon {gen}G (.pk{gen})")
     data = bytes(data[:SIZE])
     plain = struct.unpack_from("<H", data, 6)[0] == sum(struct.unpack_from("<112H", data, 8)) & 0xFFFF
     pk = data if plain and struct.unpack_from("<H", data, 8)[0] else decrypt(data)
     if not A.checksum_ok(pk):
         raise ValueError("fichier illisible (somme de contrôle fausse ou mauvaise génération)")
     nat = struct.unpack_from("<H", pk, 8)[0]
-    if not 1 <= nat <= DEX_MAX:
-        raise ValueError(f"espèce {nat} inconnue en 6G")
+    if not 1 <= nat <= dex_max:
+        raise ValueError(f"espèce {nat} inconnue en {gen}G")
     return bytes(pk)
 
 
@@ -368,7 +382,7 @@ def place_mon(sv, where, pk, recalc):
 
 def _empty(sv):
     seen = {}
-    for b in range(BOXES):
+    for b in range(sv.BOXES):
         for i in range(30):
             r = sv.read(("box", b, i))
             if decode(r) is None:
@@ -392,14 +406,14 @@ def remove_mon(sv, where):
         sv.write(("party", k), mons[k] if k < len(mons) else EMPTY + bytes(PARTY_SIZE - SIZE))
 
 
-def check_mon(m, table, pockets, exp_for_level, level_for_exp):
+def check_mon(m, table, pockets, exp_for_level, level_for_exp, dex_max=DEX_MAX, move_max=MOVE_MAX, gen=6):
     if not m:
         return []
     if m.get("bad"):
         return ["données abîmées (somme de contrôle fausse)"]
     out = []
-    if not 1 <= m["species"] <= DEX_MAX:
-        out.append(f"espèce {m['species']} inconnue en 6G")
+    if not 1 <= m["species"] <= dex_max:
+        out.append(f"espèce {m['species']} inconnue en {gen}G")
     if sum(m["evs"]) > 510:
         out.append(f"EV : {sum(m['evs'])} au total (510 maximum)")
     mv = [x for x in m["moves"] if x]
@@ -407,7 +421,7 @@ def check_mon(m, table, pockets, exp_for_level, level_for_exp):
         out.append("aucune attaque")
     if len(set(mv)) != len(mv):
         out.append("la même attaque deux fois")
-    if any(x > MOVE_MAX for x in mv):
+    if any(x > move_max for x in mv):
         out.append("attaque inconnue dans ce jeu")
     if m["item"] and pockets is not None and m["item"] not in pockets:
         out.append("objet tenu inconnu dans ce jeu")
@@ -438,8 +452,8 @@ def _template(sv):
 def create_mon(sv, species, level, nature, shiny, moves, table, ivs, name, exp_for_level, move_pp):
     rng = random.SystemRandom()
     species, level, nature = int(species), max(1, min(100, int(level))), int(nature) % 25
-    if species not in table or not 1 <= species <= DEX_MAX:
-        raise ValueError(f"espèce {species} inconnue en 6G")
+    if species not in table or not 1 <= species <= sv.DEX_MAX:
+        raise ValueError(f"espèce {species} inconnue en {sv.gen}G")
     info = table[species]
     growth, ratio, friend, abil = info[6], info[7], info[8], info[9:12]
     t = sv.trainer()
@@ -465,7 +479,7 @@ def create_mon(sv, species, level, nature, shiny, moves, table, ivs, name, exp_f
     pk[0x1D] = 4 if ratio == 255 else 2 if female else 0
     pk[0x40:0x5A] = encode(name)
     struct.pack_into("<4H", pk, 0x5A, *moves)
-    pk[0x62:0x66] = bytes(move_pp(6, m) if m else 0 for m in moves)
+    pk[0x62:0x66] = bytes(move_pp(sv.gen, m) if m else 0 for m in moves)
     struct.pack_into("<4H", pk, 0x6A, *moves)
     struct.pack_into("<I", pk, 0x74, sum(v << (5 * k) for k, v in enumerate(ivs)))
     pk[0x93] = 0
@@ -477,6 +491,6 @@ def create_mon(sv, species, level, nature, shiny, moves, table, ivs, name, exp_f
     struct.pack_into("<H", pk, 0xDA, struct.unpack_from("<H", tmpl, 0xDA)[0])
     pk[0xDC] = BALL_POKE
     pk[0xDD] = (tmpl[0xDD] & 0x80) | level
-    pk[0xDF] = tmpl[0xDF] or VERSION[sv.family]
+    pk[0xDF] = tmpl[0xDF] or sv.version()
     pk[0xE0:0xE4] = tmpl[0xE0:0xE4]
     return bytes(pk)

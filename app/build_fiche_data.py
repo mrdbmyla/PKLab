@@ -5,10 +5,11 @@ import sys
 from collections import defaultdict
 
 SRC = sys.argv[1]
-OUT = "C:/pkmn/data/fiche"
+OUT = os.environ.get("FICHE_OUT", "C:/pkmn/data/fiche")
 FR = "5"
-VGS = {3: 2, 4: 2, 5: 3, 6: 3, 7: 3, 8: 4, 9: 4, 10: 4, 11: 5, 14: 5, 15: 6, 16: 6}
-LAST = {2: 251, 6: 721}
+VGS = {3: 2, 4: 2, 5: 3, 6: 3, 7: 3, 8: 4, 9: 4, 10: 4, 11: 5, 14: 5, 15: 6, 16: 6, 17: 7, 18: 7}
+ONLY = {int(x) for x in sys.argv[2:]}
+LAST = {2: 251, 6: 721, 7: 807}
 TYPE_KEYS = {13: "Electrik", 17: "Tenebres", 18: "Fee"}
 
 
@@ -61,7 +62,7 @@ learn = defaultdict(lambda: defaultdict(lambda: {"lv": [], "tm": set()}))
 for r in rows("pokemon_moves"):
     vg = int(r["version_group_id"])
     pid = int(r["pokemon_id"])
-    if vg not in VGS or pid > 721:
+    if vg not in VGS or pid > 807:
         continue
     method = r["pokemon_move_method_id"]
     mid = int(r["move_id"])
@@ -121,11 +122,11 @@ for r in rows("pokemon_species"):
     species_gen[sid] = int(r["generation_id"])
     if r["evolves_from_species_id"]:
         species_from[sid] = int(r["evolves_from_species_id"])
-VG_REGIONS = {3: {2, 1}, 4: {2, 1}, 5: {3}, 6: {3}, 7: {1}, 8: {4}, 9: {4}, 10: {2, 1}, 11: {5}, 14: {5}, 15: {6}, 16: {3}}
+VG_REGIONS = {3: {2, 1}, 4: {2, 1}, 5: {3}, 6: {3}, 7: {1}, 8: {4}, 9: {4}, 10: {2, 1}, 11: {5}, 14: {5}, 15: {6}, 16: {3}, 17: {7}, 18: {7}}
 evo_rows = defaultdict(list)
 for r in rows("pokemon_evolution"):
     sid = int(r["evolved_species_id"])
-    if sid > 721 or r["region_id"]:
+    if sid > 807 or r["region_id"]:
         continue
     if any(r[k] and int(r[k]) >= 10000 for k in ("required_pokemon_form_id", "evolved_pokemon_form_id")):
         continue
@@ -196,6 +197,8 @@ def evo_methods(sid, vg):
 
 os.makedirs(OUT, exist_ok=True)
 for vg, gen in VGS.items():
+    if ONLY and vg not in ONLY:
+        continue
     used = set()
     species = {}
     last = LAST.get(gen, 649)
@@ -217,10 +220,10 @@ for vg, gen in VGS.items():
             evs.append([sid, " ou ".join(m) if m else "Méthode inconnue"])
         if evs:
             species[pid]["ev"] = evs
-    max_move = {2: 251, 3: 354, 4: 467, 5: 559, 6: 621}[gen]
+    max_move = {2: 251, 3: 354, 4: 467, 5: 559, 6: 621, 7: 728 if vg == 18 else 719}[gen]
     all_moves = sorted(used | set(range(1, max_move + 1)))
     data = {"vg": vg, "gen": gen, "moves": {m: move_at(m, vg) for m in all_moves if m in moves}, "species": species,
-            "abilities": {a: n for a, n in abil_fr.items() if a <= {2: 0, 3: 76, 4: 123, 5: 164, 6: 191}[gen]},
+            "abilities": {a: n for a, n in abil_fr.items() if a <= {2: 0, 3: 76, 4: 123, 5: 164, 6: 191, 7: 233}[gen]},
             "typeNames": [type_fr[t] for t in range(1, 19 if gen >= 6 else 18)],
             "items": {int(r["game_index"]): item_fr[int(r["item_id"])] for r in rows("item_game_indices")
                       if r["generation_id"] == str(gen) and int(r["item_id"]) in item_fr}}

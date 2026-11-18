@@ -72,7 +72,7 @@ Rubis / Saphir	Ruby / Sapphire
 
 # ---- randomizer panel
 Randomizer	Randomizer
-Crée une version aléatoire de ton jeu (2G, 3G, 4G, 5G et 6G) en quelques clics. Mode simple pour jouer tout de suite, mode détaillé pour tout régler. La ROM d'origine n'est jamais modifiée.	Creates a randomized version of your game (Gen 2, 3, 4, 5 and 6) in a few clicks. Simple mode to play right away, detailed mode to tune everything. The original ROM is never modified.
+Crée une version aléatoire de ton jeu (2G, 3G, 4G, 5G, 6G et 7G) en quelques clics. Mode simple pour jouer tout de suite, mode détaillé pour tout régler. La ROM d'origine n'est jamais modifiée.	Creates a randomized version of your game (Gen 2, 3, 4, 5, 6 and 7) in a few clicks. Simple mode to play right away, detailed mode to tune everything. The original ROM is never modified.
 Ton jeu	Your game
 Choisir une ROM...	Choose a ROM...
 Nom	Name
@@ -247,7 +247,7 @@ Mélangés	Shuffled
 Aléatoires (les CT restent des CT)	Random (TMs stay TMs)
 Magasins	Shops
 Aléatoires (prix proches, CT et Poké Balls gardés)	Random (similar prices, TMs and Poké Balls kept)
-Échanges, fixes, offerts, œufs, objets au sol, objets cachés, magasins : 3G, 4G et 5G (6G : offerts seulement). Les dialogues citent encore les anciens Pokémon / attaques, et les Pokémon fixes gardent leur apparence sur la carte.	Trades, static, gifts, eggs, field items, hidden items, shops: Gen 3, 4 and 5 (Gen 6: gifts only). Dialogues still mention the old Pokémon / moves, and static Pokémon keep their look on the map.
+Échanges, fixes, offerts, œufs, objets au sol, objets cachés, magasins : 3G, 4G et 5G (6G et 7G : offerts seulement). Les dialogues citent encore les anciens Pokémon / attaques, et les Pokémon fixes gardent leur apparence sur la carte.	Trades, static, gifts, eggs, field items, hidden items, shops: Gen 3, 4 and 5 (Gen 6 and 7: gifts only). Dialogues still mention the old Pokémon / moves, and static Pokémon keep their look on the map.
 Général	General
 Sans légendaires	No legendaries
 Même stade d'évolution	Same evolution stage
@@ -277,12 +277,12 @@ nouvelle partie	new game
 voir le détail	see the details
 Jouer maintenant	Play now
 (aléatoire)	(random)
-Aucune ROM 2G à 6G dans Téléchargements ou Bureau	No Gen 2 to 6 ROM in Downloads or Desktop
+Aucune ROM 2G à 7G dans Téléchargements ou Bureau	No Gen 2 to 7 ROM in Downloads or Desktop
 - shiny	- shiny
 
 # ---- shiny tool
 Chance de shiny	Shiny odds
-Crée une copie de ton jeu (2G, 3G, 4G, 5G et 6G, d'origine ou déjà aléatoire) où les Pokémon chromatiques sont plus fréquents, jusqu'à 100 %. Rien d'autre ne change et la ROM d'origine n'est jamais modifiée. (phase expérimentale)	Creates a copy of your game (Gen 2, 3, 4, 5 and 6, original or already randomized) where shiny Pokémon are more common, up to 100%. Nothing else changes and the original ROM is never modified. (experimental)
+Crée une copie de ton jeu (2G, 3G, 4G, 5G, 6G et 7G, d'origine ou déjà aléatoire) où les Pokémon chromatiques sont plus fréquents, jusqu'à 100 %. Rien d'autre ne change et la ROM d'origine n'est jamais modifiée. (phase expérimentale)	Creates a copy of your game (Gen 2, 3, 4, 5, 6 and 7, original or already randomized) where shiny Pokémon are more common, up to 100%. Nothing else changes and the original ROM is never modified. (experimental)
 Chance	Odds
 1 / 4096 (2 fois plus)	1 / 4096 (2 times more)
 1 / 1024 (8 fois plus)	1 / 1024 (8 times more)
@@ -508,8 +508,8 @@ Pierre Éclat	Shiny Stone
 # ---- app messages (Python)
 Le script mGBA ne répond pas (vérifie qu'il est bien chargé)	The mGBA script isn't answering (check that it is loaded)
 Sauvegarder en Save State 1 avant de quitter ?	Save to Save State 1 before quitting?
-Cette ROM n'est pas prise en charge (Pokémon 2G, 3G, 4G ou 5G d'origine)	This ROM isn't supported (original Gen 2, 3, 4 or 5 Pokémon game)
-Cette ROM n'est pas prise en charge (Pokémon 2G, 3G, 4G ou 5G)	This ROM isn't supported (Gen 2, 3, 4 or 5 Pokémon game)
+Cette ROM n'est pas prise en charge (Pokémon 2G à 7G d'origine)	This ROM isn't supported (original Gen 2 to 7 Pokémon game)
+Cette ROM n'est pas prise en charge (Pokémon 2G à 7G)	This ROM isn't supported (Gen 2 to 7 Pokémon game)
 Nom trop long (100 caractères maximum)	Name too long (100 characters maximum)
 Ce nom est celui de la ROM d'origine : choisis-en un autre	This is the original ROM's name: choose another one
 Une ROM porte déjà ce nom dans ce dossier : choisis-en un autre	A ROM already has this name in this folder: choose another one
@@ -1065,3 +1065,37 @@ Sable	Sand
 Pêche	Fishing
 Autres	Other
 Pokémon Soleil	Pokémon Sun
+Pas encore disponible en 6G (ignoré) :	Not available yet in Gen 6 (ignored):
+Pas encore disponible en 7G (ignoré) :	Not available yet in Gen 7 (ignored):
+taux de capture minimum	minimum catch rate
+Identifiant de la copie :	Copy ID:
+(sauvegarde séparée)	(separate save)
+(herbes, fleurs, grottes, sable, surf, pêche, renforts SOS)	(grass, flowers, caves, sand, surfing, fishing, SOS allies)
+(herbes, fleurs, surf, pêche, Éclate-Roc, hordes)	(grass, flowers, surfing, fishing, Rock Smash, hordes)
+Eau en surf et pêche	Water when surfing and fishing
+Capitaines / Doyens / Conseil 4 : un type chacun	Trial Captains / Kahunas / Elite Four: one type each
+suivie par les rivaux	followed by the rivals
+~changés	changed
+Écran de choix des starters	Starter selection screen
+noms et types changés	names and types changed
+langues sur	languages out of
+modèles 3D d'origine	original 3D models
+NON modifié (fiches introuvables)	NOT changed (entries not found)
+NON modifiés (table introuvable)	NOT changed (table not found)
+au lieu de	instead of
+non testé en jeu	not tested in game
+NON changée	NOT changed
+tests introuvables	tests not found
+test introuvable	test not found
+code d'un test inattendu	unexpected test code
+code des DV introuvable	DV code not found
+~trouvés	found
+~décalages	offsets
+~Capitaine	Captain
+~Doyenne	Kahuna
+~Doyen	Kahuna
+~Présidente	President
+Professeur Pokémon	Pokémon Professor
+, Eau en surf et pêche	, Water when surfing and fishing
+, lignée des starters suivie par les rivaux (	, starters' line followed by the rivals (
+pour les Pokémon sauvages	for wild Pokémon
