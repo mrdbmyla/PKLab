@@ -3,6 +3,7 @@ import random
 import socket
 import struct
 
+import osdep
 from pokedata import ABILITIES, NATURES
 
 RPC_PORT = 45987
@@ -352,7 +353,8 @@ class AzaharReader:
             return False
         try:
             if self.host is None:
-                self.host = HostMem(self.pid)
+                self.host = HostMem(self.pid) if osdep.IS_WIN else osdep.ProcMem(
+                    osdep.find_process(osdep.LINUX_EMU_NAMES["azahar"], self.pid) or self.pid)
             delta = self._delta(addr)
             if delta is None:
                 return False

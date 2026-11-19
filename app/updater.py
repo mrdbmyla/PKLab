@@ -161,12 +161,8 @@ def cleanup_old_exe(wait_pid=None):
     import sys
     import time
     if wait_pid:
-        import ctypes
-        k = ctypes.windll.kernel32
-        hp = k.OpenProcess(0x00100000, False, int(wait_pid))
-        if hp:
-            k.WaitForSingleObject(hp, 30000)
-            k.CloseHandle(hp)
+        import osdep
+        osdep.wait_pid(wait_pid)
     if not paths.FROZEN:
         return
     old = sys.executable + ".old"

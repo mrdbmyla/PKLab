@@ -2,15 +2,20 @@ import os
 import sys
 
 FROZEN = getattr(sys, "frozen", False)
+_SRC_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__))).replace("\\", "/")
 
 
 def _base_dir():
     if not FROZEN:
-        return "C:/pkmn"
+        return "C:/pkmn" if sys.platform == "win32" else _SRC_DIR
     exe_dir = os.path.dirname(sys.executable)
     if os.path.isfile(os.path.join(exe_dir, "pklab.html")):
         return exe_dir
-    d = os.path.join(os.environ.get("LOCALAPPDATA") or os.path.expanduser("~"), "PKLab")
+    if sys.platform == "win32":
+        root = os.environ.get("LOCALAPPDATA") or os.path.expanduser("~")
+    else:
+        root = os.environ.get("XDG_DATA_HOME") or os.path.join(os.path.expanduser("~"), ".local", "share")
+    d = os.path.join(root, "PKLab")
     try:
         os.makedirs(d, exist_ok=True)
         return d
@@ -19,7 +24,7 @@ def _base_dir():
 
 
 BASE_DIR = _base_dir().replace("\\", "/")
-RES_DIR = (os.path.join(sys._MEIPASS, "pklab_res") if FROZEN else "C:/pkmn").replace("\\", "/")
+RES_DIR = os.path.join(sys._MEIPASS, "pklab_res").replace("\\", "/") if FROZEN else BASE_DIR
 os.environ["PKLAB_BASE_DIR"] = BASE_DIR
 
 
@@ -31,7 +36,7 @@ def res(*parts):
 
 APP_VERSION = "1.1.2"
 EXE_DIR = os.path.dirname(sys.executable).replace("\\", "/") if FROZEN else ""
-UPDATABLE = FROZEN and os.path.normcase(BASE_DIR) != os.path.normcase(EXE_DIR)
+UPDATABLE = FROZEN and sys.platform == "win32" and os.path.normcase(BASE_DIR) != os.path.normcase(EXE_DIR)
 MAJ_FILE = os.path.join(BASE_DIR, "maj_installee.json")
 
 

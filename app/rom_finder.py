@@ -1,6 +1,7 @@
 import ctypes
 import json
 import os
+import sys
 import threading
 import time
 
@@ -23,6 +24,7 @@ ROM_EXTS = {".nds", ".gba", ".gbc", ".gb", ".srl", ".dsi", ".agb", ".bin", ".rom
 SKIP_DIRS = {"windows", "windows.old", "program files", "program files (x86)", "programdata", "$recycle.bin",
              "system volume information", "$winreagent", "$windows.~bt", "$windows.~ws", "recovery", "perflogs",
              "config.msi", "msocache", "appdata", "node_modules", ".git", "__pycache__", "site-packages"}
+SKIP_PREFIX = "$" if sys.platform == "win32" else ("$", ".")
 MIN_SIZE = 0x40000
 MAX_SIZE = 1 << 30
 MAX_SIZE_CTR = 1 << 33
@@ -74,6 +76,12 @@ def _candidate(entry):
 
 
 def _drives():
+    if sys.platform != "win32":
+        home = os.path.expanduser("~")
+        out = [home] + [d for d in ("/media", "/run/media") if os.path.isdir(d)]
+        if os.path.isdir("/mnt") and not os.path.isdir("/mnt/wslg"):
+            out.append("/mnt")
+        return out
     try:
         k = ctypes.windll.kernel32
         mask = k.GetLogicalDrives()
@@ -89,6 +97,12 @@ def _drives():
 
 
 def _background_thread():
+    if sys.platform != "win32":
+        try:
+            os.nice(10)
+        except (OSError, AttributeError):
+            pass
+        return
     try:
         k = ctypes.windll.kernel32
         k.GetCurrentThread.restype = ctypes.c_void_p
@@ -153,9 +167,9 @@ class RomIndex:
                 for e in it:
                     try:
                         if e.is_dir(follow_symlinks=False):
-                            if e.name.lower() in SKIP_DIRS or e.name.startswith("$"):
+                            if e.name.lower() in SKIP_DIRS or e.name.startswith(SKIP_PREFIX):
                                 continue
-                            if e.stat(follow_symlinks=False).st_file_attributes & 0x400:
+                            if getattr(e.stat(follow_symlinks=False), "st_file_attributes", 0) & 0x400:
                                 continue
                             if max_depth is None or depth < max_depth:
                                 stack.append((e.path, depth + 1))

@@ -268,6 +268,11 @@ if (I18N) {
         font-size: 13px;
         z-index: 1;
     }
+    #gameViewPlaceholder .ph-separate { display: none; max-width: 520px; text-align: center; line-height: 1.6; padding: 0 24px; }
+    body.no-embed #gameViewPlaceholder { background: var(--bg, #0b1220); }
+    body.no-embed #gameViewPlaceholder .ph-embed { display: none; }
+    body.no-embed #gameViewPlaceholder .ph-separate { display: block; }
+    body.no-embed #volumeWrap, body.no-embed #speedWrap { display: none !important; }
     #status .dot {
         width: 8px;
         height: 8px;
@@ -2117,7 +2122,7 @@ if (I18N) {
         <div id="langMenuBar" class="lang-menu" translate="no"></div>
     </div>
 
-    <div id="gameViewPlaceholder">Choisis un jeu dans la bibliothèque pour commencer.</div>
+    <div id="gameViewPlaceholder"><span class="ph-embed">Choisis un jeu dans la bibliothèque pour commencer.</span><span class="ph-separate">Le jeu s'ouvre dans sa propre fenêtre : place-la à côté de PKLab. Les infos de combat, l'équipe et la carte s'affichent ici.</span></div>
 
     <div id="detectOverlay" hidden>
         <div id="detectBox">
@@ -3193,11 +3198,11 @@ async function fetchRomList(engineKey, rescan) {
 
 function pickRomFor(data, gameValue) {
     const aliases = GAME_ALIASES[gameValue] || [];
-    const byName = p => { const n = p.split("\\").pop().toLowerCase(); return aliases.some(a => n.includes(a)); };
+    const byName = p => { const n = p.split(/[\\/]/).pop().toLowerCase(); return aliases.some(a => n.includes(a)); };
     const found = (data.found || []).filter(r => r.game === gameValue);
     const mod = new Set(found.filter(r => r.modified).map(r => r.path));
-    const plain = p => !mod.has(p) && !/(\((Aleatoire|Aleatorio|Random) \d)|randomi[sz]ed/i.test(p.split("\\").pop());
-    const base = p => p.split("\\").pop();
+    const plain = p => !mod.has(p) && !/(\((Aleatoire|Aleatorio|Random) \d)|randomi[sz]ed/i.test(p.split(/[\\/]/).pop());
+    const base = p => p.split(/[\\/]/).pop();
     const ids = found.map(r => r.path).sort((a, b) => (plain(b) && byName(b)) - (plain(a) && byName(a)) || plain(b) - plain(a) || base(a).length - base(b).length);
     return ids[0] || null;
 }
@@ -3404,7 +3409,7 @@ async function launchGame(engineKey, rom, label, loadState = false, game = null)
         lastLaunchNewGame = !!(data.ok && data.newGame);
         if (data.ok) {
 
-            saveLastLaunch(engineKey, rom, label || rom.split("\\").pop().replace(/\.[^.]+$/, ""), game);
+            saveLastLaunch(engineKey, rom, label || rom.split(/[\\/]/).pop().replace(/\.[^.]+$/, ""), game);
 
             let attempts = 0;
             const tryLoad = async () => {
@@ -3573,7 +3578,7 @@ async function loadRoms(engineKey) {
         for (const path of roms) {
             const opt = document.createElement("option");
             opt.value = path;
-            opt.textContent = path.split("\\").pop();
+            opt.textContent = path.split(/[\\/]/).pop();
             romSelect.appendChild(opt);
         }
     } catch (e) {  }
@@ -3586,6 +3591,7 @@ async function loadEngines() {
     try {
         const res = await fetch("/api/emulators", { cache: "no-store" });
         const data = await res.json();
+        if (data.embed === false) document.body.classList.add("no-embed");
         for (const eng of data.engines || []) {
             const opt = document.createElement("option");
             opt.value = eng.key;
@@ -4283,7 +4289,7 @@ function seSlot(w) {
     const ch = seEdits[key] ? " changed" : "";
     const wn = (m.warnings || []).length ? `<span class="se-w" title="${escapeAttr(m.warnings.join(" ; "))}">!</span>` : "";
     return `<div class="se-slot${sel}${ch}" data-where="${key}" title="${escapeAttr(seName("sp", m.species))}${m.level ? " Nv." + m.level : ""}"><img src="/data/sprites/${m.species}.png" alt="">${wn}`
-        + `${w[0] === "party" ? escapeAttr(seName("sp", m.species)) + (m.level ? " N." + m.level : "") : ""}</div>`;
+        + `${w[0] === "party" ? escapeAttr(seName("sp", m.species)) + (m.level ? " Nv." + m.level : "") : ""}</div>`;
 }
 function seRender() {
     const t = seData.trainer;
@@ -4638,7 +4644,9 @@ async function seOpen(path) {
         document.getElementById("seMoveList").innerHTML = Object.entries(seFiche.moves).map(([id, mv]) => {
             seNames.mv[mv[0].toLowerCase()] = +id; return `<option value="${escapeAttr(mv[0])}">`; }).join("");
         document.getElementById("seItemList").innerHTML = Object.entries(seFiche.items || {}).map(([id, nm]) => {
-            seNames.it[nm.toLowerCase()] = +id; return `<option value="${escapeAttr(nm)}">`; }).join("");
+            const k = nm.toLowerCase();
+            if (k in seNames.it) return "";
+            seNames.it[k] = +id; return `<option value="${escapeAttr(nm)}">`; }).join("");
         document.getElementById("seMoney").max = d.gen >= 6 ? 9999999 : 999999;
         document.getElementById("seMoney").value = d.trainer.money;
         seBag = d.bag.map(pk => Object.assign({}, pk, { items: pk.items.map(x => x.slice()) }));

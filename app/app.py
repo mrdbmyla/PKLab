@@ -1,6 +1,5 @@
 import atexit
 import ctypes
-import ctypes.wintypes as wintypes
 import http.server
 import json
 import os
@@ -22,6 +21,8 @@ except Exception:
     _PYCAW_AVAILABLE = False
 
 import paths
+import osdep
+from osdep import IS_WIN
 from nds_mem import NdsMemory, NdsEmulatorNotFound
 from games import GAMES
 import engine
@@ -254,7 +255,10 @@ def _ini_set(path, section, values):
 
 
 def _prepare_mgba_config():
-    base = os.path.join(os.environ.get("APPDATA") or "", "mGBA")
+    if IS_WIN:
+        base = os.path.join(os.environ.get("APPDATA") or "", "mGBA")
+    else:
+        base = os.path.join(os.environ.get("XDG_CONFIG_HOME") or os.path.expanduser("~/.config"), "mgba")
     if not os.path.isdir(base):
         return
     _ini_set(os.path.join(base, "config.ini"), "[ports.qt]", {"mute": "0"})
@@ -635,15 +639,7 @@ def _created_by_path(path):
 
 
 def _to_recycle_bin(paths):
-    class SHFILEOPSTRUCTW(ctypes.Structure):
-        _fields_ = [("hwnd", wintypes.HWND), ("wFunc", ctypes.c_uint), ("pFrom", wintypes.LPCWSTR),
-                    ("pTo", wintypes.LPCWSTR), ("fFlags", ctypes.c_ushort), ("fAnyOperationsAborted", wintypes.BOOL),
-                    ("hNameMappings", ctypes.c_void_p), ("lpszProgressTitle", wintypes.LPCWSTR)]
-    op = SHFILEOPSTRUCTW()
-    op.wFunc = 3
-    op.pFrom = "\0".join(paths) + "\0\0"
-    op.fFlags = 0x0040 | 0x0010 | 0x0400 | 0x0004
-    return ctypes.windll.shell32.SHFileOperationW(ctypes.byref(op)) == 0 and not op.fAnyOperationsAborted
+    return osdep.to_trash(paths)
 
 
 def created_rom_delete(data):
@@ -664,9 +660,9 @@ def created_rom_action(data):
     if not e:
         return {"ok": False}
     if data.get("what") == "folder":
-        subprocess.Popen(["explorer", "/select,", os.path.normpath(e["path"])])
+        osdep.reveal(e["path"])
     elif data.get("what") == "report" and e["report"]:
-        os.startfile(e["report"])
+        osdep.open_file(e["report"])
     else:
         return {"ok": False}
     return {"ok": True}
@@ -746,8 +742,8 @@ def _restart_after_update():
         time.sleep(1.5)
     cmd, env = updater.restart_command()
     try:
-        subprocess.Popen(cmd, env=env, close_fds=True,
-                         creationflags=0x00000008 | 0x00000200)
+        subprocess.Popen(cmd, env=env, close_fds=True, creationflags=osdep.DETACHED,
+                         start_new_session=not IS_WIN)
     except OSError:
         return
     stop_emulator()
@@ -1369,6 +1365,7 @@ WA_ACTIVE = 1
 
 
 def _pump_sleep(seconds):
+    import ctypes.wintypes as wintypes
     user32 = ctypes.windll.user32
     msg = wintypes.MSG()
     PM_REMOVE = 1
@@ -1394,7 +1391,42 @@ def _find_save_state_slot1_id(user32, hmenu, label="Save State"):
     return None
 
 
+def _linux_save_state_hotkey(load):
+    if CURRENT_EMULATOR_PROC is None or CURRENT_EMULATOR_PROC.poll() is not None:
+        return False
+    if CURRENT_ENGINE_KEY == "mgba":
+        return _mgba_bridge_request("loadstate1" if load else "savestate1")[0]
+    wid = LINUX_EMU_WID
+    if not wid:
+        return False
+    if CURRENT_ENGINE_KEY == "azahar":
+        snap = _azahar_quicksaves
+    else:
+        st = state1_path(CURRENT_ENGINE_KEY, CURRENT_ROM_PATH)
+
+        def snap():
+            try:
+                return {st: os.path.getmtime(st)} if st else {}
+            except OSError:
+                return {}
+    before = snap()
+    if not osdep.x11_keys(wid, ["F1" if load else "shift+F1"]):
+        return False
+    time.sleep(0.5)
+    if load:
+        return True
+    end = time.time() + 10
+    while time.time() < end:
+        if any(before.get(f) != t for f, t in snap().items()):
+            time.sleep(0.5)
+            return True
+        time.sleep(0.2)
+    return False
+
+
 def send_save_state_hotkey(load=False):
+    if not IS_WIN:
+        return _linux_save_state_hotkey(load)
     if not CURRENT_CANVAS_HWND or CURRENT_EMULATOR_PROC is None or CURRENT_EMULATOR_PROC.poll() is not None:
         return False
     user32 = _user32()
@@ -1474,13 +1506,16 @@ def state1_path(engine_key, rom_path):
 def _load_state1_when_ready(proc):
     end = time.time() + 40
     while time.time() < end and proc.poll() is None:
-        if CURRENT_EMULATOR_PROC is proc and CURRENT_CANVAS_HWND:
+        if CURRENT_EMULATOR_PROC is proc and (CURRENT_CANVAS_HWND or LINUX_EMU_WID):
             break
         time.sleep(0.3)
     else:
         return
     time.sleep(4.0)
     if CURRENT_EMULATOR_PROC is not proc or proc.poll() is not None:
+        return
+    if not IS_WIN:
+        send_save_state_hotkey(load=True)
         return
     user32 = _user32()
     hidden = not user32.IsWindowVisible(CURRENT_CANVAS_HWND)
@@ -1550,6 +1585,27 @@ def set_sidebar_collapsed(collapsed):
     resize_embedded_canvas()
 
 
+LINUX_EMU_WID = None
+
+
+def _track_linux_window(engine_key, proc):
+    global LINUX_EMU_WID
+    hint = EMBED_TITLE_HINTS.get(engine_key, "").rstrip(" -")
+    end = time.time() + 30
+    while time.time() < end and proc.poll() is None and CURRENT_EMULATOR_PROC is proc:
+        pids = osdep.descendants(proc.pid)
+        wid = osdep.x11_window(pids, hint)
+        if wid:
+            LINUX_EMU_WID = wid
+            if EMULATOR_BUNDLES[engine_key]["needs_script"]:
+                time.sleep(1.0)
+                script = osdep.x11_window(pids, "Script")
+                if script and script != wid:
+                    osdep._xdotool("windowminimize", str(script))
+            return
+        time.sleep(0.5)
+
+
 def embed_emulator_window(engine_key, pid):
     global CURRENT_CANVAS_HWND, OWN_HWND, CURRENT_EMBEDDED_HMENU, _LAST_RESIZE_PARAMS
     _LAST_RESIZE_PARAMS = None
@@ -1599,6 +1655,8 @@ def _focus_embedded(user32):
 
 
 def _focus_guard_loop():
+    if not IS_WIN:
+        return
     user32 = _user32()
     was_down = False
     pt = _POINT()
@@ -1799,6 +1857,8 @@ def _set_emulator_priority(fast):
 
 
 def _speed_watchdog_loop():
+    if not IS_WIN:
+        return
     u = ctypes.windll.user32
     u.SendMessageTimeoutW.argtypes = [ctypes.c_void_p, ctypes.c_uint, ctypes.c_size_t, ctypes.c_ssize_t,
                                       ctypes.c_uint, ctypes.c_uint, ctypes.POINTER(ctypes.c_size_t)]
@@ -1841,10 +1901,11 @@ def emulator_fps():
     try:
         buf = ctypes.create_unicode_buffer(256)
         _user32().GetWindowTextW(h, buf, 256)
+        title = buf.value
     except Exception:
         return None
     for rx in _FPS_TITLE:
-        m = rx.search(buf.value)
+        m = rx.search(title)
         if m:
             return round(float(m.group(1).replace(",", ".")))
     return None
@@ -1881,6 +1942,7 @@ def _reset_speed_state():
 
 CURRENT_EMULATOR_PROC = None
 CURRENT_ENGINE_KEY = None
+CURRENT_ROM_PATH = None
 
 
 def _emulator_audio_session():
@@ -1922,21 +1984,18 @@ def _kill_stale_emulator():
         return
     _clear_emulator_pid_file()
     try:
-        subprocess.run(
-            ["taskkill", "/F", "/FI", f"PID eq {pid_str}", "/FI", f"IMAGENAME eq {exe_name}"],
-            creationflags=subprocess.CREATE_NO_WINDOW,
-            capture_output=True, timeout=5,
-        )
+        osdep.kill_pid(pid_str, exe_name)
     except Exception:
         pass
 
 
 def stop_emulator():
-    global CURRENT_EMULATOR_PROC, CURRENT_CANVAS_HWND, CURRENT_EMBEDDED_HMENU, _LAST_RESIZE_PARAMS
+    global CURRENT_EMULATOR_PROC, CURRENT_CANVAS_HWND, CURRENT_EMBEDDED_HMENU, _LAST_RESIZE_PARAMS, LINUX_EMU_WID
     _reset_speed_state()
     proc = CURRENT_EMULATOR_PROC
     CURRENT_EMULATOR_PROC = None
     CURRENT_CANVAS_HWND = None
+    LINUX_EMU_WID = None
     CURRENT_EMBEDDED_HMENU = None
     _LAST_RESIZE_PARAMS = None
     _clear_emulator_pid_file()
@@ -1944,11 +2003,11 @@ def stop_emulator():
         return
     try:
         if proc.poll() is None:
-            proc.terminate()
+            osdep.stop_proc(proc)
             try:
                 proc.wait(timeout=3)
             except subprocess.TimeoutExpired:
-                proc.kill()
+                osdep.stop_proc(proc, force=True)
     except Exception:
         pass
 
@@ -2033,7 +2092,14 @@ def launch_emulator(engine_key, rom_path, load_state=False):
     state = state1_path(engine_key, rom_path) if load_state else None
     if load_state and not (state and os.path.isfile(state)):
         return False, "Aucune sauvegarde dans le state 1 pour ce jeu"
-    if engine_key == "azahar":
+    if not IS_WIN:
+        local = AZAHAR_DIR if engine_key == "azahar" else os.path.join(BASE_DIR, engine_key)
+        exe = osdep.find_linux_emulator(engine_key, local)
+        if not exe:
+            return False, "AZAHAR_MISSING" if engine_key == "azahar" else osdep.install_hint(engine_key, local)
+        if engine_key == "azahar":
+            os.makedirs(os.path.join(AZAHAR_DIR, "user"), exist_ok=True)
+    elif engine_key == "azahar":
         exe = os.path.join(AZAHAR_DIR, cfg["exe_name"])
         if not os.path.isfile(exe):
             return False, "AZAHAR_MISSING"
@@ -2041,10 +2107,11 @@ def launch_emulator(engine_key, rom_path, load_state=False):
         exe = _ensure_bundled_extracted(engine_key)
     if not exe:
         return False, "Exécutable introuvable dans l'appli"
-    global EMBED_DESIRED_VISIBLE, CURRENT_ENGINE_KEY
+    global EMBED_DESIRED_VISIBLE, CURRENT_ENGINE_KEY, CURRENT_ROM_PATH
     EMBED_DESIRED_VISIBLE = True
     CURRENT_ENGINE_KEY = engine_key
-    if engine_key == "melonds":
+    CURRENT_ROM_PATH = rom_path
+    if engine_key == "melonds" and IS_WIN:
         _ensure_melonds_keyboard_defaults(os.path.dirname(exe))
         for key in gen4_maps.REPO_BY_GAME:
             gen4_maps.set_rom_path(key, rom_path)
@@ -2072,18 +2139,20 @@ def launch_emulator(engine_key, rom_path, load_state=False):
     if engine_key == "azahar":
         _prepare_azahar_config()
     try:
-        proc = subprocess.Popen(args, creationflags=subprocess.CREATE_NO_WINDOW,
-                                cwd=os.path.dirname(exe) if engine_key == "azahar" else None)
+        proc = osdep.popen_emulator(args, cwd=AZAHAR_DIR if engine_key == "azahar" else None)
         global CURRENT_EMULATOR_PROC
         CURRENT_EMULATOR_PROC = proc
-        _write_emulator_pid_file(proc.pid, cfg["exe_name"])
+        _write_emulator_pid_file(proc.pid, os.path.basename(exe))
         try:
             _speed_log(f"lancement {cfg['label']} ({os.path.getsize(exe)} octets, PKLab {paths.APP_VERSION}, {os.cpu_count()} cœurs)")
         except OSError:
             pass
-        if cfg["needs_script"]:
-            threading.Thread(target=_hide_window_by_title, args=(proc.pid, "Script"), daemon=True).start()
-        threading.Thread(target=embed_emulator_window, args=(engine_key, proc.pid), daemon=True).start()
+        if not IS_WIN:
+            threading.Thread(target=_track_linux_window, args=(engine_key, proc), daemon=True).start()
+        else:
+            if cfg["needs_script"]:
+                threading.Thread(target=_hide_window_by_title, args=(proc.pid, "Script"), daemon=True).start()
+            threading.Thread(target=embed_emulator_window, args=(engine_key, proc.pid), daemon=True).start()
         if state and engine_key in ("melonds", "azahar"):
             threading.Thread(target=_load_state1_when_ready, args=(proc,), daemon=True).start()
         return True, None
@@ -2146,6 +2215,10 @@ def _enrich_encounter(mon, hack_mode):
 def give_cheat_item_gen3(cheat_key):
     if cheat_key not in GEN3_CHEATS:
         return False, "Triche inconnue"
+    return _mgba_bridge_request(cheat_key)
+
+
+def _mgba_bridge_request(cheat_key):
     for path in (GEN3_CHEAT_REQUEST_PATH, GEN3_CHEAT_RESULT_PATH):
         try:
             os.remove(path)
@@ -2353,7 +2426,9 @@ class State:
                              fetch_bundle=lambda key, p: ctr_maps.get_zone_bundle(key, p["mapNum"]))
 
     def attach_emulator(self):
-        mem = NdsMemory("melonDS.exe")
+        if not IS_WIN and (CURRENT_ENGINE_KEY != "melonds" or CURRENT_EMULATOR_PROC is None):
+            return False
+        mem = NdsMemory("melonDS.exe", CURRENT_EMULATOR_PROC.pid if CURRENT_EMULATOR_PROC else None)
         try:
             mem.attach()
         except NdsEmulatorNotFound:
@@ -2661,6 +2736,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return
         if self.path == "/api/emulators":
             self._send_json({
+                "embed": IS_WIN,
                 "engines": [{"key": k, "label": v["label"], "romExt": v["rom_ext"], "romExts": v.get("rom_exts", [v["rom_ext"]])} for k, v in EMULATOR_BUNDLES.items()],
             })
             return
@@ -2862,9 +2938,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             global EMBED_DESIRED_VISIBLE
             EMBED_DESIRED_VISIBLE = visible
             ok = False
-            user32 = _user32()
-            if CURRENT_CANVAS_HWND and user32.IsWindow(CURRENT_CANVAS_HWND):
-                user32.ShowWindow(CURRENT_CANVAS_HWND, SW_SHOW if visible else SW_HIDE)
+            if IS_WIN and CURRENT_CANVAS_HWND and _user32().IsWindow(CURRENT_CANVAS_HWND):
+                _user32().ShowWindow(CURRENT_CANVAS_HWND, SW_SHOW if visible else SW_HIDE)
                 ok = True
             self._send_json({"ok": ok})
             return
@@ -2953,7 +3028,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             rep = data.get("path") or ""
             if rep.endswith(".txt") and os.path.isfile(rep) and any(
                     os.path.dirname(r["path"]) == os.path.dirname(rep) for r in rando_roms()):
-                os.startfile(rep)
+                osdep.open_file(rep)
                 self._send_json({"ok": True})
             else:
                 self._send_json({"ok": False})
@@ -2985,7 +3060,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
 
 class _Server(http.server.ThreadingHTTPServer):
-    allow_reuse_address = False
+    allow_reuse_address = not IS_WIN
     daemon_threads = True
 
 
@@ -2997,6 +3072,12 @@ def run_server(httpd=None):
 def ask_save_state_choice():
     if CURRENT_EMULATOR_PROC is None or CURRENT_EMULATOR_PROC.poll() is not None:
         return "nosave"
+    if not IS_WIN:
+        if not LINUX_EMU_WID and CURRENT_ENGINE_KEY != "mgba":
+            return "nosave"
+        r = osdep.ask_yes_no_cancel(i18n.tr("Sauvegarder en Save State 1 avant de quitter ?"),
+                                    i18n.tr("Oui"), i18n.tr("Non"), i18n.tr("Annuler"))
+        return {"yes": "save", "no": "nosave"}.get(r, "cancel")
     user32 = _user32()
     MB_YESNOCANCEL = 0x00000003
     MB_ICONQUESTION = 0x00000020
@@ -3024,8 +3105,22 @@ def on_window_closing():
     return True
 
 
+def _watch_exit_signals():
+    import signal
+    sigs = {signal.SIGTERM, signal.SIGHUP, signal.SIGINT}
+    signal.pthread_sigmask(signal.SIG_BLOCK, sigs)
+
+    def wait():
+        signal.sigwait(sigs)
+        stop_emulator()
+        os._exit(0)
+    threading.Thread(target=wait, daemon=True).start()
+
+
 def main():
     global STATE
+    if not IS_WIN:
+        _watch_exit_signals()
     if "--wait-pid" in sys.argv:
         i = sys.argv.index("--wait-pid")
         updater.cleanup_old_exe(sys.argv[i + 1] if i + 1 < len(sys.argv) and sys.argv[i + 1].isdigit() else None)
@@ -3034,7 +3129,7 @@ def main():
     try:
         httpd = _Server(("127.0.0.1", PORT), Handler)
     except OSError:
-        ctypes.windll.user32.MessageBoxW(None, i18n.tr("PKLab est déjà ouvert."), "PKLab", 0x40)
+        osdep.message_box(i18n.tr("PKLab est déjà ouvert."))
         return
     _kill_stale_emulator()
     state = State()
@@ -3059,12 +3154,12 @@ def main():
             "PKLab",
             site_url,
             width=1180, height=820, min_size=(760, 560),
-            maximized=True,
+            maximized=IS_WIN,
         )
         window.events.closing += on_window_closing
         window.events.resized += lambda *a, **kw: resize_embedded_canvas()
         webview.start(
-            icon=res("app", "assets", "app_icon.ico"),
+            icon=res("app", "assets", "app_icon.ico") if IS_WIN else res("favicon.png"),
             private_mode=False,
             storage_path=os.path.join(BASE_DIR, "webview_data"),
         )

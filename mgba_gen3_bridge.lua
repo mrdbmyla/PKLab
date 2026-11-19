@@ -389,6 +389,8 @@ local function giveMoney(cfg, saveBlock1, key)
 end
 
 local function runCheat(cheatKey)
+    if cheatKey == "savestate1" then return emu:saveStateSlot(1), "" end
+    if cheatKey == "loadstate1" then return emu:loadStateSlot(1), "" end
     local cfg = currentConfig()
     if not cfg then
         return false, "jeu non pris en charge"

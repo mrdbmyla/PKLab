@@ -129,6 +129,8 @@ local function giveItem(pocketName, itemId)
 end
 
 local function runCheat(cheatKey)
+    if cheatKey == "savestate1" then return emu:saveStateSlot(1), "" end
+    if cheatKey == "loadstate1" then return emu:loadStateSlot(1), "" end
     if not cfg then return false, "jeu non pris en charge" end
     local spec = CHEATS[cheatKey]
     if not spec then return false, "triche inconnue" end

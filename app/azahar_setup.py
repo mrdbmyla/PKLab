@@ -1,6 +1,7 @@
 import hashlib
 import os
 import shutil
+import sys
 import threading
 import urllib.request
 import zipfile
@@ -9,13 +10,18 @@ VERSION = "2126.2"
 URL = f"https://github.com/azahar-emu/azahar/releases/download/{VERSION}/azahar-windows-mxe-{VERSION}.zip"
 SHA256 = "dae9f107d9141ebc0e64ba251f9796393aab651cf3437ab9e083b45354624486"
 SIZE = 69427557
+if sys.platform != "win32":
+    URL = f"https://github.com/azahar-emu/azahar/releases/download/{VERSION}/azahar.AppImage"
+    SHA256 = "af037f8b775198f636b14bcfe63fb401b02246ebfefe1025bb905ce042556960"
+    SIZE = 103684600
+EXE = "azahar.exe" if sys.platform == "win32" else "azahar.AppImage"
 
 _lock = threading.Lock()
 STATUS = {"state": "idle", "done": 0, "total": SIZE, "error": None}
 
 
 def installed(dest):
-    return os.path.isfile(os.path.join(dest, "azahar.exe"))
+    return os.path.isfile(os.path.join(dest, EXE))
 
 
 def status():
@@ -37,7 +43,7 @@ def start(dest):
 
 
 def _run(dest):
-    part = dest.rstrip("\\/") + "_telechargement.zip"
+    part = dest.rstrip("\\/") + ("_telechargement.zip" if sys.platform == "win32" else "_telechargement.AppImage")
     tmp = dest.rstrip("\\/") + "_extraction"
     try:
         h = hashlib.sha256()
@@ -55,6 +61,12 @@ def _run(dest):
         if h.hexdigest() != SHA256:
             raise ValueError("fichier téléchargé invalide (empreinte différente)")
         _set(state="extracting")
+        if sys.platform != "win32":
+            os.makedirs(os.path.join(dest, "user"), exist_ok=True)
+            os.chmod(part, 0o755)
+            os.replace(part, os.path.join(dest, EXE))
+            _set(state="done")
+            return
         shutil.rmtree(tmp, ignore_errors=True)
         with zipfile.ZipFile(part) as z:
             for info in z.infolist():

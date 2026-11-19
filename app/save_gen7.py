@@ -10,6 +10,8 @@ DEX_MAX = {"SM": 802, "USUM": 807}
 MOVE_MAX = {"SM": 719, "USUM": 728}
 VERSION = {"POKEMON S": 30, "POKEMON M": 31, "POKEMON US": 32, "POKEMON UM": 33}
 VG = {"SM": 17, "USUM": 18}
+HELD_Z = {"SM": set(range(776, 795)) | set(range(798, 807)) | {836},
+          "USUM": set(range(776, 795)) | set(range(798, 807)) | {836} | set(range(921, 927))}
 BOXES = 32
 SIGN_BLOCK = 36
 POCKETS = {
@@ -222,4 +224,6 @@ def from_file(data, family="USUM"):
 
 
 def check_mon(m, table, pockets, exp_for_level, level_for_exp, family="USUM"):
+    if pockets is not None:
+        pockets = set(pockets) | HELD_Z[family]
     return G6.check_mon(m, table, pockets, exp_for_level, level_for_exp, DEX_MAX[family], MOVE_MAX[family], 7)
