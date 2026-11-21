@@ -1,7 +1,9 @@
 import os
+import re
 import shutil
 import struct
 import subprocess
+import tempfile
 import sys
 import time
 
@@ -65,7 +67,8 @@ def install_hint(engine_key, local_dir):
 def _emu_env():
     env = dict(os.environ)
     env.setdefault("QT_QPA_PLATFORM", "xcb")
-    env.pop("PKLAB_BASE_DIR", None)
+    for k in ("PKLAB_BASE_DIR", "PKLAB_RES_DIR", "PYWEBVIEW_GUI", "QTWEBENGINE_CHROMIUM_FLAGS", "QTWEBENGINE_DISABLE_SANDBOX"):
+        env.pop(k, None)
     if not _HAS_FUSE2:
         env.setdefault("APPIMAGE_EXTRACT_AND_RUN", "1")
     return env
@@ -81,12 +84,36 @@ def _fuse2():
 _HAS_FUSE2 = _fuse2()
 
 
+EMU_LOG_PATH = os.path.join(tempfile.gettempdir(), f"pklab_emulator_{os.getuid() if hasattr(os, 'getuid') else 0}.log")
+
+
 def popen_emulator(args, cwd=None):
     if IS_WIN:
         return subprocess.Popen(args, creationflags=NO_WINDOW, cwd=cwd)
     env = _emu_env()
-    return subprocess.Popen(args, cwd=cwd, env=env, stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
-                            stderr=subprocess.DEVNULL, start_new_session=True, preexec_fn=_unblock_signals)
+    try:
+        log = open(EMU_LOG_PATH, "wb")
+    except OSError:
+        log = subprocess.DEVNULL
+    try:
+        return subprocess.Popen(args, cwd=cwd, env=env, stdin=subprocess.DEVNULL, stdout=log,
+                                stderr=subprocess.STDOUT, start_new_session=True, preexec_fn=_unblock_signals)
+    finally:
+        if log is not subprocess.DEVNULL:
+            log.close()
+
+
+def emulator_failure():
+    try:
+        with open(EMU_LOG_PATH, "rb") as f:
+            lines = [l.strip() for l in f.read()[-4000:].decode("utf-8", "replace").splitlines() if l.strip()]
+    except OSError:
+        lines = []
+    for l in lines:
+        m = re.search(r"error while loading shared libraries: ([^:]+)", l)
+        if m:
+            return "Bibliothèque système manquante : " + m.group(1)
+    return "L'émulateur s'est fermé au démarrage" + (" : " + lines[-1][:200] if lines else "")
 
 
 def _unblock_signals():
@@ -94,14 +121,49 @@ def _unblock_signals():
     signal.pthread_sigmask(signal.SIG_SETMASK, set())
 
 
-def stop_proc(proc, force=False):
-    if IS_WIN:
-        proc.kill() if force else proc.terminate()
-        return
+def _signal_all(pgid, pids, sig):
     try:
-        os.killpg(proc.pid, 9 if force else 15)
+        os.killpg(pgid, sig)
     except OSError:
-        proc.kill() if force else proc.terminate()
+        pass
+    for p in pids:
+        try:
+            os.kill(p, sig)
+        except OSError:
+            pass
+
+
+def _running(pid):
+    try:
+        with open(f"/proc/{pid}/stat", "rb") as f:
+            st = f.read()
+        return st[st.rindex(b")") + 2:st.rindex(b")") + 3] != b"Z"
+    except (OSError, ValueError):
+        return False
+
+
+def stop_tree(proc, timeout=3.0):
+    if IS_WIN:
+        proc.terminate()
+        try:
+            proc.wait(timeout=timeout)
+        except subprocess.TimeoutExpired:
+            proc.kill()
+        return
+    pids = [p for p in descendants(proc.pid) if p != proc.pid]
+    _signal_all(proc.pid, [proc.pid] + pids, 15)
+    t0 = time.time()
+    while time.time() - t0 < timeout:
+        proc.poll()
+        if not _running(proc.pid) and not any(_running(p) for p in pids):
+            break
+        time.sleep(0.1)
+    else:
+        _signal_all(proc.pid, [proc.pid] + pids, 9)
+    try:
+        proc.wait(timeout=2)
+    except subprocess.TimeoutExpired:
+        pass
 
 
 def kill_pid(pid, exe_name):
@@ -116,13 +178,7 @@ def kill_pid(pid, exe_name):
     except (OSError, ValueError):
         return
     if exe_name and comm.lower()[:15] == os.path.basename(exe_name).lower()[:15]:
-        try:
-            os.killpg(pid, 15)
-        except OSError:
-            try:
-                os.kill(pid, 15)
-            except OSError:
-                pass
+        _signal_all(pid, descendants(pid), 9)
 
 
 def wait_pid(pid, timeout=30.0):
@@ -300,11 +356,18 @@ def proc_name(pid):
         return ""
 
 
+def _exe_name(pid):
+    try:
+        return os.path.basename(os.readlink(f"/proc/{pid}/exe"))
+    except OSError:
+        return ""
+
+
 def find_process(names, root_pid=None):
-    low = {n.lower()[:15] for n in names}
+    low = {n.lower() for n in names}
     pids = descendants(root_pid) if root_pid else [int(d) for d in os.listdir("/proc") if d.isdigit()]
     for p in pids:
-        if proc_name(p).lower()[:15] in low:
+        if proc_name(p).lower() in {n[:15] for n in low} or _exe_name(p).lower() in low:
             return p
     return None
 
@@ -351,8 +414,10 @@ class ProcMem:
             pass
         return out
 
-    def rw_regions(self, min_size=0, max_size=1 << 62):
-        return [(a, s) for a, s, perms, path in self.regions() if _anon_rw(perms, path) and min_size <= s <= max_size]
+    def rw_regions(self, min_size=0, max_size=1 << 62, files=False):
+        return [(a, s) for a, s, perms, path in self.regions()
+                if (_anon_rw(perms, path) or files and perms.startswith("rw") and path.startswith("/"))
+                and min_size <= s <= max_size]
 
     def read_bytes(self, addr, size):
         self.f.seek(addr)
@@ -410,6 +475,55 @@ class ProcMem:
                         i = data.find(needle, i + 1)
                 off += step
         return hits
+
+
+class PulseVolume:
+    def __init__(self, ids, volume, muted):
+        self.ids, self.volume, self.muted = ids, volume, muted
+
+    @staticmethod
+    def _pactl(*args):
+        exe = shutil.which("pactl")
+        if not exe:
+            return None
+        env = dict(os.environ, LC_ALL="C")
+        try:
+            r = subprocess.run([exe, *args], capture_output=True, text=True, timeout=3, env=env)
+        except (OSError, subprocess.TimeoutExpired):
+            return None
+        return r.stdout if r.returncode == 0 else None
+
+    @classmethod
+    def find(cls, pids):
+        out = cls._pactl("list", "sink-inputs")
+        if not out:
+            return None
+        pids = {str(p) for p in pids}
+        ids, vol, muted = [], None, False
+        for block in out.split("Sink Input #")[1:]:
+            m = re.search(r'application\.process\.id = "(\d+)"', block)
+            if not m or m.group(1) not in pids:
+                continue
+            ids.append(block.split(None, 1)[0])
+            v = re.search(r"Volume:.*?(\d+)%", block)
+            if v and vol is None:
+                vol = int(v.group(1)) / 100.0
+            muted = muted or bool(re.search(r"Mute: yes", block))
+        return cls(ids, 1.0 if vol is None else vol, muted) if ids else None
+
+    def GetMasterVolume(self):
+        return self.volume
+
+    def GetMute(self):
+        return self.muted
+
+    def SetMasterVolume(self, v, _ctx=None):
+        for i in self.ids:
+            self._pactl("set-sink-input-volume", i, f"{round(v * 100)}%")
+
+    def SetMute(self, m, _ctx=None):
+        for i in self.ids:
+            self._pactl("set-sink-input-mute", i, "1" if m else "0")
 
 
 def _xdotool(*args, timeout=3):

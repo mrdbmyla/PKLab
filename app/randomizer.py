@@ -430,8 +430,9 @@ def _randomize_moves_data(g, rng, opts, log):
         opts = dict(opts, moveCategory=False)
     if not any(opts[k] for k in keys):
         return
+    skip = {STRUGGLE} | set(getattr(g, "banned_moves", ()))
     for m in range(1, MAX_MOVE + 1):
-        if m == STRUGGLE:
+        if m in skip:
             continue
         d = g.move(m)
         damaging = d["cat"] != 0 and d["power"] > 1
@@ -545,10 +546,11 @@ def _randomize_personal(g, rng, opts, order, pre, log):
         log.append("Objets tenus par les Pokémon sauvages : aléatoires (objets utiles en combat)")
 
 
-def _randomize_evolutions(g, rng, opts, bst, pool, log, names):
+def _randomize_evolutions(g, rng, opts, bst, pool, log, names, max_species=None):
+    max_species = max_species or MAX_SPECIES
     changes = []
     if opts["evolutions"] == "everyLevel":
-        for s in range(1, MAX_SPECIES + 1):
+        for s in range(1, max_species + 1):
             new = rng.choice([x for x in pool if x != s])
             g.clear_evolutions(s)
             g.set_evo(s, 0, 4, 1, new)
@@ -556,9 +558,9 @@ def _randomize_evolutions(g, rng, opts, bst, pool, log, names):
         log.append("Évolutions : à chaque niveau, vers une espèce au hasard")
         return changes
     if opts["evolutions"] == "random":
-        types_of = {s: set(_type_list(*g.types(s))) for s in range(1, MAX_SPECIES + 1)}
-        kids = {s: {t for m, _, t in g.evolutions(s) if m and 0 < t <= MAX_SPECIES} for s in range(1, MAX_SPECIES + 1)}
-        parents = {s: set() for s in range(1, MAX_SPECIES + 1)}
+        types_of = {s: set(_type_list(*g.types(s))) for s in range(1, max_species + 1)}
+        kids = {s: {t for m, _, t in g.evolutions(s) if m and 0 < t <= max_species} for s in range(1, max_species + 1)}
+        parents = {s: set() for s in range(1, max_species + 1)}
         for s, ts in kids.items():
             for t in ts:
                 parents[t].add(s)
@@ -579,10 +581,10 @@ def _randomize_evolutions(g, rng, opts, bst, pool, log, names):
                     seen.add(x)
                     todo.extend(kids[x])
             return False
-        depth = {x: below(x) for x in range(1, MAX_SPECIES + 1)}
-        for s in range(1, MAX_SPECIES + 1):
+        depth = {x: below(x) for x in range(1, max_species + 1)}
+        for s in range(1, max_species + 1):
             for slot, (method, _, target) in enumerate(g.evolutions(s)):
-                if not method or not (0 < target <= MAX_SPECIES):
+                if not method or not (0 < target <= max_species):
                     continue
                 up = above(s)
                 ok = [x for x in pool if x != s and x != target and x not in kids[s] and up + 1 + depth[x] <= 2
@@ -596,14 +598,14 @@ def _randomize_evolutions(g, rng, opts, bst, pool, log, names):
                 parents[target].discard(s)
                 kids[s].add(new)
                 parents[new].add(s)
-                for x in {s} | set(parents[s]) | {a for a in range(1, MAX_SPECIES + 1) if reaches(a, s)}:
+                for x in {s} | set(parents[s]) | {a for a in range(1, max_species + 1) if reaches(a, s)}:
                     depth[x] = below(x)
                 changes.append((s, target, new))
         log.append(f"Évolutions : {len(changes)} évolutions vers des espèces aléatoires ("
                    + ("au moins aussi fortes, " if opts["evoSimilar"] else "") + "3 stades maximum"
                    + (", partageant un type" if opts["evoSameType"] else "") + ")")
     fixed = 0
-    for s in range(1, MAX_SPECIES + 1):
+    for s in range(1, max_species + 1):
         for slot, (method, param, target) in enumerate(g.evolutions(s)):
             new_m, new_p = method, param
             if opts["evoImpossible"] and method in (5, 7, 16):
@@ -613,9 +615,11 @@ def _randomize_evolutions(g, rng, opts, bst, pool, log, names):
             if opts["evoNoTime"]:
                 if new_m in (2, 3):
                     new_m = 1
+                elif new_m in (32, 33):
+                    new_m = 4
                 elif new_m in (19, 20):
                     new_m = 8
-            if opts["evoEasier"] and new_m in (4, 9, 10, 11, 12, 13, 14, 15, 23, 24) and new_p > 40:
+            if opts["evoEasier"] and new_m in (4, 9, 10, 11, 12, 13, 14, 15, 23, 24, 32, 33) and new_p > 40:
                 new_p = 40
             if (new_m, new_p) != (method, param):
                 g.set_evo(s, slot, new_m, new_p, target)
@@ -628,7 +632,8 @@ def _randomize_evolutions(g, rng, opts, bst, pool, log, names):
 
 
 def _randomize_learnsets(g, rng, opts, log):
-    moves = {m: g.move(m) for m in range(1, MAX_MOVE + 1) if m != STRUGGLE}
+    skip = {STRUGGLE} | set(getattr(g, "banned_moves", ()))
+    moves = {m: g.move(m) for m in range(1, MAX_MOVE + 1) if m not in skip}
     if opts["noGameBreaking"]:
         moves = {m: d for m, d in moves.items() if m not in GAME_BREAKING_MOVES}
     if opts["learnsets"] == "metronome":
@@ -1501,7 +1506,7 @@ def _randomize_shops5(g, rng, opts, log, items_fr):
                         l[k] = rng.choice(free)
     write(lists)
     changed = sum(a != b for x, y in zip(before, lists) for a, b in zip(x, y))
-    log.append(f"Magasins : {len(lists)} boutiques, {changed} objets changés (CT et Poké Balls gardés) - "
+    log.append(f"Magasins : {len(lists)} boutiques, {changed} objets changés (CT et Poké Ball de base gardés) - "
                + ("mélangés" if opts["shops"] == "shuffle" else "parmi les objets vendus dans le jeu"))
 
 
@@ -1713,6 +1718,8 @@ def _randomize(src_path, options, out_path=None, fiche_base=None, sprite_dir=Non
     _randomize_learnsets(g, rng, opts, log)
     if gen3:
         starters = R3.randomize_starters(g, rng, opts, pool, pre, log, names)
+        if starters and opts["starterText"]:
+            R3.starter_text3(g, starters, log)
         wild_lines = R3.randomize_wild(g, rng, opts, pool, bst, log, names, pick_ws, _type_list)
         cats3 = R3.trainer_categories(g, pre)
         trainer_lines = R3.randomize_trainers(g, rng, opts, pool, bst, log, names, pick_ws, _type_list,

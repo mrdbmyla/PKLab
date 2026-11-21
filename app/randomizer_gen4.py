@@ -1011,7 +1011,7 @@ def randomize_events(g, rng, opts, pool, bst, pre, log, names, pick):
                         struct.pack_into("<H", buf, at, it)
                         changed += 1
             nds_rebuild.code_set_bytes(g.rom, None, lo, bytes(buf))
-            log.append(f"Magasins : {len(main)} boutiques du jeu, {changed} objets changés (CT et Poké Balls gardés) - "
+            log.append(f"Magasins : {len(main)} boutiques du jeu, {changed} objets changés (CT et Poké Ball de base gardés) - "
                        + ("mélangés" if opts["shops"] == "shuffle" else "parmi les objets vendus dans le jeu"))
     return lines
 

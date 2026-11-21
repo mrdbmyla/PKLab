@@ -1,4 +1,5 @@
 import os
+import re
 import struct
 
 SAVE_SIZE = 0x8000
@@ -507,10 +508,17 @@ def _find(rom, pat, start=0):
     return rom.find(pat, start)
 
 
+def _numbered_table(rom, width, count):
+    pat = re.compile(b"".join(re.escape(bytes([n])) + b".{%d}" % (width - 1) for n in range(1, 6)), re.S)
+    for m in pat.finditer(rom):
+        o = m.start()
+        if o + width * count <= len(rom) and all(rom[o + width * (n - 1)] == n for n in range(1, count + 1)):
+            return o
+    return -1
+
+
 def base_stats_rom(rom):
-    o = _find(rom, bytes([1, 45, 49, 49, 45, 65, 65, 22, 3]))
-    if o < 0:
-        raise ValueError("2G : table des statistiques introuvable")
+    o = base_stats_offset(rom)
     out = {}
     for nat in range(1, DEX_MAX + 1):
         e = o + 32 * (nat - 1)
@@ -523,12 +531,16 @@ def base_stats_rom(rom):
 def base_stats_offset(rom):
     o = _find(rom, bytes([1, 45, 49, 49, 45, 65, 65, 22, 3]))
     if o < 0:
+        o = _numbered_table(rom, 32, DEX_MAX)
+    if o < 0:
         raise ValueError("2G : table des statistiques introuvable")
     return o
 
 
 def moves_offset(rom):
     o = _find(rom, bytes([1, 0, 40, 0, 255, 35, 0, 2]))
+    if o < 0:
+        o = _numbered_table(rom, 7, MOVE_MAX)
     if o < 0:
         raise ValueError("2G : table des attaques introuvable")
     return o

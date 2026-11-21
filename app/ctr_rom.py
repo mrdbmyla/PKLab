@@ -32,6 +32,9 @@ class RomFS:
         self.dm = self._read(self.lv3 + self.dm_off, self.dm_size)
         self.fm = self._read(self.lv3 + self.fm_off, self.fm_size)
         self.files = {}
+        self.entries = {}
+        self.romfs = romfs
+        self.romfs_end = romfs + struct.unpack_from("<I", ncch, 0x1B4)[0] * MEDIA
         self._walk(0, "")
 
     def close(self):
@@ -50,6 +53,7 @@ class RomFS:
             _, sib, off, size, _, fl = struct.unpack_from("<IIQQII", self.fm, f)
             fname = self.fm[f + 0x20:f + 0x20 + fl].decode("utf-16-le")
             self.files[path + fname] = (self.lv3 + self.data_off + off, size)
+            self.entries[path + fname] = f
             f = sib
         c = child
         while c != 0xFFFFFFFF:
@@ -493,8 +497,9 @@ def garc_build(original, files):
     if original[:4] != b"CRAG":
         raise ValueError("GARC invalide")
     hsize, _, version = struct.unpack_from("<IHH", original, 4)
-    if version != 0x0400:
+    if version not in (0x0400, 0x0600):
         raise ValueError("version de GARC non prise en charge")
+    pad = struct.unpack_from("<I", original, 0x20)[0] if version == 0x0600 else 4
     data_off = struct.unpack_from("<I", original, 0x10)[0]
     fato_size, count = struct.unpack_from("<IH", original, hsize + 4)
     if count != len(files):
@@ -503,7 +508,7 @@ def garc_build(original, files):
     fatb = hsize + fato_size
     head = bytearray(original[:data_off])
     body = bytearray()
-    largest = 0
+    largest = largest_pad = 0
     for i, blob in enumerate(files):
         e = fatb + 0xC + offs[i]
         if struct.unpack_from("<I", original, e)[0] != 1:
@@ -512,15 +517,45 @@ def garc_build(original, files):
         size = o_len if bytes(blob) == original[data_off + o_start:data_off + o_end] else len(blob)
         start = len(body)
         body += blob[:size]
-        while len(body) % 4:
+        while len(body) % pad:
             body.append(0xFF)
         struct.pack_into("<III", head, e + 4, start, len(body), size)
         largest = max(largest, size)
+        largest_pad = max(largest_pad, len(body) - start)
     fimb = fatb + struct.unpack_from("<I", original, fatb + 4)[0]
     struct.pack_into("<I", head, fimb + 8, len(body))
     struct.pack_into("<I", head, 0x14, data_off + len(body))
-    struct.pack_into("<I", head, 0x18, largest)
+    if version == 0x0600:
+        struct.pack_into("<II", head, 0x18, largest_pad, largest)
+    else:
+        struct.pack_into("<I", head, 0x18, largest)
     return bytes(head + body)
+
+
+def romfs_put(path, name, data):
+    fs = RomFS(path)
+    try:
+        at, size = fs.files[name]
+        entry = fs.fm_off + fs.entries[name]
+        if len(data) <= size:
+            new_at = at
+        else:
+            end = max(o + s for o, s in fs.files.values())
+            new_at = (end + 0xF) & ~0xF
+            if new_at + len(data) > fs.romfs_end:
+                raise ValueError(f"Pas assez de place dans la RomFS ({name})")
+        lv3, data_off, ivfc = fs.lv3, fs.data_off, fs.romfs
+    finally:
+        fs.close()
+    with open(path, "r+b") as f:
+        f.seek(new_at)
+        f.write(data)
+        f.seek(lv3 + entry + 8)
+        f.write(struct.pack("<QQ", new_at - lv3 - data_off, len(data)))
+        if new_at != at:
+            f.seek(ivfc + 0x44)
+            f.write(struct.pack("<Q", new_at + len(data) - lv3))
+    return new_at
 
 
 def blz(data):

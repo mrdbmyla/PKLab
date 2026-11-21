@@ -2,6 +2,8 @@ import ctypes
 import random
 import socket
 import struct
+import threading
+import time
 
 import osdep
 from pokedata import ABILITIES, NATURES
@@ -41,6 +43,7 @@ class Rpc:
         self.addr = ("127.0.0.1", port)
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.sock.settimeout(timeout)
+        self.lock = threading.Lock()
 
     def close(self):
         try:
@@ -49,6 +52,10 @@ class Rpc:
             pass
 
     def _request(self, kind, payload, tries=2):
+        with self.lock:
+            return self._request_locked(kind, payload, tries)
+
+    def _request_locked(self, kind, payload, tries):
         for _ in range(tries):
             rid = random.getrandbits(32)
             self.sock.sendto(struct.pack("<IIII", RPC_VERSION, rid, kind, len(payload)) + payload, self.addr)
@@ -282,7 +289,7 @@ class AzaharReader:
                 if zero or not (0x08000000 <= holder < 0x40000000):
                     continue
                 sp, mx, cur = struct.unpack_from("<HHH", buf, off + 0xC)
-                if 1 <= sp <= 721 and 1 <= mx <= 999 and cur <= mx:
+                if 1 <= sp <= 807 and 1 <= mx <= 999 and cur <= mx:
                     m = self._battle_mon(base + off, buf[off:off + 0x14])
                     if m:
                         found.append((base + off, m))
@@ -298,6 +305,7 @@ class AzaharReader:
             if all(mons):
                 return self._unique(mons, mine)
             self.battle_slots = []
+            self.battle_scan_at = 0.0
         if now - self.battle_scan_at < 1.0:
             return []
         self.battle_scan_at = now
@@ -346,8 +354,19 @@ class AzaharReader:
                 break
         return None
 
+    def _read_retry(self, addr, size):
+        for _ in range(4):
+            got = self.rpc.read(addr, size)
+            if got is not None:
+                return got
+            time.sleep(0.25)
+        return None
+
+    def _written(self, addr, data):
+        return self._read_retry(addr, len(data)) == data
+
     def write(self, addr, data):
-        if self.rpc.write(addr, data) and self.rpc.read(addr, len(data)) == data:
+        if self.rpc.write(addr, data) and self._written(addr, data):
             return True
         if not self.pid:
             return False
@@ -358,7 +377,7 @@ class AzaharReader:
             delta = self._delta(addr)
             if delta is None:
                 return False
-            return self.host.write(addr + delta, data) and self.rpc.read(addr, len(data)) == data
+            return self.host.write(addr + delta, data) and self._written(addr, data)
         except OSError:
             return False
 
@@ -375,8 +394,10 @@ class AzaharReader:
         addr = (self.game or {}).get("money")
         if not addr:
             return False, "Argent non configuré pour ce jeu"
-        cur = self.rpc.read(addr, 4)
-        if not cur or struct.unpack("<I", cur)[0] > MAX_MONEY:
+        cur = self._read_retry(addr, 4)
+        if not cur:
+            return False, "Lecture mémoire impossible"
+        if struct.unpack("<I", cur)[0] > MAX_MONEY:
             return False, "Adresse argent non confirmée (valeur actuelle improbable)"
         ok = self.write(addr, struct.pack("<I", MAX_MONEY))
         return ok, None if ok else "Écriture impossible"

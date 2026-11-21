@@ -8,6 +8,7 @@ import struct
 import ctr_maps
 import ctr_rom
 import i18n
+import randomizer_ctr as RC
 import rom_finder
 import randomizer_gen6 as G6
 
@@ -29,7 +30,9 @@ TRPOKE = 0x20
 WATER_KINDS = {4, 6}
 BOSS_WORDS = ("Capitaine", "Doyen", "Conseil 4", "Boss Team", "Présidente", "Professeur Pokémon", "Admin Team")
 LEVEL_METHODS = {4, 9, 10, 11, 12, 13, 14, 23, 24}
-SUPPORTED = G6.SUPPORTED
+SUPPORTED = (G6.SUPPORTED - {"doubleBattles"}) | {"trades", "starterText"}
+STATIC = 0x38
+TRADE = 0x34
 
 
 class Garc:
@@ -70,6 +73,25 @@ class Garc:
         return True
 
 
+class RawFile:
+    def __init__(self, fs, name):
+        self.name = name
+        self.base, self.size = fs.files[name]
+
+    def span(self, i):
+        return (0, self.size, self.size)
+
+    def patch(self, f, i, data):
+        if len(data) > self.size:
+            return False
+        f.seek(self.base + i)
+        f.write(data)
+        return True
+
+    def check(self, fs, i, data):
+        return fs._read(self.base + i, len(data)) == data
+
+
 class Gen7Rom:
     def __init__(self, path):
         hit = rom_finder.identify(path)
@@ -84,15 +106,27 @@ class Gen7Rom:
         c = GARCS[self.family]
         fs = ctr_rom.RomFS(path)
         try:
-            blob = ctr_rom.garc(fs.read(c["personal"]))[-1]
+            self.personal_g = Garc(fs, c["personal"])
+            self.pfiles = ctr_rom.garc(fs.read(c["personal"]))
+            blob = self.pfiles[-1]
             self.personal = {s: blob[0x54 * s:0x54 * (s + 1)] for s in range(1, self.max + 1)}
+            self.moves_g = Garc(fs, RC.MOVES[self.family])
+            self.mfiles = ctr_rom.garc(fs.read(RC.MOVES[self.family]))
+            self.learn_g = Garc(fs, c["learn"])
             self.evos = ctr_rom.garc(fs.read(c["evo"]))
+            self.evo_g = Garc(fs, c["evo"])
             self.learn = ctr_rom.garc(fs.read(c["learn"]))
             self.tr_data = ctr_rom.garc(fs.read(c["trdata"]))
+            self.trdata_g = Garc(fs, c["trdata"])
             self.trpoke = Garc(fs, c["trpoke"])
+            self.trpoke_raw = fs.read(c["trpoke"])
             self.tr_poke = [self.trpoke.read(fs, i) or b"" for i in range(self.trpoke.count)]
             self.static = Garc(fs, c["static"])
             self.gifts = bytearray(self.static.read(fs, 0))
+            self.statics = bytearray(self.static.read(fs, 1) or b"")
+            self.trades = bytearray(self.static.read(fs, 4) or b"")
+            self.shop_file = RawFile(fs, "Shop.cro") if "Shop.cro" in fs.files else None
+            self.shop = fs.read("Shop.cro") if self.shop_file else b""
             self.class_names = ctr_rom.text(ctr_rom.garc(fs.read("a/0/3/3"))[c["classes"]])
             name = max(AREAS, key=lambda n: fs.files.get(n, (0, 0))[1])
             self.areas = Garc(fs, name)
@@ -109,8 +143,8 @@ class Gen7Rom:
                     sg = Garc(fs, f"a/0/4/{lang}")
                     gt = ctr_rom.garc(fs.read(f"a/0/3/{lang}"))
                     self.story[lang] = (sg, ctr_rom.text_raw(sg.read(fs, story_file)),
-                                        [_clean(c) for c, _ in ctr_rom.text_raw(gt[sp_file])],
-                                        [_clean(c) for c, _ in ctr_rom.text_raw(gt[ty_file])])
+                                        [RC.clean_text(c) for c, _ in ctr_rom.text_raw(gt[sp_file])],
+                                        [RC.clean_text(c) for c, _ in ctr_rom.text_raw(gt[ty_file])])
                 except Exception:
                     continue
         finally:
@@ -196,27 +230,6 @@ class Gen7Rom:
         return sum(self.personal[s][0:6])
 
 
-def _clean(chars):
-    out = list(chars)
-    while out and out[-1] == 0:
-        out.pop()
-    return out
-
-
-def _swap(chars, old, new):
-    if not old:
-        return chars
-    out, i = [], 0
-    while i < len(chars):
-        if chars[i:i + len(old)] == old:
-            out += new
-            i += len(old)
-        else:
-            out.append(chars[i])
-            i += 1
-    return out
-
-
 def _starter_text(g, mapping, log):
     story_file = STORY[g.family][0]
     out, done = [], []
@@ -232,9 +245,9 @@ def _starter_text(g, mapping, log):
             def fix(k, name=True, typ=True):
                 c, f = lines[k]
                 if name:
-                    c = _swap(c, on, nn)
+                    c = RC.swap_text(c, on, nn)
                 if typ:
-                    c = _swap(c, ot, nt)
+                    c = RC.swap_text(c, ot, nt)
                 lines[k] = (c, f)
             if g.family == "SM":
                 fix(1 + j)
@@ -272,6 +285,53 @@ def _slots(d):
             spots = [p + 0xC + 4 * k for k in range(80)] + [p + 0x14C + 4 * k for k in range(6)]
             out.append((p, kind in WATER_KINDS, spots))
     return out
+
+
+def _field_items(g, src_path, rng, opts, log, base):
+    if opts["fieldItems"] == "off":
+        return {}, []
+    import save_editor
+    max_item = RC.MAX_ITEM[g.family]
+    files = {}
+    fs = ctr_rom.RomFS(src_path)
+    try:
+        for i in range(0, g.areas.count, 11):
+            raw = g.areas.read(fs, i)
+            if not raw or raw[:1] != b"\x11":
+                continue
+            d = bytearray(ctr_rom.lz11(raw))
+            sites = RC.event_item_sites(d, max_item)
+            if sites:
+                files[i] = (raw, d, sites)
+    finally:
+        fs.close()
+    if not files:
+        log.append("Objets au sol : NON modifiés (objets introuvables)")
+        return {}, []
+    order = [(i, e) for i, (_, _, sites) in sorted(files.items()) for e in sites]
+    old = [struct.unpack_from("<H", files[i][1], e)[0] for i, e in order]
+    new = RC.field_item_picks([old], g.family, max_item, save_editor.item_pockets_default(g.family), rng,
+                              opts["fieldItems"], False)[0]
+    for (i, e), it in zip(order, new):
+        struct.pack_into("<H", files[i][1], e, it)
+    out = {}
+    for i, (raw, d, sites) in files.items():
+        packed = ctr_rom.lz11_pack(d)
+        start, end, _ = g.areas.span(i)
+        if ctr_rom.lz11(packed) != bytes(d):
+            raise ValueError("objets au sol : compression incorrecte")
+        if len(packed) > end - start:
+            for k, (j, e) in enumerate(order):
+                if j == i:
+                    new[k] = old[k]
+            continue
+        if bytes(d) != ctr_rom.lz11(raw):
+            out[i] = packed
+    items = (base or {}).get("items", {})
+    name = lambda x: items.get(str(x), f"objet {x}")
+    changed = sum(a != b for a, b in zip(old, new))
+    RC.field_items_log(log, opts, len(old), changed)
+    return out, [f"  {name(a)} -> {name(b)}" for a, b in zip(old, new) if a != b]
 
 
 def _wild(g, rng, opts, pool, bst, names, pick, R):
@@ -369,18 +429,97 @@ def _starters(g, rng, opts, pool, pre, log, names, R):
     return mapping
 
 
-def _gifts(g, rng, opts, pool, bst, log, names, pick):
-    if opts["gifts"] == "off" or len(g.gift_offsets) <= 3:
-        return []
-    lines = []
-    for o in g.gift_offsets[3:]:
-        old = struct.unpack_from("<H", g.gifts, o)[0]
-        new = pick(rng, pool, bst, old, opts["giftSimilar"])
-        struct.pack_into("<H", g.gifts, o, new)
-        g.gifts[o + 2] = 0
-        lines.append(f"  {names(old)} -> {names(new)} Nv{g.gifts[o + 3]}")
-    log.append(f"Pokémon offerts : {len(lines)} changés" + (", force similaire" if opts["giftSimilar"] else ""))
-    return lines
+def _gifts(g, rng, opts, pool, bst, pre, log, names, pick):
+    def writer(o):
+        def write(new):
+            struct.pack_into("<H", g.gifts, o, new)
+            g.gifts[o + 2] = 0
+        return write
+
+    def kind(o):
+        if g.gifts[o + 0xA] == 1:
+            return "eggs"
+        return "fossils" if struct.unpack_from("<H", g.gifts, o)[0] in RC.FOSSILS else "gifts"
+    entries = [(kind(o), struct.unpack_from("<H", g.gifts, o)[0], g.gifts[o + 3], writer(o)) for o in g.gift_offsets[3:]]
+    return RC.randomize_gifts(entries, rng, opts, pool, bst, pre, log, names, pick)
+
+
+def _statics(g, rng, opts, pool, bst, legend, log, names, R):
+    def writer(o):
+        def write(new, lv):
+            if new == struct.unpack_from("<H", g.statics, o)[0]:
+                return
+            struct.pack_into("<H", g.statics, o, new)
+            g.statics[o + 2] = 0
+            if any(struct.unpack_from("<4H", g.statics, o + 0xC)):
+                struct.pack_into("<4H", g.statics, o + 0xC, *g.moves_at_level(new, lv))
+        return write
+    entries = [(struct.unpack_from("<H", g.statics, o)[0], g.statics[o + 3], writer(o))
+               for o in range(0, len(g.statics) - STATIC + 1, STATIC)
+               if 0 < struct.unpack_from("<H", g.statics, o)[0] <= g.max and 0 < g.statics[o + 3] <= 100]
+    return RC.randomize_statics(entries, rng, opts, pool, bst, legend, log, names, R)
+
+
+def _trades(g, rng, opts, pool, bst, log, names, R):
+    def got_writer(o):
+        def write(new):
+            struct.pack_into("<H", g.trades, o, new)
+            g.trades[o + 4] = 0
+        return write
+
+    def asked_writer(o):
+        def write(new):
+            struct.pack_into("<H", g.trades, o + 0x2C, new)
+        return write
+    entries = [(struct.unpack_from("<H", g.trades, o)[0], struct.unpack_from("<H", g.trades, o + 0x2C)[0], got_writer(o), asked_writer(o))
+               for o in range(0, len(g.trades) - TRADE + 1, TRADE)
+               if 0 < struct.unpack_from("<H", g.trades, o)[0] <= g.max and 0 < struct.unpack_from("<H", g.trades, o + 0x2C)[0] <= g.max]
+    return RC.randomize_trades(entries, rng, opts, pool, bst, log, names, R)
+
+
+def _trainer_extras(g, out, rng, opts, pool, bst, log, R):
+    if not RC.extras_wanted(opts):
+        return {}
+    starter_species = {x for s in STARTERS for x in g.chain(s)}
+    counts = {}
+    added = items = 0
+    for i in range(1, min(len(g.tr_data), len(g.tr_poke))):
+        d = g.tr_data[i]
+        if len(d) < 4 or d[3] == 0 or d[3] * TRPOKE > len(g.tr_poke[i]):
+            continue
+        n = d[3]
+        cname = g.class_names[d[0]] if d[0] < len(g.class_names) else ""
+        old = g.tr_poke[i]
+        cat = RC.trainer_category(cname, [struct.unpack_from("<H", old, k * TRPOKE + 0x10)[0] for k in range(n)], starter_species)
+        blob = bytearray(out.get(i, old)[:n * TRPOKE])
+        tail = out.get(i, old)[n * TRPOKE:]
+        extra = max(0, min(int(opts["extra" + cat] or 0), 6 - n))
+        if extra:
+            ref = max(range(n), key=lambda k: struct.unpack_from("<H", blob, k * TRPOKE + 0xE)[0])
+            ref_entry = blob[ref * TRPOKE:(ref + 1) * TRPOKE]
+            lv, ref_sp = struct.unpack_from("<HH", ref_entry, 0xE)
+            used = {struct.unpack_from("<H", blob, k * TRPOKE + 0x10)[0] for k in range(n)}
+            for _ in range(extra):
+                sp = R._pick(rng, pool, bst, ref_sp if ref_sp in bst else rng.choice(pool), True, used)
+                used.add(sp)
+                e = bytearray(ref_entry)
+                struct.pack_into("<HHH", e, 0x10, sp, 0, 0)
+                struct.pack_into("<4H", e, 0x18, *g.moves_at_level(sp, lv))
+                blob += e
+            added += extra
+        if opts["items" + cat]:
+            mons = [{"lv": struct.unpack_from("<H", blob, k * TRPOKE + 0xE)[0], "item": 0} for k in range(len(blob) // TRPOKE)]
+            items += RC.give_items(mons, rng, opts, R)
+            for k, m in enumerate(mons):
+                if m["item"]:
+                    struct.pack_into("<H", blob, k * TRPOKE + 0x14, m["item"])
+        blob = bytes(blob) + tail
+        if blob != old:
+            out[i] = blob
+        if extra:
+            counts[i] = len(blob[:len(blob) - len(tail)]) // TRPOKE
+    RC.extras_log(log, opts, added, items, 0, 0)
+    return counts
 
 
 def _trainers(g, rng, opts, pool, bst, log, names, pick, starter_map, R):
@@ -503,27 +642,68 @@ def randomize(src_path, options, out_path, fiche_base, azahar_dir, used_tids=())
 
     legend = R.LEGENDARIES | LEGENDARIES_7
     pool = [s for s in range(1, g.max + 1) if not (opts["noLegendaries"] and s in legend)]
-    bst = {s: g.bst(s) for s in range(1, g.max + 1)}
     log = []
-    gifts0 = bytes(g.gifts)
+    gifts0, statics0, trades0 = bytes(g.gifts), bytes(g.statics), bytes(g.trades)
+    ev = G6.CtrEvos(g.evos, 8, g.max, None)
+    d = RC.CtrData(g.family, g.pfiles, 0x54, g.mfiles, g.learn, ev, g.max)
+    ev.types, g.personal, g.learn = d.types, d.p, d.learn
     try:
+        with RC.core(R, g.max, d.max_move, RC.MAX_ABILITY[g.family]):
+            bst, evo_changes, tm_labels, code_ips = RC.randomize_core(g, d, ev, rng, opts, pool, log, names, fiche_base, src_path, R)
         starters = _starters(g, rng, opts, pool, pre, log, names, R)
         areas, wild_log, wild_lines = _wild(g, rng, opts, pool, bst, names, pick, R)
         log.append(wild_log)
         trainers, trainer_lines = _trainers(g, rng, opts, pool, bst, log, names, pick, starters, R)
-        gift_lines = _gifts(g, rng, opts, pool, bst, log, names, pick)
+        tr_counts = _trainer_extras(g, trainers, rng, opts, pool, bst, log, R)
+        gift_lines = _gifts(g, rng, opts, pool, bst, pre, log, names, pick)
+        static_lines = _statics(g, rng, opts, pool, bst, legend, log, names, R)
+        trade_lines = _trades(g, rng, opts, pool, bst, log, names, R)
+        item_patches, item_lines = _field_items(g, src_path, rng, opts, log, fiche_base)
+        shop_patches = RC.randomize_shops(g.shop, g.family, RC.MAX_ITEM[g.family], rng, opts, log, (fiche_base or {}).get("items", {}))
     finally:
         R._STAGE.clear()
     story = _starter_text(g, starters, log) if starters and opts["starterText"] else []
-    patches = story + [(g.areas, i, d) for i, d in sorted(areas.items())] + [(g.trpoke, i, d) for i, d in sorted(trainers.items())]
+    whole = []
+    if tr_counts:
+        whole.append((g.trpoke.name, ctr_rom.garc_build(g.trpoke_raw, [trainers.get(i, x) for i, x in enumerate(g.tr_poke)])))
+        trainer_patches = []
+        for i, n in sorted(tr_counts.items()):
+            td = bytearray(g.tr_data[i])
+            td[3] = n
+            trainer_patches.append((g.trdata_g, i, bytes(td)))
+    else:
+        trainer_patches = [(g.trpoke, i, d) for i, d in sorted(trainers.items())]
+    patches = story + [(g.areas, i, d) for i, d in sorted(areas.items())] + trainer_patches
+    patches += [(g.areas, i, d) for i, d in sorted(item_patches.items())]
     if bytes(g.gifts) != gifts0:
         patches.append((g.static, 0, bytes(g.gifts)))
-    skipped = sorted({randomizer_gen2.UNSUPPORTED.get(k, {"trainers": "dresseurs", "starters": "starters"}.get(k, k))
+    if bytes(g.statics) != statics0:
+        patches.append((g.static, 1, bytes(g.statics)))
+    if bytes(g.trades) != trades0:
+        patches.append((g.static, 4, bytes(g.trades)))
+    patches += [(g.shop_file, o, data) for o, data in shop_patches]
+    patches += [(g.evo_g, i, g.evos[i]) for i in ev.changed()]
+    patches += [(g.personal_g, i, x) for i, x in enumerate(d.personal_files()) if x != g.pfiles[i]]
+    if d.moves_changed():
+        patches.append((g.moves_g, 0, d.move_files()[0]))
+    patches += [(g.learn_g, i, x) for i, x in enumerate(d.learn_files()) if x != d.l0[i]]
+    skipped = sorted({RC.LABELS.get(k, randomizer_gen2.UNSUPPORTED.get(k, k))
                       for k in R.DEFAULTS if k not in SUPPORTED and opts.get(k) != R.DEFAULTS[k]
                       and opts.get(k) not in ("off", False, 0, None, [])})
     if skipped:
         log.append("Pas encore disponible en 7G (ignoré) : " + ", ".join(skipped))
-    if not patches:
+    RC.native_tweaks(opts, log)
+    paths, idx = RC.name_files(g.family, opts)
+    if paths:
+        fs = ctr_rom.RomFS(src_path)
+        try:
+            texts = {p: Garc(fs, p) for p in paths if p in fs.files}
+            sources = {p: {i: t.read(fs, i) for i in idx if i < t.count} for p, t in texts.items()}
+        finally:
+            fs.close()
+        for p, changed in RC.shuffle_names(sources, g.family, rng, opts, log).items():
+            patches += [(texts[p], i, data) for i, data in changed.items()]
+    if not patches and not code_ips and not whole:
         raise ValueError("Aucun changement demandé")
     for garc_, i, data in patches:
         sp = garc_.span(i)
@@ -541,9 +721,13 @@ def randomize(src_path, options, out_path, fiche_base, azahar_dir, used_tids=())
             for garc_, i, data in patches:
                 if not garc_.patch(f, i, data):
                     raise ValueError(f"Données trop grandes pour la ROM ({garc_.name} n°{i})")
+        for name, data in whole:
+            ctr_rom.romfs_put(out_path, name, data)
         check = ctr_rom.RomFS(out_path)
         try:
-            ok = all((ctr_rom.garc_file(check, garc_.name, i) or b"")[:len(data)] == data for garc_, i, data in patches)
+            ok = all(garc_.check(check, i, data) if isinstance(garc_, RawFile) else
+                     (ctr_rom.garc_file(check, garc_.name, i) or b"")[:len(data)] == data for garc_, i, data in patches)
+            ok = ok and all(check.read(name) == data for name, data in whole)
         finally:
             check.close()
         if not ok:
@@ -554,13 +738,15 @@ def randomize(src_path, options, out_path, fiche_base, azahar_dir, used_tids=())
     stem = os.path.splitext(out_path)[0]
     fiche = dict(fiche_base or {"species": {}, "moves": {}})
     fiche["randomized"] = True
+    G6.fiche_evolutions(fiche, fiche_base, ev)
+    RC.fiche_update(fiche, fiche_base, d, tm_labels, R)
     import shiny_patch
     t = shiny_patch.side_threshold(src_path)
     if t != 8:
         fiche["shinyThreshold"] = t
-    ips = src_path + ".exefsdir"
-    if os.path.isdir(ips):
-        shutil.copytree(ips, out_path + ".exefsdir", dirs_exist_ok=True)
+    if os.path.isdir(src_path + ".exefsdir"):
+        shutil.copytree(src_path + ".exefsdir", out_path + ".exefsdir", dirs_exist_ok=True)
+    RC.write_ips(out_path, code_ips, src_path)
     with open(stem + ".pklab.json", "w", encoding="utf-8") as f:
         json.dump(fiche, f, ensure_ascii=False, separators=(",", ":"))
     report_path = stem + ".txt"
@@ -573,6 +759,14 @@ def randomize(src_path, options, out_path, fiche_base, azahar_dir, used_tids=())
         f.write("\nDresseurs importants\n" + "\n".join(trainer_lines) + "\n")
     if gift_lines:
         f.write("\nPokémon offerts\n" + "\n".join(gift_lines) + "\n")
+    if static_lines:
+        f.write("\nPokémon fixes\n" + "\n".join(static_lines) + "\n")
+    if trade_lines:
+        f.write("\nÉchanges\n" + "\n".join(trade_lines) + "\n")
+    if evo_changes:
+        f.write("\nÉvolutions\n" + "\n".join(G6.evolution_lines(evo_changes, names)) + "\n")
+    if item_lines:
+        f.write("\nObjets au sol\n" + "\n".join(item_lines) + "\n")
     if wild_lines:
         f.write("\nPokémon sauvages\n" + "\n".join(wild_lines) + "\n")
     with open(report_path, "w", encoding="utf-8") as out:

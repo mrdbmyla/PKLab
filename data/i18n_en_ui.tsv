@@ -100,7 +100,7 @@ Toutes les CS pour tous	All HMs for everyone
 Ligue unique	Unique League
 (champions, Conseil 4 et Maître ont des Pokémon que personne d'autre n'a)	(Gym Leaders, Elite Four and Champion have Pokémon nobody else has)
 Magasins aléatoires	Random shops
-(objets vendus changés, CT et Poké Balls gardés)	(items sold changed, TMs and Poké Balls kept)
+(objets vendus changés, CT et Poké Ball de base gardés)	(items sold changed, TMs and the basic Poké Ball kept)
 Courir partout, même à l'intérieur	Run everywhere, even indoors
 (3G, phase expérimentale)	(Gen 3, experimental)
 Chaussures de course dès le début	Running Shoes from the start
@@ -246,7 +246,7 @@ Objets au sol	Field items
 Mélangés	Shuffled
 Aléatoires (les CT restent des CT)	Random (TMs stay TMs)
 Magasins	Shops
-Aléatoires (prix proches, CT et Poké Balls gardés)	Random (similar prices, TMs and Poké Balls kept)
+Aléatoires (prix proches, CT et Poké Ball de base gardés)	Random (similar prices, TMs and the basic Poké Ball kept)
 Échanges, fixes, offerts, œufs, objets au sol, objets cachés, magasins : 3G, 4G et 5G (6G et 7G : offerts seulement). Les dialogues citent encore les anciens Pokémon / attaques, et les Pokémon fixes gardent leur apparence sur la carte.	Trades, static, gifts, eggs, field items, hidden items, shops: Gen 3, 4 and 5 (Gen 6 and 7: gifts only). Dialogues still mention the old Pokémon / moves, and static Pokémon keep their look on the map.
 Général	General
 Sans légendaires	No legendaries
@@ -760,8 +760,8 @@ aléatoires (parmi les objets au sol du jeu ; les CT restent des CT)	random (amo
 aléatoires (les CT restent des CT)	random (TMs stay TMs)
 CT restent des CT)	TMs stay TMs)
 boutiques du jeu,	game shops,
-objets changés (CT et Poké Balls gardés) -	items changed (TMs and Poké Balls kept) -
-objets changés (CT et Poké Balls gardés)	items changed (TMs and Poké Balls kept)
+objets changés (CT et Poké Ball de base gardés) -	items changed (TMs and the basic Poké Ball kept) -
+objets changés (CT et Poké Ball de base gardés)	items changed (TMs and the basic Poké Ball kept)
 parmi les objets vendus dans le jeu	among the items sold in the game
 - prix proches	- similar prices
 Magasins :	Shops:
@@ -1103,3 +1103,70 @@ pour les Pokémon sauvages	for wild Pokémon
 Oui	Yes
 Non	No
 Le jeu s'ouvre dans sa propre fenêtre : place-la à côté de PKLab. Les infos de combat, l'équipe et la carte s'affichent ici.	The game opens in its own window: place it next to PKLab. Battle info, your team and the map show up here.
+Bibliothèque système manquante : 	Missing system library: 
+L'émulateur s'est fermé au démarrage	The emulator closed on startup
+Évolutions à chaque niveau : impossible en 2G (pas de place dans la ROM), ignoré	Evolutions at every level: impossible in Gen 2 (no room in the ROM), ignored
+CT : attaques aléatoires (sans doublon, CS inchangées, Coup d'Boule et Éclate-Roc gardées pour le terrain)	TM: random moves (no duplicates, HMs unchanged, Headbutt and Rock Smash kept for the overworld)
+CT : attaques aléatoires (sans doublon, CS inchangées)	TM: random moves (no duplicates, HMs unchanged)
+CT : NON modifiées (liste des CT introuvable)	TM: NOT changed (TM list not found)
+(fossiles et œufs à part)	(fossils and eggs counted separately)
+(Pokémon de base)	(basic Pokémon)
+Pokémon offerts 2G : les dialogues citent encore les anciens Pokémon	Gift Pokémon Gen 2: dialogues still mention the old Pokémon
+Échanges 2G : les surnoms et dialogues d'origine restent	Trades Gen 2: the original nicknames and dialogues stay
+(CT/CS, objets rares et Poké Ball de base gardés)	(TMs/HMs, key items and the basic Poké Ball kept)
+dresseurs laissés tels quels faute de place dans la ROM	trainers left as they were for lack of room in the ROM
+octets sur	bytes used out of
+disponibles dans la banque	available in the bank
+(n'existent pas en 2G)	(not in Gen 2)
+course (n'existe pas en 2G)	running (not in Gen 2)
+fossiles (pas de fossiles à ranimer en 2G)	fossils (no fossils to revive in Gen 2)
+texte rapide (réglage non trouvé en 2G)	fast text (setting not found in Gen 2)
+catégorie des attaques (fixée par le type en 2G)	move category (set by the type in Gen 2)
+objets rares gardés ; objets cachés inchangés	key items kept; hidden items unchanged
+Objets au sol : NON modifiés (objets introuvables)	Field items: NOT changed (items not found)
+Pokémon fixes : NON modifiés (scripts introuvables)	Static Pokémon: NOT changed (scripts not found)
+Échanges en jeu : NON modifiés (table introuvable)	In-game trades: NOT changed (table not found)
+Dresseurs, équipes agrandies : NON modifiées (table introuvable)	Trainers, bigger teams: NOT changed (table not found)
+Dresseurs, équipes agrandies : NON modifiées (pas de place libre après les dresseurs)	Trainers, bigger teams: NOT changed (no free space after the trainers)
+Dresseurs, équipes agrandies : NON modifiées (pas assez de place)	Trainers, bigger teams: NOT changed (not enough room)
+Échanges, fixes, offerts, œufs, objets au sol, objets cachés, magasins : 3G, 4G et 5G. 2G : tout sauf les objets cachés. 6G : fixes, offerts, fossiles, œufs et magasins. 7G : pareil, plus les échanges. Les dialogues citent encore les anciens Pokémon / attaques, et les Pokémon fixes gardent leur apparence sur la carte.	Trades, static, gifts, eggs, field items, hidden items, shops: Gen 3, 4 and 5. Gen 2: everything except hidden items. Gen 6 and 7: trades, static, gifts, fossils, eggs and shops. Dialogues still mention the old Pokémon / moves, and static Pokémon keep their look on the map.
+Tuteurs : Émeraude, Rouge Feu, Vert Feuille, Platine, HeartGold, SoulSilver, Noire 2, Blanche 2, Rubis Oméga, Saphir Alpha, Ultra-Soleil, Ultra-Lune.	Tutors: Emerald, FireRed, LeafGreen, Platinum, HeartGold, SoulSilver, Black 2, White 2, Omega Ruby, Alpha Sapphire, Ultra Sun, Ultra Moon.
+Course : rien à changer en 6G/7G (course déjà autorisée en intérieur et disponible dès le début de l'aventure, non vérifié en jeu)	Running: nothing to change in Gen 6/7 (running is already allowed indoors and available from the start of the adventure, not checked in game)
+Pokémon de base	basic Pokémon
+CT et Poké Ball de base gardées	TMs and the basic Poké Ball kept
+noms	names
+langues	languages
+programme du jeu modifié (correctif code.ips)	game code changed (code.ips patch)
+attaques aléatoires (programme du jeu modifié, correctif code.ips)	random moves (game code changed, code.ips patch)
+Tuteurs : aucun tuteur modifiable dans ce jeu	Tutors: no tutor can be changed in this game
+Dresseurs, équipes agrandies : rien à changer	Trainers, bigger teams: nothing to change
+texte rapide	fast text
+échanges	trades
+texte de l'écran des starters	starter screen text
+Pokémon en plus chez les dresseurs	extra Pokémon for trainers
+(2G, et 3G : Émeraude, Rouge Feu, Vert Feuille ; phase expérimentale)	(Gen 2, and Gen 3: Emerald, FireRed, LeafGreen; experimental)
+Échanges, fixes, offerts, œufs, objets au sol, objets cachés, magasins : 2G, 3G, 4G et 5G. 6G et 7G : échanges, fixes, offerts, fossiles, œufs et magasins. Les dialogues citent encore les anciens Pokémon / attaques, et les Pokémon fixes gardent leur apparence sur la carte.	Trades, static, gifts, eggs, field items, hidden items, shops: Gen 2, 3, 4 and 5. Gen 6 and 7: trades, static, gifts, fossils, eggs and shops. Dialogues still mention the old Pokémon / moves, and static Pokémon keep their look on the map.
+objets rares gardés	key items kept
+Objets cachés : NON modifiés (objets introuvables)	Hidden items: NOT changed (items not found)
+Noms de dresseurs : NON mélangés (table introuvable)	Trainer names: NOT shuffled (table not found)
+Noms de classes : NON mélangés (table introuvable)	Class names: NOT shuffled (table not found)
+Texte rapide : NON appliqué (code introuvable : 	Fast text: NOT applied (code not found: 
+Texte des starters	Starter text
+écran de choix + explication des types	choice screen + type explanation
+écran de choix seul	choice screen only
+inchangé	unchanged
+pas assez de place	not enough room
+forces et faiblesses citées inchangées	strengths and weaknesses mentioned unchanged
+répliques du rival	rival lines
+les autres inchangées	the others unchanged
+quiz de Sannah inchangé	Shauna's quiz unchanged
+non vérifié en jeu	not checked in game
+résultats	results
+~un Pokémon au choix	any Pokémon
+Échanges	Trades
+Texte rapide : rien à changer en 6G/7G (choisir « Vitesse du texte : Rapide » dans les options du jeu, non vérifié en jeu)	Fast text: nothing to change in Gen 6/7 (choose “Text Speed: Fast” in the game options, not checked in game)
+Texte du Prof. Orme : nom et type des nouveaux starters (	Prof. Elm's text: name and type of the new starters (
+Texte du Prof. Chen : nom et type des nouveaux starters (	Prof. Oak's text: name and type of the new starters (
+Texte du Prof. Orme : NON modifié (répliques introuvables)	Prof. Elm's text: NOT changed (lines not found)
+Texte du Prof. Chen : NON modifié (répliques introuvables)	Prof. Oak's text: NOT changed (lines not found)
+répliques)	lines)

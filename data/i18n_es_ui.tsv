@@ -98,7 +98,7 @@ Toutes les CS pour tous	Todas las MO para todos
 Ligue unique	Liga única
 (champions, Conseil 4 et Maître ont des Pokémon que personne d'autre n'a)	(Líderes de Gimnasio, Alto Mando y Campeón tienen Pokémon que nadie más tiene)
 Magasins aléatoires	Tiendas aleatorias
-(objets vendus changés, CT et Poké Balls gardés)	(objetos en venta cambiados, MT y Poké Balls conservadas)
+(objets vendus changés, CT et Poké Ball de base gardés)	(objetos en venta cambiados, MT y Poké Ball básica conservadas)
 Courir partout, même à l'intérieur	Correr en todas partes, incluso en interiores
 (3G, phase expérimentale)	(3.ª gen., experimental)
 Chaussures de course dès le début	Deportivas desde el principio
@@ -244,7 +244,7 @@ Objets au sol	Objetos del suelo
 Mélangés	Mezclados
 Aléatoires (les CT restent des CT)	Aleatorios (las MT siguen siendo MT)
 Magasins	Tiendas
-Aléatoires (prix proches, CT et Poké Balls gardés)	Aleatorias (precios parecidos, MT y Poké Balls conservadas)
+Aléatoires (prix proches, CT et Poké Ball de base gardés)	Aleatorias (precios parecidos, MT y Poké Ball básica conservadas)
 Échanges, fixes, offerts, œufs, objets au sol, objets cachés, magasins : 3G, 4G et 5G (6G et 7G : offerts seulement). Les dialogues citent encore les anciens Pokémon / attaques, et les Pokémon fixes gardent leur apparence sur la carte.	Intercambios, estáticos, regalos, huevos, objetos del suelo, objetos ocultos, tiendas: 3.ª, 4.ª y 5.ª gen. (6.ª y 7.ª gen.: solo regalos). Los diálogos siguen mencionando los Pokémon / movimientos antiguos, y los Pokémon estáticos conservan su aspecto en el mapa.
 Général	General
 Sans légendaires	Sin legendarios
@@ -758,8 +758,8 @@ aléatoires (parmi les objets au sol du jeu ; les CT restent des CT)	aleatorios 
 aléatoires (les CT restent des CT)	aleatorios (las MT siguen siendo MT)
 CT restent des CT)	MT siguen siendo MT)
 boutiques du jeu,	tiendas del juego,
-objets changés (CT et Poké Balls gardés) -	objetos cambiados (MT y Poké Balls conservadas) -
-objets changés (CT et Poké Balls gardés)	objetos cambiados (MT y Poké Balls conservadas)
+objets changés (CT et Poké Ball de base gardés) -	objetos cambiados (MT y Poké Ball básica conservadas) -
+objets changés (CT et Poké Ball de base gardés)	objetos cambiados (MT y Poké Ball básica conservadas)
 parmi les objets vendus dans le jeu	entre los objetos que se venden en el juego
 - prix proches	- precios parecidos
 Magasins :	Tiendas:
@@ -1312,3 +1312,70 @@ pour les Pokémon sauvages	para los Pokémon salvajes
 Oui	Sí
 Non	No
 Le jeu s'ouvre dans sa propre fenêtre : place-la à côté de PKLab. Les infos de combat, l'équipe et la carte s'affichent ici.	El juego se abre en su propia ventana: colócala junto a PKLab. La información de combate, tu equipo y el mapa aparecen aquí.
+Bibliothèque système manquante : 	Falta una biblioteca del sistema: 
+L'émulateur s'est fermé au démarrage	El emulador se cerró al iniciar
+Évolutions à chaque niveau : impossible en 2G (pas de place dans la ROM), ignoré	Evoluciones en cada nivel: imposible en 2.ª gen. (no hay sitio en la ROM), ignorado
+CT : attaques aléatoires (sans doublon, CS inchangées, Coup d'Boule et Éclate-Roc gardées pour le terrain)	MT: movimientos aleatorios (sin repetir, MO sin cambios, Golpe Cabeza y Golpe Roca conservados para el mapa)
+CT : attaques aléatoires (sans doublon, CS inchangées)	MT: movimientos aleatorios (sin repetir, MO sin cambios)
+CT : NON modifiées (liste des CT introuvable)	MT: NO cambiadas (lista de MT no encontrada)
+(fossiles et œufs à part)	(fósiles y huevos aparte)
+(Pokémon de base)	(Pokémon básicos)
+Pokémon offerts 2G : les dialogues citent encore les anciens Pokémon	Pokémon regalados 2.ª gen.: los diálogos aún mencionan los Pokémon antiguos
+Échanges 2G : les surnoms et dialogues d'origine restent	Intercambios 2.ª gen.: los motes y diálogos originales se mantienen
+(CT/CS, objets rares et Poké Ball de base gardés)	(MT/MO, objetos clave y Poké Ball básica conservados)
+dresseurs laissés tels quels faute de place dans la ROM	entrenadores sin cambios por falta de espacio en la ROM
+octets sur	bytes usados de
+disponibles dans la banque	disponibles en el banco
+(n'existent pas en 2G)	(no existen en 2.ª gen.)
+course (n'existe pas en 2G)	correr (no existe en 2.ª gen.)
+fossiles (pas de fossiles à ranimer en 2G)	fósiles (no hay fósiles que revivir en 2.ª gen.)
+texte rapide (réglage non trouvé en 2G)	texto rápido (ajuste no encontrado en 2.ª gen.)
+catégorie des attaques (fixée par le type en 2G)	categoría de los movimientos (fijada por el tipo en 2.ª gen.)
+objets rares gardés ; objets cachés inchangés	objetos clave conservados; objetos ocultos sin cambios
+Objets au sol : NON modifiés (objets introuvables)	Objetos en el suelo: NO cambiados (objetos no encontrados)
+Pokémon fixes : NON modifiés (scripts introuvables)	Pokémon fijos: NO cambiados (scripts no encontrados)
+Échanges en jeu : NON modifiés (table introuvable)	Intercambios: NO cambiados (tabla no encontrada)
+Dresseurs, équipes agrandies : NON modifiées (table introuvable)	Entrenadores, equipos ampliados: NO cambiados (tabla no encontrada)
+Dresseurs, équipes agrandies : NON modifiées (pas de place libre après les dresseurs)	Entrenadores, equipos ampliados: NO cambiados (no hay espacio libre tras los entrenadores)
+Dresseurs, équipes agrandies : NON modifiées (pas assez de place)	Entrenadores, equipos ampliados: NO cambiados (no hay espacio suficiente)
+Échanges, fixes, offerts, œufs, objets au sol, objets cachés, magasins : 3G, 4G et 5G. 2G : tout sauf les objets cachés. 6G : fixes, offerts, fossiles, œufs et magasins. 7G : pareil, plus les échanges. Les dialogues citent encore les anciens Pokémon / attaques, et les Pokémon fixes gardent leur apparence sur la carte.	Intercambios, fijos, regalados, huevos, objetos en el suelo, objetos ocultos, tiendas: 3.ª, 4.ª y 5.ª gen. 2.ª gen.: todo salvo los objetos ocultos. 6.ª y 7.ª gen.: intercambios, fijos, regalados, fósiles, huevos y tiendas. Los diálogos aún mencionan los Pokémon / movimientos antiguos, y los Pokémon fijos mantienen su aspecto en el mapa.
+Tuteurs : Émeraude, Rouge Feu, Vert Feuille, Platine, HeartGold, SoulSilver, Noire 2, Blanche 2, Rubis Oméga, Saphir Alpha, Ultra-Soleil, Ultra-Lune.	Tutores: Esmeralda, Rojo Fuego, Verde Hoja, Platino, HeartGold, SoulSilver, Negro 2, Blanco 2, Rubí Omega, Zafiro Alfa, Ultrasol, Ultraluna.
+Course : rien à changer en 6G/7G (course déjà autorisée en intérieur et disponible dès le début de l'aventure, non vérifié en jeu)	Correr: nada que cambiar en 6.ª/7.ª gen. (ya se puede correr en interiores y desde el principio de la aventura, no verificado en el juego)
+Pokémon de base	Pokémon básicos
+CT et Poké Ball de base gardées	MT y Poké Ball básica conservadas
+noms	nombres
+langues	idiomas
+programme du jeu modifié (correctif code.ips)	código del juego modificado (parche code.ips)
+attaques aléatoires (programme du jeu modifié, correctif code.ips)	movimientos aleatorios (código del juego modificado, parche code.ips)
+Tuteurs : aucun tuteur modifiable dans ce jeu	Tutores: ningún tutor modificable en este juego
+Dresseurs, équipes agrandies : rien à changer	Entrenadores, equipos ampliados: nada que cambiar
+texte rapide	texto rápido
+échanges	intercambios
+texte de l'écran des starters	texto de la pantalla de iniciales
+Pokémon en plus chez les dresseurs	Pokémon extra para los entrenadores
+(2G, et 3G : Émeraude, Rouge Feu, Vert Feuille ; phase expérimentale)	(2.ª gen., y 3.ª gen.: Esmeralda, Rojo Fuego, Verde Hoja; fase experimental)
+Échanges, fixes, offerts, œufs, objets au sol, objets cachés, magasins : 2G, 3G, 4G et 5G. 6G et 7G : échanges, fixes, offerts, fossiles, œufs et magasins. Les dialogues citent encore les anciens Pokémon / attaques, et les Pokémon fixes gardent leur apparence sur la carte.	Intercambios, fijos, regalados, huevos, objetos en el suelo, objetos ocultos, tiendas: 2.ª, 3.ª, 4.ª y 5.ª gen. 6.ª y 7.ª gen.: intercambios, fijos, regalados, fósiles, huevos y tiendas. Los diálogos aún mencionan los Pokémon / movimientos antiguos, y los Pokémon fijos mantienen su aspecto en el mapa.
+objets rares gardés	objetos clave conservados
+Objets cachés : NON modifiés (objets introuvables)	Objetos ocultos: NO cambiados (objetos no encontrados)
+Noms de dresseurs : NON mélangés (table introuvable)	Nombres de entrenadores: NO mezclados (tabla no encontrada)
+Noms de classes : NON mélangés (table introuvable)	Nombres de clases: NO mezclados (tabla no encontrada)
+Texte rapide : NON appliqué (code introuvable : 	Texto rápido: NO aplicado (código no encontrado: 
+Texte des starters	Texto de los iniciales
+écran de choix + explication des types	pantalla de elección + explicación de tipos
+écran de choix seul	solo la pantalla de elección
+inchangé	sin cambios
+pas assez de place	no hay espacio suficiente
+forces et faiblesses citées inchangées	fortalezas y debilidades citadas sin cambios
+répliques du rival	frases del rival
+les autres inchangées	las demás sin cambios
+quiz de Sannah inchangé	test sobre los iniciales sin cambios
+non vérifié en jeu	no verificado en el juego
+résultats	resultados
+~un Pokémon au choix	un Pokémon a elección
+Échanges	Intercambios
+Texte rapide : rien à changer en 6G/7G (choisir « Vitesse du texte : Rapide » dans les options du jeu, non vérifié en jeu)	Texto rápido: nada que cambiar en 6.ª/7.ª gen. (elige «Velocidad del texto: Rápida» en las opciones del juego, no verificado en el juego)
+Texte du Prof. Orme : nom et type des nouveaux starters (	Texto del Prof. Elm: nombre y tipo de los nuevos iniciales (
+Texte du Prof. Chen : nom et type des nouveaux starters (	Texto del Prof. Oak: nombre y tipo de los nuevos iniciales (
+Texte du Prof. Orme : NON modifié (répliques introuvables)	Texto del Prof. Elm: NO modificado (frases no encontradas)
+Texte du Prof. Chen : NON modifié (répliques introuvables)	Texto del Prof. Oak: NO modificado (frases no encontradas)
+répliques)	frases)

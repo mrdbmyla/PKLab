@@ -47,7 +47,7 @@ import ctr_maps
 from paths import BASE_DIR, res
 HACKMODE_OVERRIDE_PATH = os.path.join(BASE_DIR, "hackmode_override.txt")
 DETECTION_LOG_PATH = os.path.join(BASE_DIR, "detection.log")
-PORT = 8731
+PORT = int(os.environ.get("PKLAB_PORT") or 8731)
 
 GEN3_RAW_PATH = os.path.join(BASE_DIR, "gen3_raw.json")
 GEN3_RAW_FRESH_SECONDS = 2.0
@@ -155,10 +155,13 @@ def _prepare_azahar_config():
     ini = os.path.join(AZAHAR_DIR, "user", "config", "qt-config.ini")
     _ini_set(ini, "[Debugging]", {"enable_rpc_server\\default": "false", "enable_rpc_server": "true"})
     _ini_set(ini, "[Renderer]", {"frame_limit\\default": "true", "frame_limit": "100"})
-    sc = "Shortcuts\\Main%20Window\\Quick%20"
+    sc = "Shortcuts\\Main%20Window\\"
     _ini_set(ini, "[UI]", {"confirmClose\\default": "false", "confirmClose": "false",
-                           sc + "Save\\KeySeq\\default": "false", sc + "Save\\KeySeq": "Shift+F1",
-                           sc + "Load\\KeySeq\\default": "false", sc + "Load\\KeySeq": "F1"})
+                           "fullscreen\\default": "false", "fullscreen": "false",
+                           sc + "Quick%20Save\\KeySeq\\default": "false", sc + "Quick%20Save\\KeySeq": "Shift+F1",
+                           sc + "Quick%20Load\\KeySeq\\default": "false", sc + "Quick%20Load\\KeySeq": "F1",
+                           sc + "Fullscreen\\KeySeq\\default": "false", sc + "Fullscreen\\KeySeq": "",
+                           sc + "Exit%20Fullscreen\\KeySeq\\default": "false", sc + "Exit%20Fullscreen\\KeySeq": ""})
     _azahar_any_controller(ini)
 
 
@@ -635,7 +638,10 @@ def created_roms():
 
 
 def _created_by_path(path):
-    return next((e for e in created_roms() if path and e["path"] == path), None)
+    if not path:
+        return None
+    key = os.path.normcase(os.path.abspath(path))
+    return next((e for e in created_roms() if os.path.normcase(os.path.abspath(e["path"])) == key), None)
 
 
 def _to_recycle_bin(paths):
@@ -1225,6 +1231,8 @@ SIDEBAR_COLLAPSED_PX = 28
 CURRENT_CANVAS_HWND = None
 CURRENT_EMBEDDED_HMENU = None
 _LAST_RESIZE_PARAMS = None
+_EMBED_PLACED = None
+_EMBED_REFITS = []
 OWN_HWND = None
 EMBED_DESIRED_VISIBLE = True
 CURRENT_SIDEBAR_PX = SIDEBAR_EXPANDED_PX
@@ -1277,6 +1285,9 @@ def _user32():
     user32.WindowFromPoint.restype = ctypes.c_void_p
     user32.WindowFromPoint.argtypes = [_POINT]
     user32.IsChild.argtypes = [ctypes.c_void_p, ctypes.c_void_p]
+    user32.GetParent.restype = ctypes.c_void_p
+    user32.GetParent.argtypes = [ctypes.c_void_p]
+    user32.IsWindowVisible.argtypes = [ctypes.c_void_p]
     user32.GetAsyncKeyState.restype = ctypes.c_short
     _U32 = user32
     return user32
@@ -1560,7 +1571,44 @@ def resize_embedded_canvas():
     _fit_and_center(user32, CURRENT_CANVAS_HWND, embed_x, embed_y, embed_w, embed_h)
 
 
+def _embed_geometry(user32, hwnd):
+    l, t, r, b = _window_rect(user32, hwnd)
+    origin = _POINT()
+    user32.ClientToScreen(OWN_HWND, ctypes.byref(origin))
+    return (l - origin.x, t - origin.y, r - l, b - t, user32.GetParent(hwnd),
+            user32.GetWindowLongW(hwnd, GWL_STYLE) & 0xFFFFFFFF & (WS_CHILD | WS_POPUP | WS_CAPTION | WS_THICKFRAME))
+
+
+def _make_child(user32, hwnd, parent):
+    style = user32.GetWindowLongW(hwnd, GWL_STYLE) & 0xFFFFFFFF
+    style &= ~(WS_POPUP | WS_CAPTION | WS_THICKFRAME | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX)
+    style |= WS_CHILD
+    user32.SetWindowLongW(hwnd, GWL_STYLE, _to_signed32(style))
+    if user32.GetParent(hwnd) != parent:
+        user32.SetParent(hwnd, parent)
+
+
+def _check_embed_placement(user32):
+    global _LAST_RESIZE_PARAMS
+    hwnd, placed = CURRENT_CANVAS_HWND, _EMBED_PLACED
+    if not hwnd or not OWN_HWND or not placed or placed[0] != hwnd or not user32.IsWindow(hwnd):
+        return
+    now = _embed_geometry(user32, hwnd)
+    if now == placed[1]:
+        return
+    t = time.time()
+    _EMBED_REFITS[:] = [x for x in _EMBED_REFITS if t - x < 10] + [t]
+    if len(_EMBED_REFITS) > 4:
+        return
+    if now[4] != OWN_HWND or now[5] != placed[1][5]:
+        _make_child(user32, hwnd, OWN_HWND)
+    _LAST_RESIZE_PARAMS = None
+    resize_embedded_canvas()
+
+
 def _fit_and_center(user32, hwnd, x, y, w, h):
+    global _EMBED_PLACED
+    _EMBED_PLACED = None
     req_w, req_h = w, h
     actual_w, actual_h = w, h
     for _ in range(4):
@@ -1577,6 +1625,7 @@ def _fit_and_center(user32, hwnd, x, y, w, h):
         centered_x = x + max((w - actual_w) // 2, 0)
         centered_y = y + max((h - actual_h) // 2, 0)
         user32.SetWindowPos(hwnd, 0, centered_x, centered_y, actual_w, actual_h, SWP_NOZORDER)
+    _EMBED_PLACED = (hwnd, _embed_geometry(user32, hwnd))
 
 
 def set_sidebar_collapsed(collapsed):
@@ -1623,11 +1672,7 @@ def embed_emulator_window(engine_key, pid):
 
     CURRENT_EMBEDDED_HMENU = user32.GetMenu(emu_hwnd) or None
 
-    style = user32.GetWindowLongW(emu_hwnd, GWL_STYLE) & 0xFFFFFFFF
-    style &= ~(WS_POPUP | WS_CAPTION | WS_THICKFRAME | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX)
-    style |= WS_CHILD
-    user32.SetWindowLongW(emu_hwnd, GWL_STYLE, _to_signed32(style))
-    user32.SetParent(emu_hwnd, own_hwnd)
+    _make_child(user32, emu_hwnd, own_hwnd)
     CURRENT_CANVAS_HWND = emu_hwnd
     if not EMBED_DESIRED_VISIBLE and engine_key != "melonds":
         user32.ShowWindow(emu_hwnd, SW_HIDE)
@@ -1660,8 +1705,15 @@ def _focus_guard_loop():
     user32 = _user32()
     was_down = False
     pt = _POINT()
+    next_check = 0.0
     while True:
         hwnd = CURRENT_CANVAS_HWND
+        if hwnd and time.time() >= next_check:
+            next_check = time.time() + 0.3
+            try:
+                _check_embed_placement(user32)
+            except Exception:
+                pass
         if not hwnd or not EMBED_DESIRED_VISIBLE:
             was_down = False
             time.sleep(0.2)
@@ -1682,6 +1734,7 @@ SPEED_STEPS = (1, 2, 5, 10, 20, 100)
 MELONDS_FPS = (60.0, 1000.0, 30.0)
 _MELONDS_FPS_SIG = struct.pack("<ddd", *MELONDS_FPS)
 _MGBA_SYNC_SIG = bytes.fromhex("d007000200000000")
+_MGBA_FPS60 = struct.pack("<f", 60.0)
 CURRENT_SPEED = 1
 _SPEED_TARGET = {"pid": None, "addr": None, "fmt": None, "base": None, "pm": None}
 _SPEED_LOCK = threading.Lock()
@@ -1690,85 +1743,100 @@ SPEED_AUTO_RESET = {"pending": False}
 
 
 def _speed_available():
-    return (CURRENT_ENGINE_KEY in ("melonds", "mgba", "azahar") and CURRENT_CANVAS_HWND is not None
+    return (CURRENT_ENGINE_KEY in ("melonds", "mgba", "azahar") and (CURRENT_CANVAS_HWND is not None or not IS_WIN)
             and CURRENT_EMULATOR_PROC is not None and CURRENT_EMULATOR_PROC.poll() is None)
 
 
-def _find_speed_target(pm, engine_key):
+def _win_regions(pm, want):
     import pymem.memory
-    handle = pm.process_handle
-    hits = []
-    addr = 0
-    while addr < 0x7FFFFFFF0000 and len(hits) < 2:
-        try:
-            mbi = pymem.memory.virtual_query(handle, addr)
-        except Exception:
-            break
-        base, size = mbi.BaseAddress or 0, mbi.RegionSize
-        if not size:
-            break
-        if mbi.State == 0x1000 and mbi.Protect == 0x04 and mbi.Type == 0x20000 and size < 0x10000000:
-            off = 0
-            while off < size and len(hits) < 2:
-                try:
-                    data = pm.read_bytes(base + off, min(_SPEED_SCAN_CHUNK + 32, size - off))
-                except Exception:
-                    break
-                if engine_key == "melonds":
-                    i = data.find(_MELONDS_FPS_SIG)
-                    while 0 <= i < _SPEED_SCAN_CHUNK:
-                        if (off + i) % 8 == 0:
-                            hits.append((base + off + i, "<d", MELONDS_FPS[0]))
-                        i = data.find(_MELONDS_FPS_SIG, i + 1)
-                else:
-                    i = data.find(_MGBA_SYNC_SIG)
-                    while 0 <= i < _SPEED_SCAN_CHUNK:
-                        if (off + i) % 4 == 0 and i + 0x14 <= len(data):
-                            fps = struct.unpack_from("<f", data, i + 0x10)[0]
-                            if 59.0 <= fps <= 61.0:
-                                hits.append((base + off + i + 0x10, "<f", fps))
-                        i = data.find(_MGBA_SYNC_SIG, i + 1)
-                off += _SPEED_SCAN_CHUNK
-                time.sleep(0)
-        addr = base + size
-    return hits[0] if len(hits) == 1 else None
-
-
-_AZAHAR_LIMIT_LABEL = b"\x16frame_limit\x00"
-
-
-def _find_azahar_speed_target(pm):
-    import pymem.memory
-    handle = pm.process_handle
     addr = 0
     while addr < 0x7FFFFFFF0000:
         try:
-            mbi = pymem.memory.virtual_query(handle, addr)
+            mbi = pymem.memory.virtual_query(pm.process_handle, addr)
         except Exception:
-            break
+            return
         base, size = mbi.BaseAddress or 0, mbi.RegionSize
         if not size:
-            break
-        if mbi.State == 0x1000 and mbi.Type == 0x1000000 and mbi.Protect in (0x04, 0x08) and size < 0x10000000:
-            off = 0
-            while off < size:
-                try:
-                    data = pm.read_bytes(base + off, min(_SPEED_SCAN_CHUNK + 32, size - off))
-                except Exception:
-                    break
-                i = data.find(_AZAHAR_LIMIT_LABEL)
-                while 0 <= i < _SPEED_SCAN_CHUNK:
-                    v = base + off + i - 0x20
-                    try:
-                        obj = pm.read_bytes(v - 0x18, 0x30)
-                    except Exception:
-                        obj = b""
-                    if len(obj) == 0x30 and struct.unpack_from("<dd", obj, 0x20) == (100.0, 1000.0):
-                        return (v if obj[0] else v - 0x10), "<d", 100.0
-                    i = data.find(_AZAHAR_LIMIT_LABEL, i + 1)
-                off += _SPEED_SCAN_CHUNK
-                time.sleep(0)
+            return
+        if mbi.State == 0x1000 and want(mbi) and size < 0x10000000:
+            yield base, size
         addr = base + size
+
+
+def _speed_regions(pm, engine_key):
+    if not IS_WIN:
+        return pm.rw_regions(max_size=0x10000000 - 1, files=engine_key == "azahar")
+    if engine_key == "azahar":
+        return _win_regions(pm, lambda m: m.Type == 0x1000000 and m.Protect in (0x04, 0x08))
+    return _win_regions(pm, lambda m: m.Protect == 0x04 and m.Type == 0x20000)
+
+
+def _find_speed_target(pm, engine_key):
+    hits = []
+    for base, size in _speed_regions(pm, engine_key):
+        if len(hits) >= 2:
+            break
+        off = 0
+        while off < size and len(hits) < 2:
+            try:
+                data = pm.read_bytes(base + off, min(_SPEED_SCAN_CHUNK + 32, size - off))
+            except Exception:
+                break
+            if engine_key == "melonds":
+                i = data.find(_MELONDS_FPS_SIG)
+                while 0 <= i < _SPEED_SCAN_CHUNK:
+                    if (off + i) % 8 == 0:
+                        hits.append((base + off + i, "<d", MELONDS_FPS[0]))
+                    i = data.find(_MELONDS_FPS_SIG, i + 1)
+            elif not IS_WIN:
+                i = data.find(_MGBA_FPS60)
+                while 0 <= i < _SPEED_SCAN_CHUNK:
+                    a = base + off + i
+                    if a % 4 == 0:
+                        try:
+                            ctx = data[i - 0x20:i] if i >= 0x20 else pm.read_bytes(a - 0x20, 0x20)
+                        except Exception:
+                            ctx = b""
+                        if len(ctx) == 0x20 and not any(ctx[:0x18]) and any(ctx[0x18:0x1C]) and not any(ctx[0x1C:]):
+                            hits.append((a, "<f", 60.0))
+                    i = data.find(_MGBA_FPS60, i + 1)
+            else:
+                i = data.find(_MGBA_SYNC_SIG)
+                while 0 <= i < _SPEED_SCAN_CHUNK:
+                    if (off + i) % 4 == 0 and i + 0x14 <= len(data):
+                        fps = struct.unpack_from("<f", data, i + 0x10)[0]
+                        if 59.0 <= fps <= 61.0:
+                            hits.append((base + off + i + 0x10, "<f", fps))
+                    i = data.find(_MGBA_SYNC_SIG, i + 1)
+            off += _SPEED_SCAN_CHUNK
+            time.sleep(0)
+    return hits[0] if len(hits) == 1 else None
+
+
+_AZAHAR_LIMIT_LABEL = b"\x16frame_limit\x00" if IS_WIN else struct.pack("<Q", 11) + b"frame_limit\x00"
+_AZAHAR_VALUE_BACK = 0x20 if IS_WIN else 0x28
+
+
+def _find_azahar_speed_target(pm):
+    for base, size in _speed_regions(pm, "azahar"):
+        off = 0
+        while off < size:
+            try:
+                data = pm.read_bytes(base + off, min(_SPEED_SCAN_CHUNK + 32, size - off))
+            except Exception:
+                break
+            i = data.find(_AZAHAR_LIMIT_LABEL)
+            while 0 <= i < _SPEED_SCAN_CHUNK:
+                v = base + off + i - _AZAHAR_VALUE_BACK
+                try:
+                    obj = pm.read_bytes(v - 0x18, 0x30)
+                except Exception:
+                    obj = b""
+                if len(obj) == 0x30 and struct.unpack_from("<dd", obj, 0x20) == (100.0, 1000.0):
+                    return (v if obj[0] else v - 0x10), "<d", 100.0
+                i = data.find(_AZAHAR_LIMIT_LABEL, i + 1)
+            off += _SPEED_SCAN_CHUNK
+            time.sleep(0)
     return None
 
 
@@ -1777,10 +1845,13 @@ def _speed_target():
     t = _SPEED_TARGET
     if t["pid"] == proc.pid and t["addr"]:
         return t
-    import pymem
     try:
-        pm = pymem.Pymem()
-        pm.open_process_from_id(proc.pid)
+        if IS_WIN:
+            import pymem
+            pm = pymem.Pymem()
+            pm.open_process_from_id(proc.pid)
+        else:
+            pm = osdep.ProcMem(osdep.find_process(osdep.LINUX_EMU_NAMES[CURRENT_ENGINE_KEY], proc.pid) or proc.pid)
     except Exception:
         return None
     found = None
@@ -1895,15 +1966,17 @@ _FPS_TITLE = (re.compile(r"\((\d+(?:[.,]\d+)?)\s*(?:ips|fps)\)", re.I), re.compi
 
 
 def emulator_fps():
-    h = CURRENT_CANVAS_HWND
-    if not h or not _speed_available():
+    if not _speed_available():
         return None
-    try:
-        buf = ctypes.create_unicode_buffer(256)
-        _user32().GetWindowTextW(h, buf, 256)
-        title = buf.value
-    except Exception:
-        return None
+    if not IS_WIN:
+        title = osdep.x11_title(LINUX_EMU_WID) if LINUX_EMU_WID else ""
+    else:
+        try:
+            buf = ctypes.create_unicode_buffer(256)
+            _user32().GetWindowTextW(CURRENT_CANVAS_HWND, buf, 256)
+            title = buf.value
+        except Exception:
+            return None
     for rx in _FPS_TITLE:
         m = rx.search(title)
         if m:
@@ -1946,7 +2019,11 @@ CURRENT_ROM_PATH = None
 
 
 def _emulator_audio_session():
-    if not _PYCAW_AVAILABLE or CURRENT_EMULATOR_PROC is None or CURRENT_EMULATOR_PROC.poll() is not None:
+    if CURRENT_EMULATOR_PROC is None or CURRENT_EMULATOR_PROC.poll() is not None:
+        return None
+    if not IS_WIN:
+        return osdep.PulseVolume.find(osdep.descendants(CURRENT_EMULATOR_PROC.pid))
+    if not _PYCAW_AVAILABLE:
         return None
     pid = CURRENT_EMULATOR_PROC.pid
     try:
@@ -2002,16 +2079,13 @@ def stop_emulator():
     if proc is None:
         return
     try:
-        if proc.poll() is None:
-            osdep.stop_proc(proc)
-            try:
-                proc.wait(timeout=3)
-            except subprocess.TimeoutExpired:
-                osdep.stop_proc(proc, force=True)
+        if proc.poll() is None or not IS_WIN:
+            osdep.stop_tree(proc)
     except Exception:
         pass
 
 
+MELONDS_CONFIG_DIR = os.path.join(os.environ.get("XDG_CONFIG_HOME") or os.path.expanduser("~/.config"), "melonDS")
 MELONDS_KEYBOARD_DEFAULTS = {
     "Up": 16777235, "Down": 16777237, "Left": 16777234, "Right": 16777236,
     "A": 88, "B": 90, "X": 83, "Y": 65,
@@ -2061,6 +2135,8 @@ def _ensure_melonds_keyboard_defaults(melonds_dir):
         if start is None:
             if lines and not lines[-1].endswith("\n"):
                 lines[-1] += "\n"
+            if not any(l.strip() == "[Instance0]" for l in lines):
+                lines += ["\n", "[Instance0]\n"]
             lines += ["\n", "[Instance0.Keyboard]\n"]
             start = len(lines) - 1
         end = next((i for i in range(start + 1, len(lines)) if lines[i].strip().startswith("[")), len(lines))
@@ -2077,10 +2153,28 @@ def _ensure_melonds_keyboard_defaults(melonds_dir):
         lines[end:end] = [f"{k} = {v}\n" for k, v in MELONDS_KEYBOARD_DEFAULTS.items() if k not in found]
         _toml_force(lines, "[JIT]", "Enable", "true")
         _toml_force(lines, "[Screen]", "UseGL", "true")
+        os.makedirs(melonds_dir, exist_ok=True)
         with open(toml_path, "w", encoding="utf-8") as f:
             f.writelines(lines)
     except Exception:
         pass
+
+
+def _install_bundled_linux_emulator(engine_key, local):
+    src_dir = os.path.join(paths.RES_DIR, "emulators", engine_key)
+    if not paths.BUNDLED or not os.path.isdir(src_dir):
+        return
+    for name in os.listdir(src_dir):
+        src, dst = os.path.join(src_dir, name), os.path.join(local, name)
+        if os.path.isfile(dst) and os.path.getsize(dst) == os.path.getsize(src):
+            continue
+        try:
+            os.makedirs(local, exist_ok=True)
+            shutil.copyfile(src, dst + ".part")
+            os.chmod(dst + ".part", 0o755)
+            os.replace(dst + ".part", dst)
+        except OSError:
+            pass
 
 
 def launch_emulator(engine_key, rom_path, load_state=False):
@@ -2094,6 +2188,7 @@ def launch_emulator(engine_key, rom_path, load_state=False):
         return False, "Aucune sauvegarde dans le state 1 pour ce jeu"
     if not IS_WIN:
         local = AZAHAR_DIR if engine_key == "azahar" else os.path.join(BASE_DIR, engine_key)
+        _install_bundled_linux_emulator(engine_key, local)
         exe = osdep.find_linux_emulator(engine_key, local)
         if not exe:
             return False, "AZAHAR_MISSING" if engine_key == "azahar" else osdep.install_hint(engine_key, local)
@@ -2111,8 +2206,8 @@ def launch_emulator(engine_key, rom_path, load_state=False):
     EMBED_DESIRED_VISIBLE = True
     CURRENT_ENGINE_KEY = engine_key
     CURRENT_ROM_PATH = rom_path
-    if engine_key == "melonds" and IS_WIN:
-        _ensure_melonds_keyboard_defaults(os.path.dirname(exe))
+    if engine_key == "melonds":
+        _ensure_melonds_keyboard_defaults(os.path.dirname(exe) if IS_WIN else MELONDS_CONFIG_DIR)
         for key in gen4_maps.REPO_BY_GAME:
             gen4_maps.set_rom_path(key, rom_path)
         for key in gen5_maps.GAMES:
@@ -2149,6 +2244,12 @@ def launch_emulator(engine_key, rom_path, load_state=False):
             pass
         if not IS_WIN:
             threading.Thread(target=_track_linux_window, args=(engine_key, proc), daemon=True).start()
+            t0 = time.time()
+            while time.time() - t0 < 15 and not LINUX_EMU_WID:
+                if proc.poll() is not None:
+                    CURRENT_EMULATOR_PROC = None
+                    return False, osdep.emulator_failure()
+                time.sleep(0.2)
         else:
             if cfg["needs_script"]:
                 threading.Thread(target=_hide_window_by_title, args=(proc.pid, "Script"), daemon=True).start()
@@ -2694,7 +2795,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
     def translate_path(self, path):
         p = super().translate_path(path)
-        if not os.path.exists(p) and paths.FROZEN:
+        if not os.path.exists(p) and paths.BUNDLED:
             rel = os.path.relpath(p, self.directory)
             if not rel.startswith(".."):
                 return os.path.join(paths.RES_DIR, rel)

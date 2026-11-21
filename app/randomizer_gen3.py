@@ -565,6 +565,13 @@ def _frlg_sites(g):
     return out
 
 
+FIXED_DAMAGE3 = {49, 69, 82, 101, 149, 162}
+
+
+def _attacks_at(g, s, level=5):
+    return any(lv <= level and (g.move(mv)["power"] > 1 or mv in FIXED_DAMAGE3) for mv, lv in g.learnset(s))
+
+
 def randomize_starters(g, rng, opts, pool, pre, log, names):
     if opts["starters"] == "off":
         return None
@@ -591,6 +598,9 @@ def randomize_starters(g, rng, opts, pool, pre, log, names):
             basics = [s for s in basics if any(evolves[t] for t in evolves[s])] or basics
         if opts["starters"] == "randomAny":
             basics = [s for s in pool if s not in old]
+        fighters = [s for s in basics if _attacks_at(g, s)]
+        if len(fighters) >= 3:
+            basics = fighters
         import randomizer as R
         chosen = R._three_starters(rng, basics, g.types, opts["starterTypes"])
     mapping = dict(zip(old, chosen))
@@ -606,6 +616,55 @@ def randomize_starters(g, rng, opts, pool, pre, log, names):
         where = "table du sac du Prof. (image, cri, Pokémon donné)"
     log.append("Starters : " + ", ".join(f"{names(o)} -> {names(n)}" for o, n in mapping.items()) + f" ({where})")
     return mapping
+
+
+TYPE_WORDS3 = ["NORMAL", "COMBAT", "VOL", "POISON", "SOL", "ROCHE", "INSECTE", "SPECTRE", "ACIER", "???", "FEU", "EAU",
+               "PLANTE", "ELECTRIK", "PSY", "GLACE", "DRAGON", "TENEBRES"]
+
+
+def _species_name_table(g):
+    rom = bytes(g.rom)
+    for h in _find_all(rom, _encode("PIKACHU") + b"\xff"):
+        t = h - 11 * g.internal(25)
+        if t > 0 and rom[t + 11 * g.internal(1)] != 0xFF and rom[t + 11 * g.internal(1) - 1] in (0xFF, 0):
+            return t
+    return None
+
+
+def starter_text3(g, mapping, log):
+    if g.family != "FRLG":
+        return
+    t = _species_name_table(g)
+    done = 0
+    if t is not None:
+        def name(sp):
+            o = t + 11 * g.internal(sp)
+            return bytes(g.rom[o:o + 11]).split(b"\xff")[0]
+        pok, q = _encode("POKéMON "), _encode("?")
+        for old, new in mapping.items():
+            rom = bytes(g.rom)
+            hits = _find_all(rom, b"\xff" + name(old) + q)
+            if len(hits) != 1:
+                continue
+            s = hits[0] + 1
+            e = rom.find(b"\xff", s)
+            seg = rom[s:e]
+            k = seg.rfind(pok)
+            if k < 0 or not seg.endswith(q):
+                continue
+            mid = seg[len(name(old)):k + len(pok)]
+            word = _encode(TYPE_WORDS3[g.rom[g._bs(new) + 6]] if g.rom[g._bs(new) + 6] < len(TYPE_WORDS3) else "")
+            text = name(new) + mid + word + q
+            if len(text) > len(seg):
+                text = name(new) + mid[:-1] + q
+            if len(text) > len(seg):
+                continue
+            g.rom[s:e + 1] = text + b"\xff" * (len(seg) + 1 - len(text))
+            done += 1
+    if done:
+        log.append(f"Texte du Prof. Chen : nom et type des nouveaux starters ({done}/3 répliques)")
+    else:
+        log.append("Texte du Prof. Chen : NON modifié (répliques introuvables)")
 
 
 GIFTS3 = {"E": {(155, 5), (158, 5), (152, 5), (374, 5), (351, 25), (345, 20), (347, 20)},
@@ -858,7 +917,7 @@ def randomize_events(g, rng, opts, pool, bst, pre, log, names, pick):
                 if struct.unpack_from("<H", g.rom, o + 2 * k)[0] != it:
                     struct.pack_into("<H", g.rom, o + 2 * k, it)
                     changed += 1
-        log.append(f"Magasins : {len(shops)} listes, {changed} objets changés (CT et Poké Balls gardés)"
+        log.append(f"Magasins : {len(shops)} listes, {changed} objets changés (CT et Poké Ball de base gardés)"
                    + (" - mélangés" if opts["shops"] == "shuffle" else " - prix proches"))
     return lines
 

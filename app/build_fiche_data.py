@@ -220,6 +220,13 @@ for vg, gen in VGS.items():
             evs.append([sid, " ou ".join(m) if m else "Méthode inconnue"])
         if evs:
             species[pid]["ev"] = evs
+    if gen >= 6:
+        with open("C:/pkmn/data/base_stats.json", encoding="utf-8") as f:
+            bst = json.load(f)[str(gen)]
+        for pid, sp in species.items():
+            v = bst.get(str(pid))
+            if v:
+                sp["st"] = [v[0], v[1], v[2], v[4], v[5], v[3]]
     max_move = {2: 251, 3: 354, 4: 467, 5: 559, 6: 621, 7: 728 if vg == 18 else 719}[gen]
     all_moves = sorted(used | set(range(1, max_move + 1)))
     data = {"vg": vg, "gen": gen, "moves": {m: move_at(m, vg) for m in all_moves if m in moves}, "species": species,

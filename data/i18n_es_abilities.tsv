@@ -169,3 +169,69 @@ Turbo Brasier	Ignora las habilidades de los objetivos que pudieran estorbar o im
 Chasse-Neige	Duplica la Velocidad de este Pokémon con granizo.
 Défaitiste	Reduce a la mitad el Ataque y el Ataque Especial con el 50 % de los PS máximos o menos.
 Multi-Type	Cambia el tipo y la forma de Arceus según la tabla que lleva.
+Aroma-Voile	Protege a todo el equipo de ataques que impiden elegir movimientos.
+Flora-Voile	Evita que los Pokémon de tipo Planta aliados sufran problemas de estado o que bajen sus características.
+Bajoues	Recupera PS al comer cualquier baya.
+Toison Épaisse	Reduce a la mitad el daño recibido por ataques físicos del rival.
+Magicien	Roba el objeto del Pokémon al que alcance con un movimiento.
+Pare-Balles	No le afectan las bombas ni algunos proyectiles.
+Prognathe	Su robusta mandíbula le confiere una mordedura potente.
+Peau Gelée	Convierte los movimientos de tipo Normal en tipo Hielo y aumenta ligeramente su potencia.
+Gluco-Voile	Evita que el equipo Pokémon se duerma.
+Déclic Tactique	Adopta la Forma Filo al lanzar un ataque, o bien la Forma Escudo si usa el movimiento Escudo Real.
+Ailes Bourrasque	Da prioridad a los movimientos de tipo Volador si los PS están al máximo.
+Méga Blaster	Aumenta la potencia de algunos movimientos de pulsos y auras.
+Toison Herbue	Aumenta la Defensa si hay un campo de hierba en el terreno de combate.
+Symbiose	El Pokémon pasa su objeto a un aliado que ya haya utilizado el suyo.
+Griffe Dure	Aumenta la potencia de los movimientos de contacto.
+Peau Féérique	Convierte los movimientos de tipo Normal en tipo Hada y aumenta ligeramente su potencia.
+Poisseux	Baja la Velocidad del rival cuando este ataca al Pokémon con un movimiento de contacto.
+Peau Céleste	Convierte los movimientos de tipo Normal en tipo Volador y aumenta ligeramente su potencia.
+Amour Filial	Ataque doble en familia.
+Aura Ténébreuse	Aumenta la potencia de todos los movimientos de tipo Siniestro.
+Aura Féérique	Aumenta la potencia de todos los movimientos de tipo Hada.
+Aura Inversée	Invierte los efectos de las auras, por lo que baja la potencia de ciertos movimientos en vez de subirla.
+Mer Primaire	Altera el clima para anular los ataques de tipo Fuego.
+Terre Finale	Altera el clima para anular los ataques de tipo Agua.
+Souffle Delta	Altera el clima para anular las vulnerabilidades del tipo Volador.
+Endurance	Aumenta la Defensa al recibir un ataque.
+Escampette	Se asusta y abandona el terreno de combate cuando sus PS se ven reducidos a la mitad.
+Repli Tactique	Abandona el terreno de combate cuando sus PS se ven reducidos a la mitad para evitar males mayores.
+Sable Humide	Aumenta mucho la Defensa si le alcanza un movimiento de tipo Agua.
+Cruauté	Hace que los movimientos asesten siempre un golpe crítico si el rival está envenenado.
+Bouclier-Carcan	Rompe su coraza cuando sus PS se ven reducidos a la mitad y adopta una forma ofensiva.
+Filature	Duplica el daño infligido a un Pokémon que se haya incorporado al combate mediante un cambio.
+Aquabulle	Reduce el daño que le provocan los movimientos de tipo Fuego e impide que sufra quemaduras.
+Expert Acier	Potencia los movimientos de tipo Acero.
+Folle Furie	Aumenta el Ataque Especial si los ataques del oponente le reducen los PS a la mitad.
+Longue Portée	Permite usar cualquier movimiento sin entrar en contacto con el rival.
+Hydrata-Son	Hace que todos los movimientos del Pokémon basados en sonido pasen a ser de tipo Agua.
+Prioguérison	Da prioridad a los movimientos que curan PS directamente al Pokémon.
+Peau Électrique	Convierte los movimientos de tipo Normal en tipo Eléctrico y aumenta ligeramente su potencia.
+Surf Caudal	Duplica la Velocidad si hay un campo eléctrico en el terreno de combate.
+Banc	Forma bancos con sus congéneres cuando tiene muchos PS, lo cual le otorga más fuerza. Cuando le quedan pocos PS, el banco se dispersa.
+Fantômasque	Permite eludir un único ataque valiéndose de la tela que le cubre el cuerpo.
+Synergie	Al derrotar a un rival, los vínculos con su Entrenador se refuerzan y se convierte en Greninja Ash. Su Shuriken de Agua también se ve potenciado.
+Rassemblement	Cuando sus PS se ven reducidos a la mitad, las células se reagrupan y adopta su Forma Completa.
+Corrosion	Permite envenenar incluso a rivales de tipo Acero o Veneno.
+Hypersommeil	No despierta jamás de su profundo letargo e incluso ataca dormido.
+Prestance Royale	Intimida al rival y le impide usar movimientos con prioridad dirigidos al Pokémon.
+Expuls’Organes	Al caer debilitado, inflige al rival un daño equivalente a los PS que le quedaran.
+Danseuse	Permite copiar inmediatamente cualquier movimiento de baile que haya usado otro Pokémon presente en el combate.
+Batterie	Potencia los movimientos especiales de los aliados.
+Boule de Poils	Reduce a la mitad el daño provocado por los movimientos de contacto, pero duplica el infligido por los de tipo Fuego.
+Corps Coloré	Desconcierta al rival y le impide utilizar movimientos con prioridad contra el usuario.
+Animacœur	Aumenta el Ataque Especial cada vez que un Pokémon cae debilitado.
+Mèche Rebelle	Baja la Velocidad del rival cuando este ataca al Pokémon con un movimiento de contacto.
+Receveur	Adquiere la habilidad de un aliado debilitado.
+Osmose	Reacciona copiando la habilidad de un aliado debilitado.
+Boost Chimère	Si el Pokémon derrota a un rival en ese turno, aumenta su característica más fuerte.
+Système Alpha	Cambia su tipo según el disco que lleve instalado.
+Créa-Élec	Crea un campo eléctrico al entrar en combate.
+Créa-Psy	Crea un campo psíquico al entrar en combate.
+Créa-Brume	Crea un campo de niebla al entrar en combate.
+Créa-Herbe	Crea un campo de hierba al entrar en combate.
+Métallo-Garde	Evita que bajen sus características a causa de movimientos o habilidades de otros Pokémon.
+Spectro-Bouclier	Reduce el daño sufrido si los PS están al máximo.
+Prisme-Armure	Mitiga el daño que le infligen los movimientos supereficaces.
+Cérébro-Force	Potencia los ataques supereficaces.
